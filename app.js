@@ -1293,37 +1293,154 @@ function initParticles() {
 window.addEventListener('resize', resizeCanvas);
 
 // ============================================================
-// 6. LEADERBOARD (LocalStorage)
+// 6. LEADERBOARD (Firebase Realtime Database + LocalStorage Fallback)
 // ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyByLu75xLmTH9gM0NEUglTYcRwzi1Q19so",
+  authDomain: "cultura-general-pro.firebaseapp.com",
+  databaseURL: "https://cultura-general-pro-default-rtdb.firebaseio.com",
+  projectId: "cultura-general-pro",
+  storageBucket: "cultura-general-pro.firebasestorage.app",
+  messagingSenderId: "670535256430",
+  appId: "1:670535256430:web:ffd43ad4079e3039bf197f"
+};
+
+let db = null;
+let globalLeaderboard = [];
 const LS_KEY = 'cgpro_leaderboard';
 
-function loadLeaderboard() {
+// Initialize Firebase
+try {
+  if (typeof firebase !== 'undefined') {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    db = firebase.database();
+    console.log("Firebase Realtime Database conectada con éxito.");
+  }
+} catch (err) {
+  console.warn("No se pudo iniciar Firebase, usando LocalStorage:", err);
+}
+
+function loadLocalLeaderboard() {
   try {
     return JSON.parse(localStorage.getItem(LS_KEY)) || [];
   } catch { return []; }
 }
 
+function sanitizeKey(str) {
+  return (str || 'jugador').toLowerCase().trim().replace(/[.#$\[\]\/]/g, '_');
+}
+
+// Guarda o suma puntos en Firebase en la nube
 function saveToLeaderboard(entry) {
-  let lb = loadLeaderboard();
-  lb.push(entry);
-  lb.sort((a, b) => b.score - a.score);
-  lb = lb.slice(0, 10);
-  localStorage.setItem(LS_KEY, JSON.stringify(lb));
-  return lb;
+  // 1. Guardar localmente
+  let localLb = loadLocalLeaderboard();
+  localLb.push(entry);
+  localLb.sort((a, b) => b.score - a.score);
+  localLb = localLb.slice(0, 10);
+  localStorage.setItem(LS_KEY, JSON.stringify(localLb));
+
+  // 2. Guardar en Firebase (Nube pública compartida)
+  if (db) {
+    const playerKey = sanitizeKey(entry.name);
+    const playerRef = db.ref('players/' + playerKey);
+
+    playerRef.transaction((current) => {
+      if (!current) {
+        return {
+          name: entry.name,
+          avatar: entry.avatar || '🧑',
+          totalScore: entry.score,
+          bestScore: entry.score,
+          gamesPlayed: 1,
+          accuracy: entry.accuracy || 0,
+          streak: entry.streak || 0,
+          diff: entry.diff || 'Normal',
+          lastDate: entry.date || new Date().toLocaleDateString('es-ES')
+        };
+      } else {
+        // Se acumulan los puntos ganados para el jugador
+        current.totalScore = (current.totalScore || 0) + entry.score;
+        if (entry.score > (current.bestScore || 0)) {
+          current.bestScore = entry.score;
+        }
+        current.gamesPlayed = (current.gamesPlayed || 0) + 1;
+        current.avatar = entry.avatar || current.avatar;
+        current.accuracy = Math.round(((current.accuracy || entry.accuracy) + entry.accuracy) / 2);
+        if ((entry.streak || 0) > (current.streak || 0)) {
+          current.streak = entry.streak;
+        }
+        current.lastDate = entry.date || new Date().toLocaleDateString('es-ES');
+        return current;
+      }
+    }, (error, committed) => {
+      if (error) {
+        console.error("Error al guardar en Firebase:", error);
+      } else if (committed) {
+        console.log("Puntaje guardado y sumado en Firebase.");
+      }
+    });
+  }
+  return localLb;
+}
+
+// Escuchar cambios en vivo en Firebase para actualizar la tabla de todos los celulares
+function initRealtimeLeaderboard() {
+  if (!db) {
+    globalLeaderboard = loadLocalLeaderboard();
+    updateAllLeaderboardViews();
+    return;
+  }
+
+  db.ref('players').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (!data) {
+      globalLeaderboard = [];
+    } else {
+      globalLeaderboard = Object.values(data).map(p => ({
+        name: p.name || 'Anónimo',
+        avatar: p.avatar || '🧑',
+        score: p.totalScore || p.bestScore || 0,
+        accuracy: p.accuracy || 0,
+        streak: p.streak || 0,
+        diff: p.diff || 'Pro',
+        date: p.lastDate || '',
+        gamesPlayed: p.gamesPlayed || 1
+      }));
+      // Ordenar de mayor a menor puntaje
+      globalLeaderboard.sort((a, b) => b.score - a.score);
+      globalLeaderboard = globalLeaderboard.slice(0, 10);
+    }
+    updateAllLeaderboardViews();
+  }, (err) => {
+    console.warn("Error leyendo de Firebase, usando fallback local:", err);
+    globalLeaderboard = loadLocalLeaderboard();
+    updateAllLeaderboardViews();
+  });
+}
+
+function updateAllLeaderboardViews() {
+  if (DOM.leaderboardStart) {
+    renderLeaderboard(DOM.leaderboardStart);
+  }
+  if (DOM.leaderboardResults && !DOM.screenResults.classList.contains('hidden')) {
+    renderLeaderboard(DOM.leaderboardResults, gameState.score, gameState.player);
+  }
 }
 
 function renderLeaderboard(container, currentScore = null, currentName = null) {
-  const lb = loadLeaderboard();
+  const lb = (globalLeaderboard && globalLeaderboard.length) ? globalLeaderboard : loadLocalLeaderboard();
+  
   if (!lb.length) {
-    container.innerHTML = `<p class="text-center text-slate-500 text-xs font-poppins py-4">Aún no hay puntuaciones guardadas. ¡Sé el primero!</p>`;
+    container.innerHTML = `<p class="text-center text-slate-500 text-xs font-poppins py-4">Aún no hay puntuaciones en la nube. ¡Sé el primero en jugar!</p>`;
     return;
   }
 
   const medals = ['🥇', '🥈', '🥉'];
   container.innerHTML = lb.map((entry, i) => {
-    // Highlight: matches both score and name (or just current session if name passed)
-    const isNew = currentScore !== null && entry.score === currentScore &&
-                  (currentName === null || entry.name === currentName);
+    const isNew = currentName !== null && 
+                  entry.name.toLowerCase().trim() === currentName.toLowerCase().trim();
 
     const scoreColor = i === 0
       ? 'neon-text-gold'
@@ -1337,16 +1454,12 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
       ? `<span class="text-lg">${medals[i]}</span>`
       : `<span class="lb-rank text-slate-500">#${i + 1}</span>`;
 
-    const diffBadge = entry.diff
-      ? `<span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.2);color:rgba(0,245,255,0.7);">${entry.diff}</span>`
+    const gamesBadge = entry.gamesPlayed && entry.gamesPlayed > 1
+      ? `<span class="text-xs px-1.5 py-0.5 rounded text-slate-400 bg-slate-800/80 font-mono">${entry.gamesPlayed} partidas</span>`
       : '';
 
     const newBadge = isNew
       ? `<span class="text-xs px-2 py-0.5 rounded-full font-black" style="background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.5);color:var(--neon-gold);">✨ TÚ</span>`
-      : '';
-
-    const incompleteBadge = entry.incomplete
-      ? `<span class="text-xs text-slate-600">(parcial)</span>`
       : '';
 
     return `
@@ -1354,12 +1467,12 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
         <div class="flex items-center gap-2 min-w-[36px]">${rankDisplay}</div>
         <span class="text-lg">${entry.avatar || '🧑'}</span>
         <div class="flex-1 min-w-0">
-          <p class="lb-name truncate ${isNew ? 'text-white' : ''}">${escapeHtml(entry.name)}</p>
-          <div class="flex items-center gap-2 mt-0.5">${diffBadge}${incompleteBadge}</div>
+          <p class="lb-name truncate ${isNew ? 'text-white font-bold' : ''}">${escapeHtml(entry.name)}</p>
+          <div class="flex items-center gap-2 mt-0.5">${gamesBadge}</div>
         </div>
         <div class="text-right shrink-0">
-          <p class="lb-score ${scoreColor}">${entry.score.toLocaleString()} PTS</p>
-          <p class="text-xs text-slate-500">${entry.accuracy}% · ${entry.date || ''}</p>
+          <p class="lb-score ${scoreColor}">${(entry.score || 0).toLocaleString()} PTS</p>
+          <p class="text-xs text-slate-500">${entry.accuracy}%</p>
         </div>
         ${newBadge}
       </div>`;
@@ -2056,6 +2169,7 @@ function escapeRegex(str) {
 document.addEventListener('DOMContentLoaded', () => {
   initParticles();
   initStartScreen();
+  initRealtimeLeaderboard();
 
   // Unlock AudioContext on first interaction
   document.addEventListener('pointerdown', ensureAudioCtx, { once: true });

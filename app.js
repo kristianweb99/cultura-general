@@ -125,6 +125,40 @@ const DOM = {
   // Shared
   scorePopup: $('score-popup'),
 
+  // Auth & Profile
+  authSection:        $('auth-section'),
+  authLoggedOut:      $('auth-logged-out'),
+  authLoggedIn:       $('auth-logged-in'),
+  btnGoogleLogin:     $('btn-google-login'),
+  btnGoogleLogout:    $('btn-google-logout'),
+  userGooglePhoto:    $('user-google-photo'),
+  userDisplayName:   $('user-display-name'),
+  userEmail:          $('user-email'),
+  btnOpenProfile:     $('btn-open-profile'),
+  roundLengthGrid:    $('round-length-grid'),
+
+  // Profile Modal & Achievements
+  profileModal:         $('profile-modal'),
+  profileModalOverlay:  $('profile-modal-overlay'),
+  btnCloseProfile:      $('btn-close-profile'),
+  btnProfileDone:       $('btn-profile-done'),
+  modalUserAvatar:      $('modal-user-avatar'),
+  modalUserName:        $('modal-user-name'),
+  modalUserAccount:     $('modal-user-account'),
+  statTotalScore:       $('stat-total-score'),
+  statBestScore:        $('stat-best-score'),
+  statGamesPlayed:      $('stat-games-played'),
+  statMaxStreak:        $('stat-max-streak'),
+  achievementsGrid:     $('achievements-grid'),
+  achievementsCount:    $('achievements-count'),
+  achievementToast:     $('achievement-toast'),
+  toastIcon:            $('toast-icon'),
+  toastTitle:           $('toast-title'),
+  toastDesc:            $('toast-desc'),
+
+  // Sharing
+  btnShareWhatsapp:     $('btn-share-whatsapp'),
+
   // Exit modal
   exitModal:         $('exit-modal'),
   exitScorePreview:  $('exit-score-preview'),
@@ -196,6 +230,24 @@ function playFanfare() {
 function playTimeout() {
   playTone({ frequency: 200, type: 'sawtooth', duration: 0.4, gain: 0.25 });
   playTone({ frequency: 150, type: 'sawtooth', duration: 0.5, gain: 0.2, delay: 0.35 });
+}
+
+function playAchievementFanfare() {
+  playTone({ frequency: 523.25, type: 'triangle', duration: 0.12, gain: 0.25, delay: 0.00 });
+  playTone({ frequency: 659.25, type: 'triangle', duration: 0.12, gain: 0.25, delay: 0.10 });
+  playTone({ frequency: 783.99, type: 'triangle', duration: 0.12, gain: 0.25, delay: 0.20 });
+  playTone({ frequency: 1046.50, type: 'sine', duration: 0.35, gain: 0.30, delay: 0.30 });
+}
+
+function triggerHaptic(type = 'tap') {
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try {
+      if (type === 'tap') navigator.vibrate(25);
+      else if (type === 'correct') navigator.vibrate(50);
+      else if (type === 'wrong') navigator.vibrate([70, 40, 70]);
+      else if (type === 'win') navigator.vibrate([100, 50, 100, 50, 150]);
+    } catch (e) {}
+  }
 }
 
 function toggleMute() {
@@ -436,7 +488,10 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
         <div class="flex items-center gap-2 min-w-[36px]">${rankDisplay}</div>
         <span class="text-lg">${entry.avatar || '🧑'}</span>
         <div class="flex-1 min-w-0">
-          <p class="lb-name truncate ${isNew ? 'text-white font-bold' : ''}">${escapeHtml(entry.name)}</p>
+          <p class="lb-name truncate ${isNew ? 'text-white font-bold' : ''} flex items-center gap-1">
+            <span>${escapeHtml(entry.name)}</span>
+            ${entry.isGoogle ? '<i class="fa-solid fa-circle-check text-neon-cyan text-[11px]" title="Verificado por Google"></i>' : ''}
+          </p>
           <div class="flex items-center gap-2 mt-0.5">${gamesBadge}</div>
         </div>
         <div class="text-right shrink-0">
@@ -448,10 +503,231 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
   }).join('');
 }
 
+
+// ============================================================
+// 6b. GOOGLE AUTHENTICATION & ACHIEVEMENTS SYSTEM
+// ============================================================
+function initAuth() {
+  if (typeof firebase === 'undefined' || !firebase.auth) {
+    console.warn("Firebase Auth no disponible, operando en modo local.");
+    loadUserAchievements('guest');
+    return;
+  }
+
+  try {
+    auth = firebase.auth();
+
+    // Listen to Google session state changes
+    auth.onAuthStateChanged((user) => {
+      currentUser = user;
+      updateAuthUI(user);
+    });
+  } catch (err) {
+    console.warn("Error al inicializar Firebase Auth:", err);
+  }
+
+  if (DOM.btnGoogleLogin) {
+    DOM.btnGoogleLogin.addEventListener('click', () => {
+      triggerHaptic('tap');
+      if (!auth) {
+        alert("Firebase Auth no está listo aún.");
+        return;
+      }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('profile');
+      provider.addScope('email');
+
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          triggerHaptic('win');
+          playTone({ frequency: 660, type: 'sine', duration: 0.15, gain: 0.2 });
+          playTone({ frequency: 880, type: 'sine', duration: 0.2, gain: 0.2, delay: 0.12 });
+          console.log("Sesión iniciada con Google:", result.user.displayName);
+        })
+        .catch((error) => {
+          console.error("Error al iniciar sesión con Google:", error);
+          if (error.code === 'auth/unauthorized-domain') {
+            alert("Dominio no autorizado en Firebase. Añade '" + window.location.hostname + "' en Firebase Console -> Authentication -> Settings -> Authorized Domains.");
+          } else if (error.code === 'auth/popup-blocked') {
+            auth.signInWithRedirect(provider);
+          } else if (error.code !== 'auth/popup-closed-by-user') {
+            alert("No se pudo iniciar sesión con Google: " + error.message);
+          }
+        });
+    });
+  }
+
+  if (DOM.btnGoogleLogout) {
+    DOM.btnGoogleLogout.addEventListener('click', () => {
+      triggerHaptic('tap');
+      if (auth) {
+        auth.signOut().then(() => {
+          currentUser = null;
+          updateAuthUI(null);
+        });
+      }
+    });
+  }
+
+  // Profile Modal event listeners
+  if (DOM.btnOpenProfile) {
+    DOM.btnOpenProfile.addEventListener('click', openProfileModal);
+  }
+  if (DOM.btnCloseProfile) {
+    DOM.btnCloseProfile.addEventListener('click', closeProfileModal);
+  }
+  if (DOM.btnProfileDone) {
+    DOM.btnProfileDone.addEventListener('click', closeProfileModal);
+  }
+  if (DOM.profileModalOverlay) {
+    DOM.profileModalOverlay.addEventListener('click', closeProfileModal);
+  }
+}
+
+function updateAuthUI(user) {
+  if (user) {
+    if (DOM.authLoggedOut) DOM.authLoggedOut.classList.add('hidden');
+    if (DOM.authLoggedIn) DOM.authLoggedIn.classList.remove('hidden');
+
+    const photo = user.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + user.uid;
+    if (DOM.userGooglePhoto) DOM.userGooglePhoto.src = photo;
+    if (DOM.userDisplayName) DOM.userDisplayName.textContent = user.displayName || user.email.split('@')[0];
+    if (DOM.userEmail) DOM.userEmail.textContent = user.email || '';
+    if (DOM.playerName) {
+      DOM.playerName.value = user.displayName || user.email.split('@')[0];
+    }
+
+    loadUserAchievements(user.uid);
+  } else {
+    if (DOM.authLoggedOut) DOM.authLoggedOut.classList.remove('hidden');
+    if (DOM.authLoggedIn) DOM.authLoggedIn.classList.add('hidden');
+    loadUserAchievements('guest');
+  }
+}
+
+function loadUserAchievements(key) {
+  try {
+    const raw = localStorage.getItem('cgpro_ach_' + key);
+    if (raw) {
+      userAchievements = new Set(JSON.parse(raw));
+    } else {
+      userAchievements = new Set();
+    }
+  } catch {
+    userAchievements = new Set();
+  }
+}
+
+function saveAchievements() {
+  const key = currentUser ? currentUser.uid : 'guest';
+  try {
+    localStorage.setItem('cgpro_ach_' + key, JSON.stringify([...userAchievements]));
+  } catch {}
+
+  if (db && currentUser) {
+    const playerKey = sanitizeKey(currentUser.displayName);
+    db.ref('players/' + playerKey + '/achievements').set([...userAchievements]).catch(() => {});
+  }
+}
+
+function unlockAchievement(id) {
+  if (userAchievements.has(id)) return;
+  userAchievements.add(id);
+  saveAchievements();
+
+  const ach = ACHIEVEMENTS_LIST.find(a => a.id === id);
+  if (!ach) return;
+
+  playAchievementFanfare();
+  triggerHaptic('win');
+
+  if (DOM.achievementToast) {
+    DOM.toastIcon.textContent = ach.icon;
+    DOM.toastTitle.textContent = ach.title;
+    DOM.toastDesc.textContent = ach.desc;
+    DOM.achievementToast.classList.remove('hidden');
+    DOM.achievementToast.style.opacity = '1';
+
+    setTimeout(() => {
+      DOM.achievementToast.style.opacity = '0';
+      setTimeout(() => DOM.achievementToast.classList.add('hidden'), 500);
+    }, 4000);
+  }
+}
+
+function openProfileModal() {
+  triggerHaptic('tap');
+  if (!DOM.profileModal) return;
+
+  const playerName = (currentUser && currentUser.displayName) || DOM.playerName.value.trim() || 'Jugador';
+  DOM.modalUserName.innerHTML = `${escapeHtml(playerName)} ${currentUser ? '<i class="fa-solid fa-circle-check text-neon-cyan text-sm ml-1" title="Verificado con Google"></i>' : ''}`;
+  DOM.modalUserAccount.textContent = currentUser ? (currentUser.email || 'Cuenta de Google') : 'Perfil de Invitado';
+
+  if (currentUser && currentUser.photoURL) {
+    DOM.modalUserAvatar.innerHTML = `<img src="${currentUser.photoURL}" class="w-full h-full object-cover rounded-full" alt="avatar" />`;
+  } else {
+    DOM.modalUserAvatar.textContent = config.avatar || '🧠';
+  }
+
+  const playerKey = sanitizeKey(playerName);
+  let totalScore = 0;
+  let bestScore = 0;
+  let gamesPlayed = 0;
+  let maxStreak = 0;
+
+  const entry = globalLeaderboard.find(p => sanitizeKey(p.name) === playerKey);
+  if (entry) {
+    totalScore = entry.score || 0;
+    bestScore = entry.bestScore || entry.score || 0;
+    gamesPlayed = entry.gamesPlayed || 1;
+    maxStreak = entry.maxStreak || 0;
+  }
+
+  DOM.statTotalScore.textContent = totalScore.toLocaleString();
+  DOM.statBestScore.textContent = bestScore.toLocaleString();
+  DOM.statGamesPlayed.textContent = gamesPlayed;
+  DOM.statMaxStreak.textContent = maxStreak;
+
+  DOM.achievementsCount.textContent = `${userAchievements.size}/${ACHIEVEMENTS_LIST.length}`;
+  DOM.achievementsGrid.innerHTML = ACHIEVEMENTS_LIST.map(ach => {
+    const isUnlocked = userAchievements.has(ach.id);
+    return `
+      <div class="achievement-card ${isUnlocked ? 'unlocked' : 'locked'} flex items-center gap-3">
+        <span class="text-2xl flex-shrink-0">${isUnlocked ? ach.icon : '🔒'}</span>
+        <div class="min-w-0">
+          <p class="text-xs font-bold ${isUnlocked ? 'text-neon-gold' : 'text-slate-400'} truncate">${escapeHtml(ach.title)}</p>
+          <p class="text-[10px] text-slate-400 leading-tight">${escapeHtml(ach.desc)}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  DOM.profileModal.classList.remove('hidden');
+}
+
+function closeProfileModal() {
+  if (DOM.profileModal) DOM.profileModal.classList.add('hidden');
+}
+
 // ============================================================
 // 7. START SCREEN INITIALIZATION
 // ============================================================
 function initStartScreen() {
+  // Setup Round Length buttons
+  const roundBtns = document.querySelectorAll('.round-len-btn');
+  roundBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      triggerHaptic('tap');
+      roundBtns.forEach(b => {
+        b.classList.remove('border-neon-cyan', 'bg-cyan-950/40', 'text-neon-cyan', 'shadow-[0_0_10px_rgba(0,245,255,0.3)]');
+        b.classList.add('border-dark-border', 'text-slate-400');
+      });
+      btn.classList.remove('border-dark-border', 'text-slate-400');
+      btn.classList.add('border-neon-cyan', 'bg-cyan-950/40', 'text-neon-cyan', 'shadow-[0_0_10px_rgba(0,245,255,0.3)]');
+      config.questionCount = parseInt(btn.dataset.count, 10) || 10;
+    });
+  });
+
   // Build avatar grid
   DOM.avatarGrid.innerHTML = AVATARS.map((av, i) =>
     `<button class="avatar-option ${i === 0 ? 'selected' : ''}" data-index="${i}" data-avatar="${av}" title="Avatar ${i + 1}">${av}</button>`
@@ -747,8 +1023,14 @@ function handleAnswer(selectedIndex) {
 
 function handleCorrect(timeUsed) {
   playCorrect();
+  triggerHaptic('correct');
   gameState.correct++;
   gameState.streak++;
+
+  // Chequear logros de partida
+  if (timeUsed <= 3) unlockAchievement('speed_3');
+  if (gameState.streak >= 5) unlockAchievement('streak_5');
+  if (gameState.streak >= 10) unlockAchievement('streak_10');
 
   if (gameState.streak > gameState.maxStreak) {
     gameState.maxStreak = gameState.streak;
@@ -783,6 +1065,7 @@ function handleCorrect(timeUsed) {
 
 function handleWrong() {
   playWrong();
+  triggerHaptic('wrong');
   gameState.wrong++;
   gameState.streak = 0;
   updateStreakUI();
@@ -961,7 +1244,10 @@ function buildEntry(incomplete = false) {
   const accuracy = answered > 0 ? Math.round((gameState.correct / answered) * 100) : 0;
   return {
     name:       gameState.player,
-    avatar:     gameState.avatar,
+    avatar:     (currentUser && currentUser.photoURL) ? currentUser.photoURL : gameState.avatar,
+    photoURL:   (currentUser && currentUser.photoURL) ? currentUser.photoURL : null,
+    isGoogle:   !!currentUser,
+    uid:        currentUser ? currentUser.uid : null,
     score:      gameState.score,
     accuracy:   accuracy,
     streak:     gameState.maxStreak,
@@ -984,6 +1270,20 @@ function endGame(incomplete = false) {
     ? Math.round(gameState.timePerQ.reduce((a, b) => a + b, 0) / gameState.timePerQ.length)
     : 0;
   const rank = getRank(gameState.score);
+
+  // Chequear logros al finalizar
+  if (!incomplete) {
+    unlockAchievement('first_game');
+    if (gameState.score >= 1000) unlockAchievement('score_1000');
+    if (entry.accuracy === 100 && (gameState.correct + gameState.wrong) >= 5) {
+      unlockAchievement('perfect_round');
+    }
+    const pKey = sanitizeKey(gameState.player);
+    const existing = globalLeaderboard.find(p => sanitizeKey(p.name) === pKey);
+    if (existing && (existing.score || 0) >= 3000) {
+      unlockAchievement('titan_3000');
+    }
+  }
 
   // Save to leaderboard
   saveToLeaderboard(entry);
@@ -1008,6 +1308,15 @@ function endGame(incomplete = false) {
 
   // Share button
   DOM.btnShare.onclick = () => shareResult(rank, entry.accuracy);
+  if (DOM.btnShareWhatsapp) {
+    DOM.btnShareWhatsapp.onclick = () => {
+      triggerHaptic('tap');
+      const msg = `🏆 ¡Obtuve ${gameState.score.toLocaleString()} PTS (${DOM.rankTitle.textContent}) en CULTURA GENERAL PRO! ¿Crees que puedes superarme? 🧠\n\nJuega gratis aquí: ${window.location.href}`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    };
+  }
+
   DOM.btnReplay.onclick = () => {
     showScreen('start');
     renderLeaderboard(DOM.leaderboardStart);

@@ -19,8 +19,9 @@
   <!-- canvas-confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-  <!-- Firebase App & Realtime Database SDKs -->
+  <!-- Firebase App, Auth & Realtime Database SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
   <!-- App Stylesheet -->
@@ -70,6 +71,50 @@
     <!-- Setup card -->
     <div class="glass-card w-full max-w-lg p-8 space-y-6">
 
+      <!-- Google Account / Authentication Section -->
+      <div id="auth-section" class="mb-4">
+        <!-- Logged out: Botón de Google Sign-In -->
+        <div id="auth-logged-out" class="space-y-3">
+          <button id="btn-google-login" type="button" class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold transition-all shadow-lg hover:shadow-cyan-500/20 active:scale-95 text-sm font-poppins cursor-pointer">
+            <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.43 7.35 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.98 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.57 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+            <span>Iniciar sesión con Google</span>
+          </button>
+          <div class="flex items-center gap-2 text-[11px] text-slate-500 justify-center">
+            <span class="h-px bg-slate-800 flex-1"></span>
+            <span>o personaliza tu perfil invitado</span>
+            <span class="h-px bg-slate-800 flex-1"></span>
+          </div>
+        </div>
+
+        <!-- Logged in: Perfil conectado de Google -->
+        <div id="auth-logged-in" class="hidden p-3 rounded-xl bg-dark-card/90 border border-neon-cyan/40 flex items-center justify-between">
+          <div class="flex items-center gap-3 overflow-hidden">
+            <img id="user-google-photo" src="" alt="Google Avatar" class="w-10 h-10 rounded-full border-2 border-neon-cyan object-cover shadow-md flex-shrink-0" />
+            <div class="text-left overflow-hidden">
+              <div class="flex items-center gap-1.5">
+                <span id="user-display-name" class="font-bold text-sm text-white truncate max-w-[140px]"></span>
+                <i class="fa-solid fa-circle-check text-neon-cyan text-xs" title="Cuenta verificada por Google"></i>
+              </div>
+              <p id="user-email" class="text-[11px] text-slate-400 truncate max-w-[150px]"></p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button id="btn-open-profile" type="button" class="text-xs px-2.5 py-1.5 rounded-lg bg-dark-border text-neon-gold hover:bg-slate-700 transition flex items-center gap-1" title="Ver mi perfil y logros">
+              <i class="fa-solid fa-award"></i>
+              <span class="hidden sm:inline">Perfil</span>
+            </button>
+            <button id="btn-google-logout" type="button" class="text-xs px-2.5 py-1.5 rounded-lg bg-red-950/60 text-red-300 hover:bg-red-900/60 transition" title="Cerrar sesión de Google">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Player name -->
       <div>
         <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2 font-poppins">
@@ -113,6 +158,25 @@
           <!-- Difficulties injected by JS -->
         </div>
       </div>
+
+      <!-- Round Length selector -->
+      <div>
+        <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2 font-poppins">
+          <i class="fa-solid fa-list-ol mr-2 text-neon-cyan"></i>Preguntas por partida
+        </label>
+        <div id="round-length-grid" class="grid grid-cols-3 gap-2">
+          <button type="button" class="round-len-btn py-2 px-3 rounded-xl border border-dark-border text-xs font-bold transition text-slate-400 hover:border-neon-cyan" data-count="5">
+            ⚡ 5 <span class="hidden sm:inline">Rápida</span>
+          </button>
+          <button type="button" class="round-len-btn py-2 px-3 rounded-xl border border-neon-cyan bg-cyan-950/40 text-xs font-bold transition text-neon-cyan shadow-[0_0_10px_rgba(0,245,255,0.3)]" data-count="10">
+            🎯 10 <span class="hidden sm:inline">Normal</span>
+          </button>
+          <button type="button" class="round-len-btn py-2 px-3 rounded-xl border border-dark-border text-xs font-bold transition text-slate-400 hover:border-neon-cyan" data-count="20">
+            🏅 20 <span class="hidden sm:inline">Maratón</span>
+          </button>
+        </div>
+      </div>
+
 
       <!-- Play button -->
       <button id="btn-play" class="w-full py-4 rounded-2xl font-black text-lg uppercase tracking-widest transition-all duration-300 neon-btn-play pulse-anim">
@@ -358,13 +422,21 @@
     </div>
 
     <!-- Action buttons -->
-    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-      <button id="btn-share" class="flex-1 py-3 rounded-2xl font-bold text-sm uppercase tracking-wider glass-btn border border-neon-cyan/40 hover:border-neon-cyan transition-all duration-300">
-        <i class="fa-solid fa-share-nodes mr-2"></i>Compartir
+    <div class="flex flex-col gap-3 w-full max-w-md">
+      <!-- Retar en WhatsApp -->
+      <button id="btn-share-whatsapp" class="w-full py-3.5 rounded-2xl font-bold text-sm tracking-wide bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/40 transition active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        <span>Retar a un amigo por WhatsApp</span>
       </button>
-      <button id="btn-replay" class="flex-1 py-4 rounded-2xl font-black text-sm uppercase tracking-widest neon-btn-play">
-        <i class="fa-solid fa-rotate-right mr-2"></i>Jugar de nuevo
-      </button>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button id="btn-share" class="flex-1 py-3 rounded-2xl font-bold text-sm uppercase tracking-wider glass-btn border border-neon-cyan/40 hover:border-neon-cyan transition-all duration-300">
+          <i class="fa-solid fa-copy mr-2"></i>Copiar reto
+        </button>
+        <button id="btn-replay" class="flex-1 py-4 rounded-2xl font-black text-sm uppercase tracking-widest neon-btn-play">
+          <i class="fa-solid fa-rotate-right mr-2"></i>Jugar de nuevo
+        </button>
+      </div>
     </div>
   </div>
 
@@ -395,10 +467,81 @@
   <!-- ============================================================ -->
   <div id="score-popup" class="fixed pointer-events-none z-50 hidden text-xl font-black neon-text-green">+0</div>
 
+  <!-- ============================================================ -->
+  <!-- PROFILE & ACHIEVEMENTS MODAL                                  -->
+  <!-- ============================================================ -->
+  <div id="profile-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-md" id="profile-modal-overlay"></div>
+    <div class="glass-card relative z-10 p-6 md:p-8 max-w-lg w-full text-center max-h-[90vh] overflow-y-auto border border-neon-cyan/40 shadow-2xl">
+      <!-- Close button -->
+      <button id="btn-close-profile" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- User avatar & header -->
+      <div class="flex flex-col items-center mb-6">
+        <div id="modal-user-avatar" class="w-20 h-20 rounded-full border-4 border-neon-cyan shadow-lg flex items-center justify-center text-4xl mb-3 overflow-hidden bg-dark-card">
+          🧠
+        </div>
+        <h2 id="modal-user-name" class="text-xl font-black text-white flex items-center gap-2">
+          Jugador
+        </h2>
+        <p id="modal-user-account" class="text-xs text-neon-cyan font-poppins mt-0.5">Cuenta Verificada</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+        <div class="bg-dark-card/80 border border-dark-border p-3 rounded-xl">
+          <p id="stat-total-score" class="text-lg font-black neon-text-gold">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-poppins">Total Pts</p>
+        </div>
+        <div class="bg-dark-card/80 border border-dark-border p-3 rounded-xl">
+          <p id="stat-best-score" class="text-lg font-black text-neon-cyan">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-poppins">Mejor Ronda</p>
+        </div>
+        <div class="bg-dark-card/80 border border-dark-border p-3 rounded-xl">
+          <p id="stat-games-played" class="text-lg font-black text-emerald-400">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-poppins">Partidas</p>
+        </div>
+        <div class="bg-dark-card/80 border border-dark-border p-3 rounded-xl">
+          <p id="stat-max-streak" class="text-lg font-black text-orange-400">0</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-poppins">Racha Máx</p>
+        </div>
+      </div>
+
+      <!-- Achievements Showcase -->
+      <div class="text-left mb-6">
+        <h3 class="text-xs uppercase tracking-widest text-slate-400 mb-3 font-poppins flex items-center">
+          <i class="fa-solid fa-trophy mr-2 text-neon-gold"></i>Medallas y Logros (<span id="achievements-count">0/7</span>)
+        </h3>
+        <div id="achievements-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
+          <!-- Achievements injected by JS -->
+        </div>
+      </div>
+
+      <button id="btn-profile-done" class="w-full py-3 rounded-xl font-bold text-sm uppercase tracking-wider glass-btn border border-neon-cyan/40 hover:border-neon-cyan">
+        Listo
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- FLOATING ACHIEVEMENT NOTIFICATION TOAST                       -->
+  <!-- ============================================================ -->
+  <div id="achievement-toast" class="hidden fixed top-6 right-6 z-50 glass-card border border-neon-gold p-4 flex items-center gap-3 shadow-2xl transition-all duration-500 max-w-xs">
+    <span id="toast-icon" class="text-3xl flex-shrink-0 animate-bounce">🏆</span>
+    <div>
+      <p class="text-[10px] uppercase tracking-widest text-neon-gold font-poppins font-black">¡Logro Desbloqueado!</p>
+      <p id="toast-title" class="text-sm font-bold text-white leading-tight"></p>
+      <p id="toast-desc" class="text-xs text-slate-400 leading-tight mt-0.5"></p>
+    </div>
+  </div>
+
+
   <!-- Questions Bank (1,200 preguntas verificadas) -->
-  <script src="questions.js?v=4.0"></script>
+  <script src="questions.js?v=5.0"></script>
 
   <!-- App Script -->
-  <script src="app.js?v=4.0"></script>
+  <script src="app.js?v=5.0"></script>
 </body>
 </html>

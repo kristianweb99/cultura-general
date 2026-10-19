@@ -64,6 +64,10 @@ let nextQuestionTimeout = null;
 let audioCtx = null;
 let isMuted = false;
 let particleInterval = null;
+let userAchievements = new Set();
+let auth = null;
+let currentUser = null;
+let config = { questionCount: 10 };
 
 // ============================================================
 // 3. DOM REFERENCES
@@ -562,41 +566,67 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
 // 6b. AUTHENTICATION & ACHIEVEMENTS SYSTEM
 // ============================================================
 function showAuthAlert(msg, isSuccess = false) {
-  if (!DOM.authAlert) return;
-  DOM.authAlert.textContent = msg;
-  DOM.authAlert.className = isSuccess 
-    ? "p-3 rounded-xl text-xs font-poppins border border-green-500/40 bg-green-950/40 text-green-300 flex items-center gap-2"
-    : "p-3 rounded-xl text-xs font-poppins border border-red-500/40 bg-red-950/40 text-red-300 flex items-center gap-2";
-  DOM.authAlert.classList.remove('hidden');
+  if (DOM.authAlert) {
+    DOM.authAlert.textContent = msg;
+    DOM.authAlert.className = isSuccess 
+      ? "p-3 rounded-xl text-xs font-poppins border border-green-500/40 bg-green-950/40 text-green-300 flex items-center gap-2"
+      : "p-3 rounded-xl text-xs font-poppins border border-red-500/40 bg-red-950/40 text-red-300 flex items-center gap-2";
+    DOM.authAlert.classList.remove('hidden');
+    DOM.authAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  if (!isSuccess) {
+    console.warn("Auth alert:", msg);
+  }
 }
 
 function clearAuthAlert() {
   if (DOM.authAlert) DOM.authAlert.classList.add('hidden');
 }
 
+function getFirebaseAuth() {
+  if (auth) return auth;
+  try {
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      auth = firebase.auth();
+      return auth;
+    }
+  } catch (err) {
+    console.error("Error obteniendo Firebase Auth:", err);
+  }
+  return null;
+}
+
 function initAuth() {
-  // Tabs switching: Login / Register
-  if (DOM.tabLogin && DOM.tabRegister) {
+  console.log("initAuth() iniciado...");
+
+  // 1. Tab Iniciar Sesión
+  if (DOM.tabLogin) {
     DOM.tabLogin.addEventListener('click', () => {
       triggerHaptic('tap');
       clearAuthAlert();
       DOM.tabLogin.className = "py-2.5 rounded-lg transition-all text-neon-cyan bg-cyan-950/60 shadow-[0_0_10px_rgba(0,245,255,0.2)]";
-      DOM.tabRegister.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.tabRegister) DOM.tabRegister.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
       if (DOM.formLogin) DOM.formLogin.classList.remove('hidden');
       if (DOM.formRegister) DOM.formRegister.classList.add('hidden');
     });
+  }
 
+  // 2. Tab Registrarte
+  if (DOM.tabRegister) {
     DOM.tabRegister.addEventListener('click', () => {
       triggerHaptic('tap');
       clearAuthAlert();
       DOM.tabRegister.className = "py-2.5 rounded-lg transition-all text-neon-gold bg-amber-950/60 shadow-[0_0_10px_rgba(255,215,0,0.2)]";
-      DOM.tabLogin.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.tabLogin) DOM.tabLogin.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
       if (DOM.formRegister) DOM.formRegister.classList.remove('hidden');
       if (DOM.formLogin) DOM.formLogin.classList.add('hidden');
     });
   }
 
-  // Guest Play link
+  // 3. Jugar como Invitado
   if (DOM.btnGuestPlay) {
     DOM.btnGuestPlay.addEventListener('click', () => {
       triggerHaptic('tap');
@@ -605,12 +635,13 @@ function initAuth() {
     });
   }
 
-  // Switch Account / Logout button
+  // 4. Cambiar Cuenta / Cerrar Sesión
   if (DOM.btnSwitchAccount) {
     DOM.btnSwitchAccount.addEventListener('click', () => {
       triggerHaptic('tap');
-      if (auth && currentUser) {
-        auth.signOut().then(() => {
+      const authInst = getFirebaseAuth();
+      if (authInst && currentUser) {
+        authInst.signOut().finally(() => {
           sessionStorage.removeItem('cgpro_guest');
           currentUser = null;
           showAuthScreen();
@@ -623,48 +654,22 @@ function initAuth() {
     });
   }
 
-  if (typeof firebase === 'undefined' || !firebase.auth) {
-    console.warn("Firebase Auth no disponible, operando en modo local.");
-    loadUserAchievements('guest');
-    return;
-  }
-
-  try {
-    auth = firebase.auth();
-
-    // Listen to Auth State Changes
-    auth.onAuthStateChanged((user) => {
-      currentUser = user;
-      if (user) {
-        updateAuthUI(user);
-        showGameLobby();
-      } else {
-        const isGuest = sessionStorage.getItem('cgpro_guest') === '1';
-        if (isGuest) {
-          enterGameLobbyAsGuest();
-        } else {
-          showAuthScreen();
-        }
-      }
-    });
-  } catch (err) {
-    console.warn("Error al inicializar Firebase Auth:", err);
-  }
-
-  // Google Login (1-click)
+  // 5. Iniciar sesión con Google (1 solo clic)
   if (DOM.btnGoogleLoginMain) {
     DOM.btnGoogleLoginMain.addEventListener('click', () => {
       triggerHaptic('tap');
       clearAuthAlert();
-      if (!auth) {
-        showAuthAlert("Firebase Auth no está listo aún.");
+      const authInst = getFirebaseAuth();
+      if (!authInst) {
+        showAuthAlert("Firebase Auth no está listo aún. Revisa tu conexión a internet.");
+        alert("Firebase Auth no está listo. Verifica que cargó la librería de Firebase.");
         return;
       }
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('profile');
       provider.addScope('email');
 
-      auth.signInWithPopup(provider)
+      authInst.signInWithPopup(provider)
         .then((result) => {
           triggerHaptic('win');
           playTone({ frequency: 660, type: 'sine', duration: 0.15, gain: 0.2 });
@@ -674,17 +679,25 @@ function initAuth() {
         .catch((error) => {
           console.error("Error al iniciar sesión con Google:", error);
           if (error.code === 'auth/unauthorized-domain') {
-            showAuthAlert("Dominio no autorizado en Firebase. Añade '" + window.location.hostname + "' en Firebase Console -> Authentication -> Settings -> Authorized Domains.");
+            const host = window.location.hostname;
+            const msg = "Dominio no autorizado en Firebase: '" + host + "'. Añádelo en Firebase Console -> Authentication -> Settings -> Dominios autorizados.";
+            showAuthAlert(msg);
+            alert(msg);
+          } else if (error.code === 'auth/operation-not-allowed') {
+            const msg = "Google no está habilitado en Firebase. Ve a Firebase Console -> Authentication -> Sign-in method y activa Google.";
+            showAuthAlert(msg);
+            alert(msg);
           } else if (error.code === 'auth/popup-blocked') {
-            auth.signInWithRedirect(provider);
+            authInst.signInWithRedirect(provider);
           } else if (error.code !== 'auth/popup-closed-by-user') {
-            showAuthAlert("No se pudo iniciar sesión con Google: " + error.message);
+            showAuthAlert("Error al iniciar con Google: " + error.message);
+            alert("Error con Google: " + error.message);
           }
         });
     });
   }
 
-  // Email / Password: Iniciar Sesión
+  // 6. Formulario Iniciar Sesión (Email)
   if (DOM.formLogin) {
     DOM.formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -696,12 +709,13 @@ function initAuth() {
         showAuthAlert("Por favor ingresa tu correo y contraseña.");
         return;
       }
-      if (!auth) {
+      const authInst = getFirebaseAuth();
+      if (!authInst) {
         showAuthAlert("Servicio de autenticación no disponible.");
         return;
       }
 
-      auth.signInWithEmailAndPassword(email, pass)
+      authInst.signInWithEmailAndPassword(email, pass)
         .then((result) => {
           triggerHaptic('win');
           console.log("Sesión iniciada con correo:", result.user.email);
@@ -709,13 +723,14 @@ function initAuth() {
         .catch((error) => {
           console.error("Error al iniciar sesión:", error);
           if (error.code === 'auth/user-not-found') {
-            showAuthAlert("No existe ninguna cuenta con este correo. Regístrate en la pestaña 'Registrarte'.");
+            showAuthAlert("No existe cuenta con este correo. Ve a la pestaña 'Registrarte'.");
           } else if (error.code === 'auth/wrong-password') {
             showAuthAlert("Contraseña incorrecta. Inténtalo de nuevo.");
           } else if (error.code === 'auth/invalid-email') {
             showAuthAlert("El correo electrónico no es válido.");
           } else if (error.code === 'auth/operation-not-allowed') {
-            showAuthAlert("Inicia con Google o habilita 'Correo electrónico' en Firebase Console.");
+            showAuthAlert("Correo/Contraseña no habilitado en Firebase. Usa el botón de Google o actívalo en Firebase Console.");
+            alert("Correo/Contraseña no está habilitado en Firebase Console. Por favor usa 'Continuar con Google'.");
           } else {
             showAuthAlert(error.message);
           }
@@ -723,7 +738,7 @@ function initAuth() {
     });
   }
 
-  // Email / Password: Crear Cuenta / Registrarse
+  // 7. Formulario Registrarte (Email + Nombre)
   if (DOM.formRegister) {
     DOM.formRegister.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -745,17 +760,19 @@ function initAuth() {
         showAuthAlert("La contraseña debe tener al menos 6 caracteres.");
         return;
       }
-      if (!auth) {
+      const authInst = getFirebaseAuth();
+      if (!authInst) {
         showAuthAlert("Servicio de autenticación no disponible.");
         return;
       }
 
-      auth.createUserWithEmailAndPassword(email, pass)
+      authInst.createUserWithEmailAndPassword(email, pass)
         .then((result) => {
           triggerHaptic('win');
           return result.user.updateProfile({ displayName: name }).then(() => {
-            console.log("Cuenta creada exitosamente para:", name);
+            console.log("Cuenta creada para:", name);
             updateAuthUI(result.user);
+            showGameLobby();
           });
         })
         .catch((error) => {
@@ -767,12 +784,36 @@ function initAuth() {
           } else if (error.code === 'auth/invalid-email') {
             showAuthAlert("El correo electrónico no es válido.");
           } else if (error.code === 'auth/operation-not-allowed') {
-            showAuthAlert("Inicia con Google o habilita 'Correo electrónico' en Firebase Console.");
+            showAuthAlert("El registro con correo no está habilitado en Firebase. Inicia sesión con el botón 'Continuar con Google'.");
+            alert("El proveedor de Correo/Contraseña no está habilitado en tu Firebase. Usa el botón 'Continuar con Google' que es con 1 solo clic.");
           } else {
             showAuthAlert(error.message);
           }
         });
     });
+  }
+
+  // 8. Escuchar cambios de sesión de Firebase Auth
+  const authInst = getFirebaseAuth();
+  if (authInst) {
+    authInst.onAuthStateChanged((user) => {
+      currentUser = user;
+      if (user) {
+        updateAuthUI(user);
+        showGameLobby();
+      } else {
+        const isGuest = sessionStorage.getItem('cgpro_guest') === '1';
+        if (isGuest) {
+          enterGameLobbyAsGuest();
+        } else {
+          showAuthScreen();
+        }
+      }
+    });
+  } else {
+    // Si no hay Firebase disponible, entra como invitado
+    console.warn("Firebase Auth no disponible en el inicio, usando invitado.");
+    enterGameLobbyAsGuest();
   }
 
   // Profile Modal event listeners
@@ -1720,7 +1761,7 @@ function escapeRegex(str) {
 // ============================================================
 // 20. BOOT
 // ============================================================
-document.addEventListener('DOMContentLoaded', () => {
+function bootApp() {
   initParticles();
   initAuth();
   initStartScreen();
@@ -1728,4 +1769,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Unlock AudioContext on first interaction
   document.addEventListener('pointerdown', ensureAudioCtx, { once: true });
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootApp);
+} else {
+  bootApp();
+}

@@ -25,7 +25,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
   <!-- App Stylesheet -->
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=6.0" />
 
   <script>
     tailwind.config = {
@@ -55,9 +55,115 @@
   <canvas id="particles-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
   <!-- ============================================================ -->
+  <!-- SCREEN: AUTH (INICIAR SESIÓN / REGISTRO)                      -->
+  <!-- ============================================================ -->
+  <div id="screen-auth" class="screen relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8">
+
+    <!-- Title -->
+    <div class="text-center mb-6 animate-float">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-neon-cyan/40 text-neon-cyan text-xs font-bold tracking-widest uppercase mb-3">
+        <i class="fa-solid fa-gamepad"></i> Trivia Multijugador
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-black tracking-widest leading-none">
+        <span class="neon-text-cyan">CULTURA GENERAL</span>
+      </h1>
+      <h2 class="text-4xl sm:text-6xl font-black tracking-widest neon-text-gold mt-1">PRO</h2>
+      <p class="text-slate-400 mt-2 text-xs sm:text-sm tracking-wider uppercase font-poppins">Compite en el Top Mundial en Vivo</p>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="glass-card w-full max-w-md p-6 sm:p-8 space-y-5">
+
+      <!-- Tabs: Iniciar Sesión / Registrarte -->
+      <div class="grid grid-cols-2 p-1 bg-dark-bg/80 rounded-xl border border-dark-border text-xs font-bold font-poppins">
+        <button id="tab-login" type="button" class="py-2.5 rounded-lg transition-all text-neon-cyan bg-cyan-950/60 shadow-[0_0_10px_rgba(0,245,255,0.2)]">
+          <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Iniciar Sesión
+        </button>
+        <button id="tab-register" type="button" class="py-2.5 rounded-lg transition-all text-slate-400 hover:text-white">
+          <i class="fa-solid fa-user-plus mr-1.5"></i>Registrarte
+        </button>
+      </div>
+
+      <!-- Google Button -->
+      <button id="btn-google-login-main" type="button" class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold transition-all shadow-lg hover:shadow-cyan-500/20 active:scale-95 text-sm font-poppins cursor-pointer">
+        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.43 7.35 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.98 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.57 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <span>Continuar con Google</span>
+      </button>
+
+      <div class="flex items-center gap-2 text-[11px] text-slate-500 justify-center">
+        <span class="h-px bg-slate-800 flex-1"></span>
+        <span>o con correo y contraseña</span>
+        <span class="h-px bg-slate-800 flex-1"></span>
+      </div>
+
+      <!-- Auth Alert Message -->
+      <div id="auth-alert" class="hidden p-3 rounded-xl text-xs font-poppins border flex items-center gap-2"></div>
+
+      <!-- FORM: Login -->
+      <form id="form-login" class="space-y-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-poppins">
+            <i class="fa-solid fa-envelope mr-1 text-neon-cyan"></i>Correo electrónico
+          </label>
+          <input id="login-email" type="email" required placeholder="tu@correo.com" class="w-full bg-dark-card border border-dark-border rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-neon-cyan transition-all text-sm font-poppins" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-poppins">
+            <i class="fa-solid fa-lock mr-1 text-neon-cyan"></i>Contraseña
+          </label>
+          <input id="login-password" type="password" required placeholder="••••••••" class="w-full bg-dark-card border border-dark-border rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-neon-cyan transition-all text-sm font-poppins" />
+        </div>
+        <button type="submit" id="btn-submit-login" class="w-full py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 neon-btn-play shadow-lg hover:shadow-cyan-500/20">
+          <i class="fa-solid fa-right-to-bracket mr-2"></i>Iniciar Sesión
+        </button>
+      </form>
+
+      <!-- FORM: Register -->
+      <form id="form-register" class="space-y-4 hidden">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-poppins">
+            <i class="fa-solid fa-user mr-1 text-neon-cyan"></i>Nombre de jugador
+          </label>
+          <input id="register-name" type="text" maxlength="20" required placeholder="Tu apodo o nombre" class="w-full bg-dark-card border border-dark-border rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-neon-cyan transition-all text-sm font-poppins" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-poppins">
+            <i class="fa-solid fa-envelope mr-1 text-neon-cyan"></i>Correo electrónico
+          </label>
+          <input id="register-email" type="email" required placeholder="tu@correo.com" class="w-full bg-dark-card border border-dark-border rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-neon-cyan transition-all text-sm font-poppins" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-poppins">
+            <i class="fa-solid fa-lock mr-1 text-neon-cyan"></i>Contraseña (mínimo 6 caracteres)
+          </label>
+          <input id="register-password" type="password" minlength="6" required placeholder="Mínimo 6 caracteres" class="w-full bg-dark-card border border-dark-border rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-neon-cyan transition-all text-sm font-poppins" />
+        </div>
+        <button type="submit" id="btn-submit-register" class="w-full py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 neon-btn-gold shadow-lg hover:shadow-amber-500/20">
+          <i class="fa-solid fa-user-plus mr-2"></i>Crear Cuenta Gratis
+        </button>
+      </form>
+
+      <!-- Guest Play Link -->
+      <div class="pt-2 border-t border-slate-800 text-center">
+        <button id="btn-guest-play" type="button" class="text-xs text-slate-400 hover:text-neon-cyan transition font-poppins inline-flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-800/60">
+          <i class="fa-solid fa-user-secret"></i>
+          <span>¿Quieres probar primero? <strong>Jugar como Invitado</strong></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
   <!-- SCREEN: START / ONBOARDING                                    -->
   <!-- ============================================================ -->
-  <div id="screen-start" class="screen relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-10">
+  <div id="screen-start" class="screen hidden relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-10">
 
     <!-- Title -->
     <div class="text-center mb-8 animate-float">
@@ -71,47 +177,30 @@
     <!-- Setup card -->
     <div class="glass-card w-full max-w-lg p-8 space-y-6">
 
-      <!-- Google Account / Authentication Section -->
-      <div id="auth-section" class="mb-4">
-        <!-- Logged out: Botón de Google Sign-In -->
-        <div id="auth-logged-out" class="space-y-3">
-          <button id="btn-google-login" type="button" class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold transition-all shadow-lg hover:shadow-cyan-500/20 active:scale-95 text-sm font-poppins cursor-pointer">
-            <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.43 7.35 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.98 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.57 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-            </svg>
-            <span>Iniciar sesión con Google</span>
-          </button>
-          <div class="flex items-center gap-2 text-[11px] text-slate-500 justify-center">
-            <span class="h-px bg-slate-800 flex-1"></span>
-            <span>o personaliza tu perfil invitado</span>
-            <span class="h-px bg-slate-800 flex-1"></span>
+            <!-- Active Player Status Header -->
+      <div id="user-status-banner" class="w-full flex items-center justify-between p-3 rounded-xl bg-dark-card/90 border border-slate-700/60 mb-2">
+        <div class="flex items-center gap-2.5 overflow-hidden">
+          <div id="banner-avatar-wrapper" class="relative flex-shrink-0">
+            <img id="banner-user-photo" src="" alt="Avatar" class="w-9 h-9 rounded-full border-2 border-neon-cyan object-cover hidden" />
+            <span id="banner-user-emoji" class="text-2xl">🧑</span>
+          </div>
+          <div class="text-left overflow-hidden">
+            <div class="flex items-center gap-1.5">
+              <span id="banner-user-name" class="font-bold text-sm text-white truncate max-w-[140px]">Jugador</span>
+              <span id="banner-badge-verified" class="hidden text-neon-cyan text-xs" title="Cuenta Verificada"><i class="fa-solid fa-circle-check"></i></span>
+            </div>
+            <p id="banner-user-status" class="text-[11px] text-slate-400">En línea</p>
           </div>
         </div>
-
-        <!-- Logged in: Perfil conectado de Google -->
-        <div id="auth-logged-in" class="hidden p-3 rounded-xl bg-dark-card/90 border border-neon-cyan/40 flex items-center justify-between">
-          <div class="flex items-center gap-3 overflow-hidden">
-            <img id="user-google-photo" src="" alt="Google Avatar" class="w-10 h-10 rounded-full border-2 border-neon-cyan object-cover shadow-md flex-shrink-0" />
-            <div class="text-left overflow-hidden">
-              <div class="flex items-center gap-1.5">
-                <span id="user-display-name" class="font-bold text-sm text-white truncate max-w-[140px]"></span>
-                <i class="fa-solid fa-circle-check text-neon-cyan text-xs" title="Cuenta verificada por Google"></i>
-              </div>
-              <p id="user-email" class="text-[11px] text-slate-400 truncate max-w-[150px]"></p>
-            </div>
-          </div>
-          <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button id="btn-open-profile" type="button" class="text-xs px-2.5 py-1.5 rounded-lg bg-dark-border text-neon-gold hover:bg-slate-700 transition flex items-center gap-1" title="Ver mi perfil y logros">
-              <i class="fa-solid fa-award"></i>
-              <span class="hidden sm:inline">Perfil</span>
-            </button>
-            <button id="btn-google-logout" type="button" class="text-xs px-2.5 py-1.5 rounded-lg bg-red-950/60 text-red-300 hover:bg-red-900/60 transition" title="Cerrar sesión de Google">
-              <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-          </div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <button id="btn-open-profile" type="button" class="text-xs px-2.5 py-1.5 rounded-lg bg-dark-border text-neon-gold hover:bg-slate-700 transition flex items-center gap-1" title="Ver mis logros">
+            <i class="fa-solid fa-award"></i>
+            <span class="hidden sm:inline">Logros</span>
+          </button>
+          <button id="btn-switch-account" type="button" class="text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1" title="Cambiar de cuenta o cerrar sesión">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="hidden sm:inline">Salir</span>
+          </button>
         </div>
       </div>
 
@@ -542,6 +631,6 @@
   <script src="questions.js?v=5.0"></script>
 
   <!-- App Script -->
-  <script src="app.js?v=5.0"></script>
+  <script src="app.js?v=6.0"></script>
 </body>
 </html>

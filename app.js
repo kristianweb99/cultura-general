@@ -125,17 +125,33 @@ const DOM = {
   // Shared
   scorePopup: $('score-popup'),
 
-  // Auth & Profile
-  authSection:        $('auth-section'),
-  authLoggedOut:      $('auth-logged-out'),
-  authLoggedIn:       $('auth-logged-in'),
-  btnGoogleLogin:     $('btn-google-login'),
-  btnGoogleLogout:    $('btn-google-logout'),
-  userGooglePhoto:    $('user-google-photo'),
-  userDisplayName:   $('user-display-name'),
-  userEmail:          $('user-email'),
-  btnOpenProfile:     $('btn-open-profile'),
-  roundLengthGrid:    $('round-length-grid'),
+  // Auth Screen & Controls
+  screenAuth:           $('screen-auth'),
+  tabLogin:             $('tab-login'),
+  tabRegister:          $('tab-register'),
+  formLogin:            $('form-login'),
+  formRegister:         $('form-register'),
+  btnGoogleLoginMain:   $('btn-google-login-main'),
+  loginEmail:           $('login-email'),
+  loginPassword:        $('login-password'),
+  btnSubmitLogin:       $('btn-submit-login'),
+  registerName:         $('register-name'),
+  registerEmail:        $('register-email'),
+  registerPassword:     $('register-password'),
+  btnSubmitRegister:    $('btn-submit-register'),
+  authAlert:            $('auth-alert'),
+  btnGuestPlay:         $('btn-guest-play'),
+
+  // Screen Start Banner
+  userStatusBanner:     $('user-status-banner'),
+  bannerUserPhoto:      $('banner-user-photo'),
+  bannerUserEmoji:      $('banner-user-emoji'),
+  bannerUserName:       $('banner-user-name'),
+  bannerBadgeVerified:  $('banner-badge-verified'),
+  bannerUserStatus:     $('banner-user-status'),
+  btnSwitchAccount:     $('btn-switch-account'),
+  btnOpenProfile:       $('btn-open-profile'),
+  roundLengthGrid:      $('round-length-grid'),
 
   // Profile Modal & Achievements
   profileModal:         $('profile-modal'),
@@ -345,7 +361,16 @@ try {
 
 function loadLocalLeaderboard() {
   try {
-    return JSON.parse(localStorage.getItem(LS_KEY)) || [];
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    if (!Array.isArray(list)) return [];
+    const legacyMockNames = ['Carlos', 'Elena', 'Sofía', 'Mateo', 'Lucía', 'memo', 'ari', 'juan', 'jonathan', 'jugador'];
+    const filtered = list.filter(item => item && !legacyMockNames.includes(item.name));
+    if (filtered.length !== list.length) {
+      localStorage.setItem(LS_KEY, JSON.stringify(filtered));
+    }
+    return filtered;
   } catch { return []; }
 }
 
@@ -362,16 +387,24 @@ function saveToLeaderboard(entry) {
   localLb = localLb.slice(0, 10);
   localStorage.setItem(LS_KEY, JSON.stringify(localLb));
 
-  // 2. Guardar en Firebase (Nube pública compartida)
+  // 2. Guardar en Firebase Realtime Database
   if (db) {
-    const playerKey = sanitizeKey(entry.name);
+    const isRegistered = !!(currentUser && currentUser.uid);
+    const playerKey = isRegistered ? currentUser.uid : ('guest_' + sanitizeKey(entry.name));
     const playerRef = db.ref('players/' + playerKey);
 
     playerRef.transaction((current) => {
+      const photoURL = currentUser && currentUser.photoURL ? currentUser.photoURL : (entry.photoURL || '');
+      const isGoogle = !!(currentUser && currentUser.photoURL);
+
       if (!current) {
         return {
+          uid: isRegistered ? currentUser.uid : null,
           name: entry.name,
           avatar: entry.avatar || '🧑',
+          photoURL: photoURL,
+          isGoogle: isGoogle,
+          isRegistered: isRegistered,
           totalScore: entry.score,
           bestScore: entry.score,
           gamesPlayed: 1,
@@ -381,12 +414,16 @@ function saveToLeaderboard(entry) {
           lastDate: entry.date || new Date().toLocaleDateString('es-ES')
         };
       } else {
-        // Se acumulan los puntos ganados para el jugador
+        // Acumular puntos
         current.totalScore = (current.totalScore || 0) + entry.score;
         if (entry.score > (current.bestScore || 0)) {
           current.bestScore = entry.score;
         }
         current.gamesPlayed = (current.gamesPlayed || 0) + 1;
+        current.name = entry.name || current.name;
+        if (photoURL) current.photoURL = photoURL;
+        if (isGoogle) current.isGoogle = true;
+        if (isRegistered) current.isRegistered = true;
         current.avatar = entry.avatar || current.avatar;
         current.accuracy = Math.round(((current.accuracy || entry.accuracy) + entry.accuracy) / 2);
         if ((entry.streak || 0) > (current.streak || 0)) {
@@ -420,8 +457,12 @@ function initRealtimeLeaderboard() {
       globalLeaderboard = [];
     } else {
       globalLeaderboard = Object.values(data).map(p => ({
+        uid: p.uid || null,
         name: p.name || 'Anónimo',
         avatar: p.avatar || '🧑',
+        photoURL: p.photoURL || '',
+        isGoogle: !!p.isGoogle,
+        isRegistered: !!p.isRegistered,
         score: p.totalScore || p.bestScore || 0,
         accuracy: p.accuracy || 0,
         streak: p.streak || 0,
@@ -454,7 +495,12 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
   const lb = (globalLeaderboard && globalLeaderboard.length) ? globalLeaderboard : loadLocalLeaderboard();
   
   if (!lb.length) {
-    container.innerHTML = `<p class="text-center text-slate-500 text-xs font-poppins py-4">Aún no hay puntuaciones en la nube. ¡Sé el primero en jugar!</p>`;
+    container.innerHTML = `
+      <div class="text-center py-6 px-4 rounded-xl border border-dashed border-slate-700/60 bg-dark-bg/40">
+        <span class="text-3xl mb-2 block">🏆</span>
+        <p class="text-white font-bold text-sm font-poppins">¡Tabla de Campeones Lista!</p>
+        <p class="text-slate-400 text-xs font-poppins mt-1">Aún no hay puntuaciones registradas.<br>¡Juega una partida para ser el <strong>#1 del Top Mundial</strong>!</p>
+      </div>`;
     return;
   }
 
@@ -483,14 +529,22 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
       ? `<span class="text-xs px-2 py-0.5 rounded-full font-black" style="background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.5);color:var(--neon-gold);">✨ TÚ</span>`
       : '';
 
+    const avatarHtml = entry.photoURL
+      ? `<img src="${escapeHtml(entry.photoURL)}" alt="Avatar" class="w-7 h-7 rounded-full object-cover border border-neon-cyan flex-shrink-0" onerror="this.outerHTML='<span class=\'text-lg\'>${entry.avatar || '🧑'}</span>'" />`
+      : `<span class="text-lg">${entry.avatar || '🧑'}</span>`;
+
+    const verifiedBadge = (entry.isGoogle || entry.isRegistered)
+      ? `<i class="fa-solid fa-circle-check text-neon-cyan text-[11px]" title="Cuenta Verificada"></i>`
+      : '';
+
     return `
       <div class="lb-row ${isNew ? 'highlight' : ''}" style="${isNew ? 'animation: correctPulse 0.6s ease-out;' : ''}">
         <div class="flex items-center gap-2 min-w-[36px]">${rankDisplay}</div>
-        <span class="text-lg">${entry.avatar || '🧑'}</span>
+        <div class="flex items-center justify-center w-7 h-7 flex-shrink-0">${avatarHtml}</div>
         <div class="flex-1 min-w-0">
           <p class="lb-name truncate ${isNew ? 'text-white font-bold' : ''} flex items-center gap-1">
             <span>${escapeHtml(entry.name)}</span>
-            ${entry.isGoogle ? '<i class="fa-solid fa-circle-check text-neon-cyan text-[11px]" title="Verificado por Google"></i>' : ''}
+            ${verifiedBadge}
           </p>
           <div class="flex items-center gap-2 mt-0.5">${gamesBadge}</div>
         </div>
@@ -505,9 +559,70 @@ function renderLeaderboard(container, currentScore = null, currentName = null) {
 
 
 // ============================================================
-// 6b. GOOGLE AUTHENTICATION & ACHIEVEMENTS SYSTEM
+// 6b. AUTHENTICATION & ACHIEVEMENTS SYSTEM
 // ============================================================
+function showAuthAlert(msg, isSuccess = false) {
+  if (!DOM.authAlert) return;
+  DOM.authAlert.textContent = msg;
+  DOM.authAlert.className = isSuccess 
+    ? "p-3 rounded-xl text-xs font-poppins border border-green-500/40 bg-green-950/40 text-green-300 flex items-center gap-2"
+    : "p-3 rounded-xl text-xs font-poppins border border-red-500/40 bg-red-950/40 text-red-300 flex items-center gap-2";
+  DOM.authAlert.classList.remove('hidden');
+}
+
+function clearAuthAlert() {
+  if (DOM.authAlert) DOM.authAlert.classList.add('hidden');
+}
+
 function initAuth() {
+  // Tabs switching: Login / Register
+  if (DOM.tabLogin && DOM.tabRegister) {
+    DOM.tabLogin.addEventListener('click', () => {
+      triggerHaptic('tap');
+      clearAuthAlert();
+      DOM.tabLogin.className = "py-2.5 rounded-lg transition-all text-neon-cyan bg-cyan-950/60 shadow-[0_0_10px_rgba(0,245,255,0.2)]";
+      DOM.tabRegister.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.formLogin) DOM.formLogin.classList.remove('hidden');
+      if (DOM.formRegister) DOM.formRegister.classList.add('hidden');
+    });
+
+    DOM.tabRegister.addEventListener('click', () => {
+      triggerHaptic('tap');
+      clearAuthAlert();
+      DOM.tabRegister.className = "py-2.5 rounded-lg transition-all text-neon-gold bg-amber-950/60 shadow-[0_0_10px_rgba(255,215,0,0.2)]";
+      DOM.tabLogin.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.formRegister) DOM.formRegister.classList.remove('hidden');
+      if (DOM.formLogin) DOM.formLogin.classList.add('hidden');
+    });
+  }
+
+  // Guest Play link
+  if (DOM.btnGuestPlay) {
+    DOM.btnGuestPlay.addEventListener('click', () => {
+      triggerHaptic('tap');
+      sessionStorage.setItem('cgpro_guest', '1');
+      enterGameLobbyAsGuest();
+    });
+  }
+
+  // Switch Account / Logout button
+  if (DOM.btnSwitchAccount) {
+    DOM.btnSwitchAccount.addEventListener('click', () => {
+      triggerHaptic('tap');
+      if (auth && currentUser) {
+        auth.signOut().then(() => {
+          sessionStorage.removeItem('cgpro_guest');
+          currentUser = null;
+          showAuthScreen();
+        });
+      } else {
+        sessionStorage.removeItem('cgpro_guest');
+        currentUser = null;
+        showAuthScreen();
+      }
+    });
+  }
+
   if (typeof firebase === 'undefined' || !firebase.auth) {
     console.warn("Firebase Auth no disponible, operando en modo local.");
     loadUserAchievements('guest');
@@ -517,20 +632,32 @@ function initAuth() {
   try {
     auth = firebase.auth();
 
-    // Listen to Google session state changes
+    // Listen to Auth State Changes
     auth.onAuthStateChanged((user) => {
       currentUser = user;
-      updateAuthUI(user);
+      if (user) {
+        updateAuthUI(user);
+        showGameLobby();
+      } else {
+        const isGuest = sessionStorage.getItem('cgpro_guest') === '1';
+        if (isGuest) {
+          enterGameLobbyAsGuest();
+        } else {
+          showAuthScreen();
+        }
+      }
     });
   } catch (err) {
     console.warn("Error al inicializar Firebase Auth:", err);
   }
 
-  if (DOM.btnGoogleLogin) {
-    DOM.btnGoogleLogin.addEventListener('click', () => {
+  // Google Login (1-click)
+  if (DOM.btnGoogleLoginMain) {
+    DOM.btnGoogleLoginMain.addEventListener('click', () => {
       triggerHaptic('tap');
+      clearAuthAlert();
       if (!auth) {
-        alert("Firebase Auth no está listo aún.");
+        showAuthAlert("Firebase Auth no está listo aún.");
         return;
       }
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -547,25 +674,104 @@ function initAuth() {
         .catch((error) => {
           console.error("Error al iniciar sesión con Google:", error);
           if (error.code === 'auth/unauthorized-domain') {
-            alert("Dominio no autorizado en Firebase. Añade '" + window.location.hostname + "' en Firebase Console -> Authentication -> Settings -> Authorized Domains.");
+            showAuthAlert("Dominio no autorizado en Firebase. Añade '" + window.location.hostname + "' en Firebase Console -> Authentication -> Settings -> Authorized Domains.");
           } else if (error.code === 'auth/popup-blocked') {
             auth.signInWithRedirect(provider);
           } else if (error.code !== 'auth/popup-closed-by-user') {
-            alert("No se pudo iniciar sesión con Google: " + error.message);
+            showAuthAlert("No se pudo iniciar sesión con Google: " + error.message);
           }
         });
     });
   }
 
-  if (DOM.btnGoogleLogout) {
-    DOM.btnGoogleLogout.addEventListener('click', () => {
+  // Email / Password: Iniciar Sesión
+  if (DOM.formLogin) {
+    DOM.formLogin.addEventListener('submit', (e) => {
+      e.preventDefault();
       triggerHaptic('tap');
-      if (auth) {
-        auth.signOut().then(() => {
-          currentUser = null;
-          updateAuthUI(null);
-        });
+      clearAuthAlert();
+      const email = (DOM.loginEmail ? DOM.loginEmail.value : '').trim();
+      const pass = (DOM.loginPassword ? DOM.loginPassword.value : '').trim();
+      if (!email || !pass) {
+        showAuthAlert("Por favor ingresa tu correo y contraseña.");
+        return;
       }
+      if (!auth) {
+        showAuthAlert("Servicio de autenticación no disponible.");
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then((result) => {
+          triggerHaptic('win');
+          console.log("Sesión iniciada con correo:", result.user.email);
+        })
+        .catch((error) => {
+          console.error("Error al iniciar sesión:", error);
+          if (error.code === 'auth/user-not-found') {
+            showAuthAlert("No existe ninguna cuenta con este correo. Regístrate en la pestaña 'Registrarte'.");
+          } else if (error.code === 'auth/wrong-password') {
+            showAuthAlert("Contraseña incorrecta. Inténtalo de nuevo.");
+          } else if (error.code === 'auth/invalid-email') {
+            showAuthAlert("El correo electrónico no es válido.");
+          } else if (error.code === 'auth/operation-not-allowed') {
+            showAuthAlert("Inicia con Google o habilita 'Correo electrónico' en Firebase Console.");
+          } else {
+            showAuthAlert(error.message);
+          }
+        });
+    });
+  }
+
+  // Email / Password: Crear Cuenta / Registrarse
+  if (DOM.formRegister) {
+    DOM.formRegister.addEventListener('submit', (e) => {
+      e.preventDefault();
+      triggerHaptic('tap');
+      clearAuthAlert();
+      const name = (DOM.registerName ? DOM.registerName.value : '').trim();
+      const email = (DOM.registerEmail ? DOM.registerEmail.value : '').trim();
+      const pass = (DOM.registerPassword ? DOM.registerPassword.value : '').trim();
+
+      if (!name) {
+        showAuthAlert("Por favor escribe tu nombre de jugador.");
+        return;
+      }
+      if (!email || !pass) {
+        showAuthAlert("Completa tu correo y contraseña (mínimo 6 caracteres).");
+        return;
+      }
+      if (pass.length < 6) {
+        showAuthAlert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+      if (!auth) {
+        showAuthAlert("Servicio de autenticación no disponible.");
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, pass)
+        .then((result) => {
+          triggerHaptic('win');
+          return result.user.updateProfile({ displayName: name }).then(() => {
+            console.log("Cuenta creada exitosamente para:", name);
+            updateAuthUI(result.user);
+          });
+        })
+        .catch((error) => {
+          console.error("Error al registrarse:", error);
+          if (error.code === 'auth/email-already-in-use') {
+            showAuthAlert("Este correo ya está registrado. Inicia sesión en la pestaña 'Iniciar Sesión'.");
+          } else if (error.code === 'auth/weak-password') {
+            showAuthAlert("La contraseña debe tener mínimo 6 caracteres.");
+          } else if (error.code === 'auth/invalid-email') {
+            showAuthAlert("El correo electrónico no es válido.");
+          } else if (error.code === 'auth/operation-not-allowed') {
+            showAuthAlert("Inicia con Google o habilita 'Correo electrónico' en Firebase Console.");
+          } else {
+            showAuthAlert(error.message);
+          }
+        });
     });
   }
 
@@ -584,24 +790,61 @@ function initAuth() {
   }
 }
 
+function showAuthScreen() {
+  if (DOM.screenAuth) DOM.screenAuth.classList.remove('hidden');
+  if (DOM.screenStart) DOM.screenStart.classList.add('hidden');
+  if (DOM.screenGame) DOM.screenGame.classList.add('hidden');
+  if (DOM.screenResults) DOM.screenResults.classList.add('hidden');
+}
+
+function showGameLobby() {
+  if (DOM.screenAuth) DOM.screenAuth.classList.add('hidden');
+  if (DOM.screenStart) DOM.screenStart.classList.remove('hidden');
+  if (DOM.screenGame) DOM.screenGame.classList.add('hidden');
+  if (DOM.screenResults) DOM.screenResults.classList.add('hidden');
+}
+
+function enterGameLobbyAsGuest() {
+  showGameLobby();
+  if (DOM.bannerUserPhoto) DOM.bannerUserPhoto.classList.add('hidden');
+  if (DOM.bannerUserEmoji) {
+    DOM.bannerUserEmoji.classList.remove('hidden');
+    DOM.bannerUserEmoji.textContent = '🧑';
+  }
+  if (DOM.bannerUserName) DOM.bannerUserName.textContent = 'Invitado';
+  if (DOM.bannerBadgeVerified) DOM.bannerBadgeVerified.classList.add('hidden');
+  if (DOM.bannerUserStatus) DOM.bannerUserStatus.textContent = 'Modo Invitado';
+  if (DOM.playerName && !DOM.playerName.value) DOM.playerName.value = 'Invitado';
+  loadUserAchievements('guest');
+}
+
 function updateAuthUI(user) {
   if (user) {
-    if (DOM.authLoggedOut) DOM.authLoggedOut.classList.add('hidden');
-    if (DOM.authLoggedIn) DOM.authLoggedIn.classList.remove('hidden');
+    const displayName = user.displayName || user.email.split('@')[0];
+    const photo = user.photoURL;
 
-    const photo = user.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + user.uid;
-    if (DOM.userGooglePhoto) DOM.userGooglePhoto.src = photo;
-    if (DOM.userDisplayName) DOM.userDisplayName.textContent = user.displayName || user.email.split('@')[0];
-    if (DOM.userEmail) DOM.userEmail.textContent = user.email || '';
+    if (photo && DOM.bannerUserPhoto) {
+      DOM.bannerUserPhoto.src = photo;
+      DOM.bannerUserPhoto.classList.remove('hidden');
+      if (DOM.bannerUserEmoji) DOM.bannerUserEmoji.classList.add('hidden');
+    } else {
+      if (DOM.bannerUserPhoto) DOM.bannerUserPhoto.classList.add('hidden');
+      if (DOM.bannerUserEmoji) DOM.bannerUserEmoji.classList.remove('hidden');
+    }
+
+    if (DOM.bannerUserName) DOM.bannerUserName.textContent = displayName;
+    if (DOM.bannerBadgeVerified) DOM.bannerBadgeVerified.classList.remove('hidden');
+    if (DOM.bannerUserStatus) {
+      DOM.bannerUserStatus.textContent = user.photoURL ? 'Google Verificado' : 'Cuenta Verificada';
+    }
+
     if (DOM.playerName) {
-      DOM.playerName.value = user.displayName || user.email.split('@')[0];
+      DOM.playerName.value = displayName;
     }
 
     loadUserAchievements(user.uid);
   } else {
-    if (DOM.authLoggedOut) DOM.authLoggedOut.classList.remove('hidden');
-    if (DOM.authLoggedIn) DOM.authLoggedIn.classList.add('hidden');
-    loadUserAchievements('guest');
+    enterGameLobbyAsGuest();
   }
 }
 
@@ -1440,11 +1683,13 @@ DOM.btnExitConfirm.addEventListener('click', () => {
 // 18. SCREEN MANAGEMENT
 // ============================================================
 function showScreen(name) {
-  DOM.screenStart.classList.add('hidden');
-  DOM.screenGame.classList.add('hidden');
-  DOM.screenResults.classList.add('hidden');
+  if (DOM.screenAuth) DOM.screenAuth.classList.add('hidden');
+  if (DOM.screenStart) DOM.screenStart.classList.add('hidden');
+  if (DOM.screenGame) DOM.screenGame.classList.add('hidden');
+  if (DOM.screenResults) DOM.screenResults.classList.add('hidden');
 
   const screenMap = {
+    auth:    DOM.screenAuth,
     start:   DOM.screenStart,
     game:    DOM.screenGame,
     results: DOM.screenResults,
@@ -1477,6 +1722,7 @@ function escapeRegex(str) {
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   initParticles();
+  initAuth();
   initStartScreen();
   initRealtimeLeaderboard();
 

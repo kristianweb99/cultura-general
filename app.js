@@ -79,6 +79,18 @@ let auth = null;
 let currentUser = null;
 let config = { questionCount: 10 };
 
+// 1 vs 1 Duel State
+let isDuelMode = false;
+let currentDuelRoom = null;
+let duelPlayerRole = null; // 'p1' or 'p2'
+let duelRoomListener = null;
+let duelOpponent = { name: 'Rival', score: 0, avatar: '👾', photoURL: null };
+let duelQuestionCount = 5;
+
+// Admin Panel State
+let isAdminAuthenticated = false;
+let adminAllPlayers = {};
+
 // ============================================================
 // 3. DOM REFERENCES
 // ============================================================
@@ -166,6 +178,87 @@ const DOM = {
   btnSwitchAccount:     $('btn-switch-account'),
   btnOpenProfile:       $('btn-open-profile'),
   roundLengthGrid:      $('round-length-grid'),
+
+  // Game Mode & Duel Elements
+  modeSoloTab:          $('mode-solo-tab'),
+  modeDuelTab:          $('mode-duel-tab'),
+  panelSolo:            $('panel-solo'),
+  panelDuel:            $('panel-duel'),
+  duelTabCreate:        $('duel-tab-create'),
+  duelTabJoin:          $('duel-tab-join'),
+  duelSubpanelCreate:   $('duel-subpanel-create'),
+  duelSubpanelJoin:     $('duel-subpanel-join'),
+  btnCreateRoom:        $('btn-create-room'),
+  duelWaitingCard:      $('duel-waiting-card'),
+  createdRoomCode:      $('created-room-code'),
+  btnCopyRoomCode:      $('btn-copy-room-code'),
+  btnCopyText:          $('btn-copy-text'),
+  btnShareDuelWhatsapp: $('btn-share-duel-whatsapp'),
+  duelWaitingStatus:    $('duel-waiting-status'),
+  inputRoomCode:        $('input-room-code'),
+  btnJoinRoom:          $('btn-join-room'),
+  duelJoinError:        $('duel-join-error'),
+  duelVsBar:            $('duel-vs-bar'),
+  duelYouPhoto:         $('duel-you-photo'),
+  duelYouAvatar:        $('duel-you-avatar'),
+  duelYouName:          $('duel-you-name'),
+  duelYouScore:         $('duel-you-score'),
+  duelOppPhoto:         $('duel-opp-photo'),
+  duelOppAvatar:        $('duel-opp-avatar'),
+  duelOppName:          $('duel-opp-name'),
+  duelOppScore:         $('duel-opp-score'),
+  duelResultsCard:      $('duel-results-card'),
+  duelResultBadge:      $('duel-result-badge'),
+  duelResultSubtitle:   $('duel-result-subtitle'),
+  duelFinalYouScore:    $('duel-final-you-score'),
+  duelFinalOppName:     $('duel-final-opp-name'),
+  duelFinalOppScore:    $('duel-final-opp-score'),
+
+  // Global Announcement
+  globalAnnouncement:   $('global-announcement'),
+  announcementText:     $('announcement-text'),
+
+  // Admin Elements
+  btnOpenAdmin:         $('btn-open-admin'),
+  adminPinModal:        $('admin-pin-modal'),
+  adminPinOverlay:      $('admin-pin-overlay'),
+  formAdminPin:         $('form-admin-pin'),
+  inputAdminPin:        $('input-admin-pin'),
+  btnClosePinModal:     $('btn-close-pin-modal'),
+  adminDashboardModal:  $('admin-dashboard-modal'),
+  adminDashboardOverlay:$('admin-dashboard-overlay'),
+  btnCloseAdminDash:    $('btn-close-admin-dash'),
+  adminTabStats:        $('admin-tab-stats'),
+  adminTabPlayers:      $('admin-tab-players'),
+  adminTabQuestions:    $('admin-tab-questions'),
+  adminTabAnnouncement: $('admin-tab-announcement'),
+  adminPanelStats:      $('admin-panel-stats'),
+  adminPanelPlayers:    $('admin-panel-players'),
+  adminPanelQuestions:  $('admin-panel-questions'),
+  adminPanelAnnouncement:$('admin-panel-announcement'),
+  adminStatTotalPlayers:$('admin-stat-total-players'),
+  adminStatTotalScore:  $('admin-stat-total-score'),
+  adminStatTotalGames:  $('admin-stat-total-games'),
+  adminStatTotalQuestions:$('admin-stat-total-questions'),
+  btnAdminRefresh:      $('btn-admin-refresh'),
+  adminSearchPlayers:   $('admin-search-players'),
+  btnAdminClearAll:     $('btn-admin-clear-all'),
+  adminPlayersList:     $('admin-players-list'),
+  formAdminAddQuestion: $('form-admin-add-question'),
+  adminQCategory:       $('admin-q-category'),
+  adminQCorrect:        $('admin-q-correct'),
+  adminQText:           $('admin-q-text'),
+  adminQOpt0:           $('admin-q-opt-0'),
+  adminQOpt1:           $('admin-q-opt-1'),
+  adminQOpt2:           $('admin-q-opt-2'),
+  adminQOpt3:           $('admin-q-opt-3'),
+  adminQFunfact:        $('admin-q-funfact'),
+  adminQSuccess:        $('admin-q-success'),
+  adminAnnouncementInput:$('admin-announcement-input'),
+  adminAnnouncementActive:$('admin-announcement-active'),
+  btnAdminSaveAnnouncement:$('btn-admin-save-announcement'),
+  btnAdminClearAnnouncement:$('btn-admin-clear-announcement'),
+  adminAnnouncementStatus:$('admin-announcement-status'),
 
   // Profile Modal & Achievements
   profileModal:         $('profile-modal'),
@@ -1351,6 +1444,7 @@ function handleCorrect(timeUsed) {
 
   const points = Math.round((base + speedBonus) * multiplier);
   gameState.score += points;
+  if (isDuelMode) updateDuelScoreInFirebase(gameState.score);
 
   // Update streak UI
   updateStreakUI();
@@ -1590,6 +1684,7 @@ function endGame(incomplete = false) {
 
   // Save to leaderboard
   saveToLeaderboard(entry);
+  if (isDuelMode) finishDuelInFirebase();
 
   // Update results screen
   DOM.rankTitle.textContent   = incomplete ? '🏃 Partida Interrumpida' : rank;
@@ -1778,6 +1873,685 @@ function escapeRegex(str) {
 }
 
 // ============================================================
+// 15b. REALTIME 1 VS 1 DUEL SYSTEM
+// ============================================================
+function initDuelSystem() {
+  // Mode switcher: Solitario vs Duelo
+  if (DOM.modeSoloTab && DOM.modeDuelTab) {
+    DOM.modeSoloTab.addEventListener('click', () => {
+      triggerHaptic('tap');
+      DOM.modeSoloTab.className = "py-2.5 rounded-lg transition-all text-neon-cyan bg-cyan-950/60 shadow-[0_0_10px_rgba(0,245,255,0.2)]";
+      DOM.modeDuelTab.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.panelSolo) DOM.panelSolo.classList.remove('hidden');
+      if (DOM.panelDuel) DOM.panelDuel.classList.add('hidden');
+    });
+
+    DOM.modeDuelTab.addEventListener('click', () => {
+      triggerHaptic('tap');
+      DOM.modeDuelTab.className = "py-2.5 rounded-lg transition-all text-neon-gold bg-amber-950/60 shadow-[0_0_10px_rgba(255,215,0,0.2)]";
+      DOM.modeSoloTab.className = "py-2.5 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.panelDuel) DOM.panelDuel.classList.remove('hidden');
+      if (DOM.panelSolo) DOM.panelSolo.classList.add('hidden');
+    });
+  }
+
+  // Subtabs: Crear Sala vs Unirse
+  if (DOM.duelTabCreate && DOM.duelTabJoin) {
+    DOM.duelTabCreate.addEventListener('click', () => {
+      triggerHaptic('tap');
+      DOM.duelTabCreate.className = "py-2 rounded-lg transition-all text-neon-gold bg-amber-950/60 shadow-[0_0_8px_rgba(255,215,0,0.2)]";
+      DOM.duelTabJoin.className = "py-2 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.duelSubpanelCreate) DOM.duelSubpanelCreate.classList.remove('hidden');
+      if (DOM.duelSubpanelJoin) DOM.duelSubpanelJoin.classList.add('hidden');
+    });
+
+    DOM.duelTabJoin.addEventListener('click', () => {
+      triggerHaptic('tap');
+      DOM.duelTabJoin.className = "py-2 rounded-lg transition-all text-neon-cyan bg-cyan-950/60 shadow-[0_0_8px_rgba(0,245,255,0.2)]";
+      DOM.duelTabCreate.className = "py-2 rounded-lg transition-all text-slate-400 hover:text-white";
+      if (DOM.duelSubpanelJoin) DOM.duelSubpanelJoin.classList.remove('hidden');
+      if (DOM.duelSubpanelCreate) DOM.duelSubpanelCreate.classList.add('hidden');
+    });
+  }
+
+  // Selector de preguntas en Duelo (5 o 10)
+  const duelBtns = document.querySelectorAll('.duel-len-btn');
+  duelBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      triggerHaptic('tap');
+      duelBtns.forEach(b => {
+        b.classList.remove('border-neon-cyan', 'bg-cyan-950/40', 'text-neon-cyan');
+        b.classList.add('border-dark-border', 'text-slate-400');
+      });
+      btn.classList.remove('border-dark-border', 'text-slate-400');
+      btn.classList.add('border-neon-cyan', 'bg-cyan-950/40', 'text-neon-cyan');
+      duelQuestionCount = parseInt(btn.dataset.count, 10) || 5;
+    });
+  });
+
+  // Botón Crear Sala
+  if (DOM.btnCreateRoom) {
+    DOM.btnCreateRoom.addEventListener('click', () => {
+      triggerHaptic('tap');
+      createDuelRoom();
+    });
+  }
+
+  // Copiar código de sala
+  if (DOM.btnCopyRoomCode) {
+    DOM.btnCopyRoomCode.addEventListener('click', () => {
+      if (!currentDuelRoom) return;
+      triggerHaptic('tap');
+      navigator.clipboard.writeText(currentDuelRoom).then(() => {
+        if (DOM.btnCopyText) DOM.btnCopyText.textContent = "¡Copiado!";
+        setTimeout(() => { if (DOM.btnCopyText) DOM.btnCopyText.textContent = "Copiar"; }, 2000);
+      });
+    });
+  }
+
+  // Compartir reto por WhatsApp
+  if (DOM.btnShareDuelWhatsapp) {
+    DOM.btnShareDuelWhatsapp.addEventListener('click', () => {
+      if (!currentDuelRoom) return;
+      triggerHaptic('tap');
+      const msg = `⚔️ ¡Te reto a un DUELO en CULTURA GENERAL PRO!\\n\\n1. Entra a: ${window.location.origin + window.location.pathname}\\n2. Elige 'Duelo 1 vs 1' -> 'Unirse a Sala'\\n3. Ingresa el código: *${currentDuelRoom}*\\n\\n¡A ver quién sabe más! 🧠🔥`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    });
+  }
+
+  // Botón Unirse a Sala
+  if (DOM.btnJoinRoom) {
+    DOM.btnJoinRoom.addEventListener('click', () => {
+      triggerHaptic('tap');
+      const code = (DOM.inputRoomCode ? DOM.inputRoomCode.value : '').trim().toUpperCase();
+      if (!code) {
+        showDuelJoinError("Por favor escribe el código de la sala.");
+        return;
+      }
+      joinDuelRoom(code);
+    });
+  }
+}
+
+function showDuelJoinError(msg) {
+  if (DOM.duelJoinError) {
+    DOM.duelJoinError.textContent = msg;
+    DOM.duelJoinError.classList.remove('hidden');
+  }
+}
+
+function generateRoomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = '';
+  for (let i = 0; i < 4; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+function createDuelRoom() {
+  if (!db) {
+    alert("Firebase Database no disponible para multijugador.");
+    return;
+  }
+  const roomCode = generateRoomCode();
+  currentDuelRoom = roomCode;
+  duelPlayerRole = 'p1';
+
+  const playerName = (currentUser && currentUser.displayName) || (DOM.playerName ? DOM.playerName.value.trim() : '') || 'Jugador 1';
+  const playerPhoto = (currentUser && currentUser.photoURL) || null;
+  const playerAvatar = config.avatar || '🧑';
+
+  // Obtener preguntas idénticas para ambos jugadores
+  const questions = getQuestions('all', duelQuestionCount);
+
+  const roomData = {
+    code: roomCode,
+    createdAt: Date.now(),
+    status: 'waiting', // waiting, playing, finished
+    qCount: duelQuestionCount,
+    questions: questions,
+    p1: {
+      name: playerName,
+      photoURL: playerPhoto,
+      avatar: playerAvatar,
+      score: 0,
+      finished: false
+    },
+    p2: null
+  };
+
+  db.ref('rooms/' + roomCode).set(roomData).then(() => {
+    if (DOM.createdRoomCode) DOM.createdRoomCode.textContent = roomCode;
+    if (DOM.duelWaitingCard) DOM.duelWaitingCard.classList.remove('hidden');
+    if (DOM.duelWaitingStatus) DOM.duelWaitingStatus.textContent = "Esperando a que tu rival se una...";
+
+    // Escuchar cuando el rival se conecte
+    listenToDuelRoom(roomCode, 'p1');
+  }).catch(err => {
+    console.error("Error creando sala:", err);
+    alert("Error al crear la sala: " + err.message);
+  });
+}
+
+function joinDuelRoom(code) {
+  if (!db) {
+    alert("Firebase Database no disponible.");
+    return;
+  }
+  if (DOM.duelJoinError) DOM.duelJoinError.classList.add('hidden');
+
+  db.ref('rooms/' + code).once('value').then(snapshot => {
+    const room = snapshot.val();
+    if (!room) {
+      showDuelJoinError("No existe ninguna sala con el código '" + code + "'.");
+      return;
+    }
+    if (room.status !== 'waiting' || room.p2) {
+      showDuelJoinError("Esta sala ya está llena o el duelo ya empezó.");
+      return;
+    }
+
+    const playerName = (currentUser && currentUser.displayName) || (DOM.playerName ? DOM.playerName.value.trim() : '') || 'Jugador 2';
+    const playerPhoto = (currentUser && currentUser.photoURL) || null;
+    const playerAvatar = config.avatar || '👾';
+
+    const p2Data = {
+      name: playerName,
+      photoURL: playerPhoto,
+      avatar: playerAvatar,
+      score: 0,
+      finished: false
+    };
+
+    // Actualizar sala con Jugador 2 y arrancar
+    db.ref('rooms/' + code).update({
+      p2: p2Data,
+      status: 'playing'
+    }).then(() => {
+      currentDuelRoom = code;
+      duelPlayerRole = 'p2';
+      startDuelGame(room, 'p2');
+      listenToDuelRoom(code, 'p2');
+    }).catch(err => {
+      showDuelJoinError("Error al unirse: " + err.message);
+    });
+  });
+}
+
+function listenToDuelRoom(code, myRole) {
+  if (duelRoomListener) {
+    db.ref('rooms/' + code).off('value', duelRoomListener);
+  }
+
+  duelRoomListener = (snapshot) => {
+    const room = snapshot.val();
+    if (!room) return;
+
+    const oppRole = myRole === 'p1' ? 'p2' : 'p1';
+    const opp = room[oppRole];
+
+    // Si P1 estaba esperando y P2 se une:
+    if (myRole === 'p1' && room.status === 'playing' && !isDuelMode) {
+      if (DOM.duelWaitingStatus) DOM.duelWaitingStatus.textContent = "¡Rival conectado! Iniciando...";
+      setTimeout(() => {
+        startDuelGame(room, 'p1');
+      }, 1200);
+    }
+
+    // Actualizar puntaje del rival en vivo en la pantalla de juego
+    if (opp && isDuelMode) {
+      duelOpponent = opp;
+      if (DOM.duelOppScore) DOM.duelOppScore.textContent = `${(opp.score || 0).toLocaleString()} PTS`;
+      if (DOM.duelOppName) DOM.duelOppName.textContent = opp.name || 'Rival';
+      if (opp.photoURL && DOM.duelOppPhoto) {
+        DOM.duelOppPhoto.src = opp.photoURL;
+        DOM.duelOppPhoto.classList.remove('hidden');
+        if (DOM.duelOppAvatar) DOM.duelOppAvatar.classList.add('hidden');
+      }
+    }
+
+    // Comprobar si ambos terminaron
+    if (room.p1 && room.p1.finished && room.p2 && room.p2.finished) {
+      renderDuelFinalResult(room, myRole);
+    }
+  };
+
+  db.ref('rooms/' + code).on('value', duelRoomListener);
+}
+
+function startDuelGame(room, role) {
+  isDuelMode = true;
+  currentDuelRoom = room.code;
+  duelPlayerRole = role;
+
+  const myRoleData = room[role];
+  const oppRole = role === 'p1' ? 'p2' : 'p1';
+  const oppRoleData = room[oppRole] || { name: 'Rival', score: 0, avatar: '👾', photoURL: null };
+  duelOpponent = oppRoleData;
+
+  // Configurar barra de Duelo VS
+  if (DOM.duelVsBar) DOM.duelVsBar.classList.remove('hidden');
+  if (DOM.duelYouName) DOM.duelYouName.textContent = myRoleData ? myRoleData.name : 'Tú';
+  if (DOM.duelYouScore) DOM.duelYouScore.textContent = '0 PTS';
+  if (myRoleData && myRoleData.photoURL && DOM.duelYouPhoto) {
+    DOM.duelYouPhoto.src = myRoleData.photoURL;
+    DOM.duelYouPhoto.classList.remove('hidden');
+    if (DOM.duelYouAvatar) DOM.duelYouAvatar.classList.add('hidden');
+  }
+
+  if (DOM.duelOppName) DOM.duelOppName.textContent = oppRoleData.name || 'Rival';
+  if (DOM.duelOppScore) DOM.duelOppScore.textContent = '0 PTS';
+  if (oppRoleData.photoURL && DOM.duelOppPhoto) {
+    DOM.duelOppPhoto.src = oppRoleData.photoURL;
+    DOM.duelOppPhoto.classList.remove('hidden');
+    if (DOM.duelOppAvatar) DOM.duelOppAvatar.classList.add('hidden');
+  }
+
+  // Iniciar juego con las preguntas idénticas de la sala
+  ensureAudioCtx();
+  gameState = {
+    player:         myRoleData.name,
+    avatar:         myRoleData.avatar,
+    category:       'all',
+    diff:           DIFFICULTIES[1], // Pro (10s)
+    questions:      room.questions || getQuestions('all', 5),
+    currentIndex:   0,
+    score:          0,
+    correct:        0,
+    wrong:          0,
+    streak:         0,
+    maxStreak:      0,
+    answered:       false,
+    timePerQ:       [],
+    lifelinesFifty: 1,
+    lifelinesTime:  1,
+    lifelinesClue:  1,
+    timeLeft:       10,
+  };
+
+  DOM.playerAvatarDisplay.textContent = myRoleData.avatar || '🧑';
+  DOM.playerNameDisplay.textContent   = myRoleData.name;
+  DOM.difficultyBadge.textContent     = 'Duelo 1 vs 1';
+
+  // Mostrar pantalla de juego
+  showScreen('game');
+  loadQuestion();
+}
+
+function updateDuelScoreInFirebase(newScore) {
+  if (!isDuelMode || !currentDuelRoom || !duelPlayerRole || !db) return;
+  db.ref('rooms/' + currentDuelRoom + '/' + duelPlayerRole + '/score').set(newScore).catch(() => {});
+}
+
+function finishDuelInFirebase() {
+  if (!isDuelMode || !currentDuelRoom || !duelPlayerRole || !db) return;
+  db.ref('rooms/' + currentDuelRoom + '/' + duelPlayerRole + '/finished').set(true).catch(() => {});
+}
+
+function renderDuelFinalResult(room, myRole) {
+  if (!DOM.duelResultsCard) return;
+  DOM.duelResultsCard.classList.remove('hidden');
+
+  const myData = room[myRole] || {};
+  const oppRole = myRole === 'p1' ? 'p2' : 'p1';
+  const oppData = room[oppRole] || {};
+
+  const myScore = myData.score || 0;
+  const oppScore = oppData.score || 0;
+
+  if (DOM.duelFinalYouScore) DOM.duelFinalYouScore.textContent = `${myScore.toLocaleString()} PTS`;
+  if (DOM.duelFinalOppName) DOM.duelFinalOppName.textContent = oppData.name || 'Rival';
+  if (DOM.duelFinalOppScore) DOM.duelFinalOppScore.textContent = `${oppScore.toLocaleString()} PTS`;
+
+  if (myScore > oppScore) {
+    if (DOM.duelResultBadge) {
+      DOM.duelResultBadge.textContent = "🏆 ¡VICTORIA ÉPICA!";
+      DOM.duelResultBadge.className = "text-3xl sm:text-4xl font-black uppercase tracking-wider text-neon-gold";
+    }
+    if (DOM.duelResultSubtitle) DOM.duelResultSubtitle.textContent = "¡Venciste a tu rival en conocimientos!";
+    fireSmallConfetti();
+    playTone({ frequency: 587, type: 'sine', duration: 0.15, gain: 0.25 });
+    playTone({ frequency: 880, type: 'sine', duration: 0.35, gain: 0.3, delay: 0.15 });
+  } else if (myScore < oppScore) {
+    if (DOM.duelResultBadge) {
+      DOM.duelResultBadge.textContent = "💀 DERROTA";
+      DOM.duelResultBadge.className = "text-3xl sm:text-4xl font-black uppercase tracking-wider text-neon-red";
+    }
+    if (DOM.duelResultSubtitle) DOM.duelResultSubtitle.textContent = "Tu rival fue más rápido esta vez. ¡Pide la revancha!";
+  } else {
+    if (DOM.duelResultBadge) {
+      DOM.duelResultBadge.textContent = "🤝 ¡EMPATE TÉCNICO!";
+      DOM.duelResultBadge.className = "text-3xl sm:text-4xl font-black uppercase tracking-wider text-neon-cyan";
+    }
+    if (DOM.duelResultSubtitle) DOM.duelResultSubtitle.textContent = "¡Increíble duelo! Tuvieron la misma puntuación.";
+  }
+}
+
+// ============================================================
+// 15c. PANEL DE ADMINISTRACIÓN 100% FUNCIONAL
+// ============================================================
+const ADMIN_PIN_DEFAULT = '9999';
+
+function initAdminSystem() {
+  // 1. Escuchar Anuncio Global en vivo desde Firebase
+  if (db) {
+    db.ref('announcement').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data && data.active && data.message && data.message.trim()) {
+        if (DOM.announcementText) DOM.announcementText.textContent = data.message.trim();
+        if (DOM.globalAnnouncement) DOM.globalAnnouncement.classList.remove('hidden');
+      } else {
+        if (DOM.globalAnnouncement) DOM.globalAnnouncement.classList.add('hidden');
+      }
+    });
+
+    // 2. Escuchar Preguntas personalizadas agregadas por el Admin
+    db.ref('customQuestions').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const customList = Object.values(data);
+        customList.forEach(q => {
+          if (!QUESTION_BANK.some(existing => existing.question === q.question)) {
+            QUESTION_BANK.push(q);
+          }
+        });
+        if (DOM.adminStatTotalQuestions) {
+          DOM.adminStatTotalQuestions.textContent = QUESTION_BANK.length.toLocaleString();
+        }
+      }
+    });
+  }
+
+  // 3. Abrir modal de Admin
+  if (DOM.btnOpenAdmin) {
+    DOM.btnOpenAdmin.addEventListener('click', () => {
+      triggerHaptic('tap');
+      if (isAdminAuthenticated) {
+        openAdminDashboard();
+      } else {
+        if (DOM.adminPinModal) DOM.adminPinModal.classList.remove('hidden');
+        if (DOM.inputAdminPin) DOM.inputAdminPin.focus();
+      }
+    });
+  }
+
+  // 4. Cerrar PIN modal
+  if (DOM.btnClosePinModal) {
+    DOM.btnClosePinModal.addEventListener('click', () => {
+      if (DOM.adminPinModal) DOM.adminPinModal.classList.add('hidden');
+    });
+  }
+  if (DOM.adminPinOverlay) {
+    DOM.adminPinOverlay.addEventListener('click', () => {
+      if (DOM.adminPinModal) DOM.adminPinModal.classList.add('hidden');
+    });
+  }
+
+  // 5. Submit PIN
+  if (DOM.formAdminPin) {
+    DOM.formAdminPin.addEventListener('submit', (e) => {
+      e.preventDefault();
+      triggerHaptic('tap');
+      const enteredPin = (DOM.inputAdminPin ? DOM.inputAdminPin.value : '').trim();
+      const storedPin = localStorage.getItem('cgpro_admin_pin') || ADMIN_PIN_DEFAULT;
+
+      if (enteredPin === storedPin) {
+        isAdminAuthenticated = true;
+        if (DOM.adminPinModal) DOM.adminPinModal.classList.add('hidden');
+        openAdminDashboard();
+      } else {
+        alert("PIN incorrecto. (PIN por defecto: 9999)");
+      }
+    });
+  }
+
+  // 6. Cerrar Dashboard Modal
+  if (DOM.btnCloseAdminDash) {
+    DOM.btnCloseAdminDash.addEventListener('click', closeAdminDashboard);
+  }
+  if (DOM.adminDashboardOverlay) {
+    DOM.adminDashboardOverlay.addEventListener('click', closeAdminDashboard);
+  }
+
+  // 7. Tabs del Dashboard
+  const adminTabs = [
+    { tab: DOM.adminTabStats, panel: DOM.adminPanelStats },
+    { tab: DOM.adminTabPlayers, panel: DOM.adminPanelPlayers },
+    { tab: DOM.adminTabQuestions, panel: DOM.adminPanelQuestions },
+    { tab: DOM.adminTabAnnouncement, panel: DOM.adminPanelAnnouncement },
+  ];
+
+  adminTabs.forEach(({ tab, panel }) => {
+    if (tab && panel) {
+      tab.addEventListener('click', () => {
+        triggerHaptic('tap');
+        adminTabs.forEach(item => {
+          if (item.tab) item.tab.className = "py-2 rounded-lg text-slate-400 hover:text-white transition";
+          if (item.panel) item.panel.classList.add('hidden');
+        });
+        tab.className = "py-2 rounded-lg text-neon-cyan bg-cyan-950/60 shadow-sm transition";
+        panel.classList.remove('hidden');
+      });
+    }
+  });
+
+  // 8. Botón Actualizar Métricas
+  if (DOM.btnAdminRefresh) {
+    DOM.btnAdminRefresh.addEventListener('click', () => {
+      triggerHaptic('tap');
+      loadAdminData();
+    });
+  }
+
+  // 9. Buscador de jugadores
+  if (DOM.adminSearchPlayers) {
+    DOM.adminSearchPlayers.addEventListener('input', (e) => {
+      renderAdminPlayersList(e.target.value.toLowerCase().trim());
+    });
+  }
+
+  // 10. Botón Limpiar toda la tabla
+  if (DOM.btnAdminClearAll) {
+    DOM.btnAdminClearAll.addEventListener('click', () => {
+      triggerHaptic('tap');
+      const confirmText = prompt("⚠️ ACCIÓN DE PELIGRO:\\nPara borrar toda la tabla de jugadores de Firebase, escribe 'BORRAR':");
+      if (confirmText === 'BORRAR' && db) {
+        db.ref('players').remove().then(() => {
+          localStorage.removeItem('cgpro_leaderboard');
+          globalLeaderboard = [];
+          updateAllLeaderboardViews();
+          loadAdminData();
+          alert("¡Tabla de jugadores completamente reiniciada!");
+        });
+      }
+    });
+  }
+
+  // 11. Formulario Agregar Pregunta
+  if (DOM.formAdminAddQuestion) {
+    DOM.formAdminAddQuestion.addEventListener('submit', (e) => {
+      e.preventDefault();
+      triggerHaptic('tap');
+      const category = DOM.adminQCategory.value;
+      const correctIdx = parseInt(DOM.adminQCorrect.value, 10);
+      const questionText = DOM.adminQText.value.trim();
+      const opts = [
+        DOM.adminQOpt0.value.trim(),
+        DOM.adminQOpt1.value.trim(),
+        DOM.adminQOpt2.value.trim(),
+        DOM.adminQOpt3.value.trim()
+      ];
+      const funfact = DOM.adminQFunfact.value.trim();
+
+      const catLabels = { geo: 'Geografía', hist: 'Historia', sci: 'Ciencia', art: 'Arte', pop: 'Cultura Pop', dep: 'Deportes' };
+
+      const newQ = {
+        category: category,
+        categoryLabel: catLabels[category] || 'General',
+        question: questionText,
+        options: opts,
+        correct: correctIdx,
+        funfact: funfact,
+        keywords: [opts[correctIdx]]
+      };
+
+      if (db) {
+        db.ref('customQuestions').push(newQ).then(() => {
+          QUESTION_BANK.push(newQ);
+          if (DOM.adminQSuccess) {
+            DOM.adminQSuccess.classList.remove('hidden');
+            setTimeout(() => DOM.adminQSuccess.classList.add('hidden'), 3500);
+          }
+          DOM.formAdminAddQuestion.reset();
+        });
+      }
+    });
+  }
+
+  // 12. Guardar y Desactivar Anuncio Global
+  if (DOM.btnAdminSaveAnnouncement) {
+    DOM.btnAdminSaveAnnouncement.addEventListener('click', () => {
+      triggerHaptic('tap');
+      const msg = (DOM.adminAnnouncementInput ? DOM.adminAnnouncementInput.value : '').trim();
+      const active = DOM.adminAnnouncementActive ? DOM.adminAnnouncementActive.checked : false;
+
+      if (!db) return;
+      db.ref('announcement').set({ message: msg, active: active }).then(() => {
+        if (DOM.adminAnnouncementStatus) {
+          DOM.adminAnnouncementStatus.textContent = "¡Anuncio global guardado y actualizado en vivo!";
+          DOM.adminAnnouncementStatus.classList.remove('hidden');
+          setTimeout(() => DOM.adminAnnouncementStatus.classList.add('hidden'), 3000);
+        }
+      });
+    });
+  }
+
+  if (DOM.btnAdminClearAnnouncement) {
+    DOM.btnAdminClearAnnouncement.addEventListener('click', () => {
+      triggerHaptic('tap');
+      if (DOM.adminAnnouncementActive) DOM.adminAnnouncementActive.checked = false;
+      if (DOM.adminAnnouncementInput) DOM.adminAnnouncementInput.value = '';
+      if (db) {
+        db.ref('announcement').set({ message: '', active: false });
+      }
+    });
+  }
+}
+
+function openAdminDashboard() {
+  if (DOM.adminDashboardModal) DOM.adminDashboardModal.classList.remove('hidden');
+  loadAdminData();
+}
+
+function closeAdminDashboard() {
+  if (DOM.adminDashboardModal) DOM.adminDashboardModal.classList.add('hidden');
+}
+
+function loadAdminData() {
+  if (!db) return;
+  db.ref('players').once('value').then(snapshot => {
+    adminAllPlayers = snapshot.val() || {};
+    renderAdminStats();
+    renderAdminPlayersList();
+  });
+
+  db.ref('announcement').once('value').then(snapshot => {
+    const data = snapshot.val();
+    if (data && DOM.adminAnnouncementInput && DOM.adminAnnouncementActive) {
+      DOM.adminAnnouncementInput.value = data.message || '';
+      DOM.adminAnnouncementActive.checked = !!data.active;
+    }
+  });
+}
+
+function renderAdminStats() {
+  const players = Object.values(adminAllPlayers);
+  const totalPlayers = players.length;
+  const totalScore = players.reduce((acc, p) => acc + (p.totalScore || p.bestScore || 0), 0);
+  const totalGames = players.reduce((acc, p) => acc + (p.gamesPlayed || 1), 0);
+
+  if (DOM.adminStatTotalPlayers) DOM.adminStatTotalPlayers.textContent = totalPlayers.toLocaleString();
+  if (DOM.adminStatTotalScore) DOM.adminStatTotalScore.textContent = totalScore.toLocaleString();
+  if (DOM.adminStatTotalGames) DOM.adminStatTotalGames.textContent = totalGames.toLocaleString();
+  if (DOM.adminStatTotalQuestions) DOM.adminStatTotalQuestions.textContent = QUESTION_BANK.length.toLocaleString();
+}
+
+function renderAdminPlayersList(filter = '') {
+  if (!DOM.adminPlayersList) return;
+  const entries = Object.entries(adminAllPlayers);
+
+  if (!entries.length) {
+    DOM.adminPlayersList.innerHTML = `<p class="p-4 text-center text-xs text-slate-500 font-poppins">No hay jugadores registrados en Firebase.</p>`;
+    return;
+  }
+
+  const filtered = entries.filter(([key, p]) => {
+    const name = (p.name || '').toLowerCase();
+    return name.includes(filter);
+  });
+
+  if (!filtered.length) {
+    DOM.adminPlayersList.innerHTML = `<p class="p-4 text-center text-xs text-slate-500 font-poppins">No se encontraron jugadores con ese nombre.</p>`;
+    return;
+  }
+
+  DOM.adminPlayersList.innerHTML = filtered.map(([key, p]) => {
+    const avatar = p.photoURL 
+      ? `<img src="${escapeHtml(p.photoURL)}" class="w-7 h-7 rounded-full object-cover border border-neon-cyan flex-shrink-0" />`
+      : `<span class="text-lg">${p.avatar || '🧑'}</span>`;
+
+    const score = (p.totalScore || p.bestScore || 0).toLocaleString();
+    const games = p.gamesPlayed || 1;
+
+    return `
+      <div class="p-3 flex items-center justify-between gap-2 hover:bg-slate-800/40 transition">
+        <div class="flex items-center gap-2 min-w-0">
+          ${avatar}
+          <div class="min-w-0">
+            <p class="text-xs font-bold text-white truncate flex items-center gap-1">
+              <span>${escapeHtml(p.name || 'Anónimo')}</span>
+              ${p.isGoogle ? '<i class="fa-solid fa-circle-check text-neon-cyan text-[10px]"></i>' : ''}
+            </p>
+            <p class="text-[10px] text-slate-400 font-mono">${score} PTS • ${games} partidas</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" class="text-[10px] px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-neon-gold transition" onclick="adminEditScore('${key}', '${escapeHtml(p.name || '')}', ${p.totalScore || 0})">
+            ✏️ Editar
+          </button>
+          <button type="button" class="text-[10px] px-2 py-1 rounded bg-red-950/80 hover:bg-red-900 text-red-300 transition" onclick="adminDeletePlayer('${key}', '${escapeHtml(p.name || '')}')">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Global window functions for Admin player actions
+window.adminEditScore = function(key, name, currentScore) {
+  const newScoreStr = prompt(`Ingresa el nuevo puntaje para "${name}":`, currentScore);
+  if (newScoreStr !== null && !isNaN(parseInt(newScoreStr, 10)) && db) {
+    const newScore = parseInt(newScoreStr, 10);
+    db.ref('players/' + key + '/totalScore').set(newScore).then(() => {
+      loadAdminData();
+      alert(`Puntaje actualizado para ${name} a ${newScore.toLocaleString()} PTS.`);
+    });
+  }
+};
+
+window.adminDeletePlayer = function(key, name) {
+  if (confirm(`¿Eliminar al jugador "${name}" de Firebase?`) && db) {
+    db.ref('players/' + key).remove().then(() => {
+      loadAdminData();
+      alert(`Jugador ${name} eliminado.`);
+    });
+  }
+};
+
+// ============================================================
 // 20. BOOT
 // ============================================================
 function bootApp() {
@@ -1785,6 +2559,8 @@ function bootApp() {
   initAuth();
   initStartScreen();
   initRealtimeLeaderboard();
+  initDuelSystem();
+  initAdminSystem();
 
   // Unlock AudioContext on first interaction
   document.addEventListener('pointerdown', ensureAudioCtx, { once: true });

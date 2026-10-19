@@ -692,3 +692,20 @@ input[type="text"]:focus {
 .neon-btn-gold:active {
   transform: translateY(0);
 }
+
+
+/* Duel & Admin Panel Additions */
+.duel-len-btn {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.duel-len-btn:hover {
+  border-color: var(--neon-cyan);
+}
+#global-announcement {
+  animation: slideDownAnnounce 0.4s ease-out;
+}
+@keyframes slideDownAnnounce {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}

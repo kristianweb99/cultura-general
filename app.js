@@ -987,8 +987,17 @@ function updateAuthUI(user) {
     }
 
     loadUserAchievements(user.uid);
+
+    // Panel Admin: Visible ÚNICAMENTE para la cuenta del dueño
+    const ADMIN_EMAILS = ['kristianguillermo53@gmail.com'];
+    const isOwner = user.email && ADMIN_EMAILS.includes(user.email.toLowerCase().trim());
+    if (DOM.btnOpenAdmin) {
+      if (isOwner) DOM.btnOpenAdmin.classList.remove('hidden');
+      else DOM.btnOpenAdmin.classList.add('hidden');
+    }
   } else {
     enterGameLobbyAsGuest();
+    if (DOM.btnOpenAdmin) DOM.btnOpenAdmin.classList.add('hidden');
   }
 }
 
@@ -2276,6 +2285,28 @@ function initAdminSystem() {
       }
     });
   }
+
+  // 3b. Gesto secreto: 5 toques rápidos en el título para abrir Admin desde cualquier móvil
+  let secretClickCount = 0;
+  let secretClickTimer = null;
+  const headerTitles = document.querySelectorAll('.animate-float');
+  headerTitles.forEach(titleEl => {
+    titleEl.addEventListener('click', () => {
+      secretClickCount++;
+      clearTimeout(secretClickTimer);
+      secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 1600);
+      if (secretClickCount >= 5) {
+        secretClickCount = 0;
+        triggerHaptic('win');
+        if (isAdminAuthenticated) {
+          openAdminDashboard();
+        } else {
+          if (DOM.adminPinModal) DOM.adminPinModal.classList.remove('hidden');
+          if (DOM.inputAdminPin) DOM.inputAdminPin.focus();
+        }
+      }
+    });
+  });
 
   // 4. Cerrar PIN modal
   if (DOM.btnClosePinModal) {

@@ -1724,7 +1724,25 @@ function endGame(incomplete = false) {
     };
   }
 
+  if (isDuelMode) {
+    finishDuelInFirebase();
+    if (DOM.duelResultsCard) DOM.duelResultsCard.classList.remove('hidden');
+    if (db && currentDuelRoom) {
+      db.ref('rooms/' + currentDuelRoom).once('value').then(snap => {
+        const room = snap.val();
+        if (room) renderDuelFinalResult(room, duelPlayerRole);
+      });
+    }
+  } else {
+    if (DOM.duelResultsCard) DOM.duelResultsCard.classList.add('hidden');
+  }
+
   DOM.btnReplay.onclick = () => {
+    isDuelMode = false;
+    currentDuelRoom = null;
+    duelPlayerRole = null;
+    if (DOM.duelVsBar) DOM.duelVsBar.classList.add('hidden');
+    if (DOM.duelResultsCard) DOM.duelResultsCard.classList.add('hidden');
     showScreen('start');
     renderLeaderboard(DOM.leaderboardStart);
   };
@@ -2074,6 +2092,10 @@ function joinDuelRoom(code) {
       finished: false
     };
 
+    // Actualizar objeto localmente
+    room.p2 = p2Data;
+    room.status = 'playing';
+
     // Actualizar sala con Jugador 2 y arrancar
     db.ref('rooms/' + code).update({
       p2: p2Data,
@@ -2106,7 +2128,7 @@ function listenToDuelRoom(code, myRole) {
       if (DOM.duelWaitingStatus) DOM.duelWaitingStatus.textContent = "¡Rival conectado! Iniciando...";
       setTimeout(() => {
         startDuelGame(room, 'p1');
-      }, 1200);
+      }, 800);
     }
 
     // Actualizar puntaje del rival en vivo en la pantalla de juego
@@ -2118,6 +2140,12 @@ function listenToDuelRoom(code, myRole) {
         DOM.duelOppPhoto.src = opp.photoURL;
         DOM.duelOppPhoto.classList.remove('hidden');
         if (DOM.duelOppAvatar) DOM.duelOppAvatar.classList.add('hidden');
+      } else {
+        if (DOM.duelOppPhoto) DOM.duelOppPhoto.classList.add('hidden');
+        if (DOM.duelOppAvatar) {
+          DOM.duelOppAvatar.classList.remove('hidden');
+          DOM.duelOppAvatar.textContent = opp.avatar || '👾';
+        }
       }
     }
 
@@ -2131,23 +2159,35 @@ function listenToDuelRoom(code, myRole) {
 }
 
 function startDuelGame(room, role) {
+  if (!room) return;
   isDuelMode = true;
   currentDuelRoom = room.code;
   duelPlayerRole = role;
 
-  const myRoleData = room[role];
+  const myRoleData = (room && room[role]) || {
+    name: (currentUser && currentUser.displayName) || (DOM.playerName ? DOM.playerName.value.trim() : '') || (role === 'p1' ? 'Jugador 1' : 'Jugador 2'),
+    avatar: config.avatar || '🧑',
+    photoURL: (currentUser && currentUser.photoURL) || null,
+    score: 0
+  };
   const oppRole = role === 'p1' ? 'p2' : 'p1';
-  const oppRoleData = room[oppRole] || { name: 'Rival', score: 0, avatar: '👾', photoURL: null };
+  const oppRoleData = (room && room[oppRole]) || { name: 'Rival', score: 0, avatar: '👾', photoURL: null };
   duelOpponent = oppRoleData;
 
   // Configurar barra de Duelo VS
   if (DOM.duelVsBar) DOM.duelVsBar.classList.remove('hidden');
-  if (DOM.duelYouName) DOM.duelYouName.textContent = myRoleData ? myRoleData.name : 'Tú';
+  if (DOM.duelYouName) DOM.duelYouName.textContent = myRoleData.name || 'Tú';
   if (DOM.duelYouScore) DOM.duelYouScore.textContent = '0 PTS';
-  if (myRoleData && myRoleData.photoURL && DOM.duelYouPhoto) {
+  if (myRoleData.photoURL && DOM.duelYouPhoto) {
     DOM.duelYouPhoto.src = myRoleData.photoURL;
     DOM.duelYouPhoto.classList.remove('hidden');
     if (DOM.duelYouAvatar) DOM.duelYouAvatar.classList.add('hidden');
+  } else {
+    if (DOM.duelYouPhoto) DOM.duelYouPhoto.classList.add('hidden');
+    if (DOM.duelYouAvatar) {
+      DOM.duelYouAvatar.classList.remove('hidden');
+      DOM.duelYouAvatar.textContent = myRoleData.avatar || '🧑';
+    }
   }
 
   if (DOM.duelOppName) DOM.duelOppName.textContent = oppRoleData.name || 'Rival';
@@ -2156,13 +2196,19 @@ function startDuelGame(room, role) {
     DOM.duelOppPhoto.src = oppRoleData.photoURL;
     DOM.duelOppPhoto.classList.remove('hidden');
     if (DOM.duelOppAvatar) DOM.duelOppAvatar.classList.add('hidden');
+  } else {
+    if (DOM.duelOppPhoto) DOM.duelOppPhoto.classList.add('hidden');
+    if (DOM.duelOppAvatar) {
+      DOM.duelOppAvatar.classList.remove('hidden');
+      DOM.duelOppAvatar.textContent = oppRoleData.avatar || '👾';
+    }
   }
 
   // Iniciar juego con las preguntas idénticas de la sala
   ensureAudioCtx();
   gameState = {
-    player:         myRoleData.name,
-    avatar:         myRoleData.avatar,
+    player:         myRoleData.name || 'Jugador',
+    avatar:         myRoleData.avatar || '🧑',
     category:       'all',
     diff:           DIFFICULTIES[1], // Pro (10s)
     questions:      room.questions || getQuestions('all', 5),
@@ -2181,7 +2227,7 @@ function startDuelGame(room, role) {
   };
 
   DOM.playerAvatarDisplay.textContent = myRoleData.avatar || '🧑';
-  DOM.playerNameDisplay.textContent   = myRoleData.name;
+  DOM.playerNameDisplay.textContent   = myRoleData.name || 'Jugador';
   DOM.difficultyBadge.textContent     = 'Duelo 1 vs 1';
 
   // Mostrar pantalla de juego

@@ -37,6 +37,16 @@ const DIFFICULTIES = [
   { id: 'relampago', label: 'Relámpago', seconds: 5,  basePoints: 350, icon: 'fa-fire' },
 ];
 
+const ACHIEVEMENTS_LIST = [
+  { id: 'first_game',    title: 'Primera Partida',   desc: 'Completa tu primera partida', icon: '🎮' },
+  { id: 'speed_3',       title: 'Velocidad Mental',  desc: 'Responde en menos de 3 segundos', icon: '⚡' },
+  { id: 'streak_5',      title: 'En Racha (x5)',     desc: 'Acierta 5 preguntas consecutivas', icon: '🔥' },
+  { id: 'streak_10',     title: 'Imparable (x10)',   desc: 'Acierta 10 preguntas consecutivas', icon: '🌟' },
+  { id: 'perfect_round', title: 'Ronda Perfecta',    desc: 'Termina con 100% de precisión', icon: '🎯' },
+  { id: 'score_1000',    title: 'Club de los 1.000', desc: 'Consigue 1.000 puntos en un juego', icon: '⭐' },
+  { id: 'titan_3000',    title: 'Titán del Saber',   desc: 'Supera los 3.000 puntos acumulados', icon: '👑' },
+];
+
 const RANKS = [
   { min: 0,    title: '🔰 Novato Curioso' },
   { min: 300,  title: '📚 Aprendiz Ágil' },
@@ -915,27 +925,35 @@ function saveAchievements() {
 }
 
 function unlockAchievement(id) {
-  if (userAchievements.has(id)) return;
-  userAchievements.add(id);
-  saveAchievements();
+  try {
+    if (!userAchievements) userAchievements = new Set();
+    if (userAchievements.has(id)) return;
+    userAchievements.add(id);
+    saveAchievements();
 
-  const ach = ACHIEVEMENTS_LIST.find(a => a.id === id);
-  if (!ach) return;
+    const list = (typeof ACHIEVEMENTS_LIST !== 'undefined') ? ACHIEVEMENTS_LIST : [];
+    const ach = list.find(a => a.id === id);
+    if (!ach) return;
 
-  playAchievementFanfare();
-  triggerHaptic('win');
+    playAchievementFanfare();
+    triggerHaptic('win');
 
-  if (DOM.achievementToast) {
-    DOM.toastIcon.textContent = ach.icon;
-    DOM.toastTitle.textContent = ach.title;
-    DOM.toastDesc.textContent = ach.desc;
-    DOM.achievementToast.classList.remove('hidden');
-    DOM.achievementToast.style.opacity = '1';
+    if (DOM.achievementToast && DOM.toastIcon && DOM.toastTitle && DOM.toastDesc) {
+      DOM.toastIcon.textContent = ach.icon;
+      DOM.toastTitle.textContent = ach.title;
+      DOM.toastDesc.textContent = ach.desc;
+      DOM.achievementToast.classList.remove('hidden');
+      DOM.achievementToast.style.opacity = '1';
 
-    setTimeout(() => {
-      DOM.achievementToast.style.opacity = '0';
-      setTimeout(() => DOM.achievementToast.classList.add('hidden'), 500);
-    }, 4000);
+      setTimeout(() => {
+        if (DOM.achievementToast) {
+          DOM.achievementToast.style.opacity = '0';
+          setTimeout(() => DOM.achievementToast.classList.add('hidden'), 500);
+        }
+      }, 4000);
+    }
+  } catch (err) {
+    console.warn("Logro omitido por error no crítico:", err);
   }
 }
 
@@ -1104,14 +1122,15 @@ function getQuestions(category, count = 10) {
 function startGame() {
   ensureAudioCtx(); // Unlock audio on user gesture
 
-  const config = getSelectedConfig();
-  const questions = getQuestions(config.category);
+  const selectedCfg = getSelectedConfig();
+  const qCount = (config && config.questionCount) ? config.questionCount : 10;
+  const questions = getQuestions(selectedCfg.category, qCount);
 
   gameState = {
-    player:         config.name,
-    avatar:         config.avatar,
-    category:       config.category,
-    diff:           config.diff,
+    player:         selectedCfg.name,
+    avatar:         selectedCfg.avatar,
+    category:       selectedCfg.category,
+    diff:           selectedCfg.diff,
     questions:      questions,
     currentIndex:   0,
     score:          0,
@@ -1124,13 +1143,13 @@ function startGame() {
     lifelinesClue:  1,
     lifelinesTime:  1,
     answered:       false,
-    timeLeft:       config.diff.seconds,
+    timeLeft:       selectedCfg.diff.seconds,
   };
 
   // Update profile UI
-  DOM.playerAvatarDisplay.textContent = config.avatar;
-  DOM.playerNameDisplay.textContent   = config.name;
-  DOM.difficultyBadge.textContent     = config.diff.label;
+  DOM.playerAvatarDisplay.textContent = selectedCfg.avatar;
+  DOM.playerNameDisplay.textContent   = selectedCfg.name;
+  DOM.difficultyBadge.textContent     = selectedCfg.diff.label;
 
   // Reset lifeline buttons
   if (DOM.btnFifty) {

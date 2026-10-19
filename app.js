@@ -32,9 +32,9 @@ const CATEGORIES = [
 ];
 
 const DIFFICULTIES = [
-  { id: 'normal',    label: 'Normal',    seconds: 15, basePoints: 100, icon: 'fa-leaf' },
-  { id: 'pro',       label: 'Pro',       seconds: 10, basePoints: 200, icon: 'fa-bolt' },
-  { id: 'relampago', label: 'Relámpago', seconds: 5,  basePoints: 350, icon: 'fa-fire' },
+  { id: 'normal',    label: 'Normal',    seconds: 25, basePoints: 100, icon: 'fa-leaf' },
+  { id: 'pro',       label: 'Pro',       seconds: 18, basePoints: 200, icon: 'fa-bolt' },
+  { id: 'relampago', label: 'Relámpago', seconds: 12, basePoints: 350, icon: 'fa-fire' },
 ];
 
 const ACHIEVEMENTS_LIST = [
@@ -1160,7 +1160,7 @@ function initStartScreen() {
 
   // Build difficulty chips
   DOM.difficultyGrid.innerHTML = DIFFICULTIES.map((d, i) =>
-    `<button class="difficulty-chip ${i === 1 ? 'selected-pro' : ''}" data-diff="${d.id}">
+    `<button class="difficulty-chip ${i === 0 ? 'selected-normal' : ''}" data-diff="${d.id}">
        <i class="fa-solid ${d.icon} mr-1"></i>${d.label}<br/>
        <small class="opacity-70">${d.seconds}s / pregunta</small>
      </button>`
@@ -1198,13 +1198,13 @@ function getSelectedConfig() {
   const name     = DOM.playerName.value.trim() || 'Jugador';
   const avatar   = selectedAvatar ? selectedAvatar.dataset.avatar : '🧑';
   const category = selectedCat ? selectedCat.dataset.cat : 'all';
-  const diffId   = activeDiff ? activeDiff.dataset.diff : 'pro';
-  const diff     = DIFFICULTIES.find(d => d.id === diffId) || DIFFICULTIES[1];
+  const diffId   = activeDiff ? activeDiff.dataset.diff : 'normal';
+  const diff     = DIFFICULTIES.find(d => d.id === diffId) || DIFFICULTIES[0];
 
   return { name, avatar, category, diff };
 }
 
-function getQuestions(category, count = 10) {
+function getQuestions(category, count = 10, diffId = 'normal') {
   let pool = category === 'all'
     ? [...QUESTION_BANK]
     : QUESTION_BANK.filter(q => q.category === category);
@@ -1215,7 +1215,22 @@ function getQuestions(category, count = 10) {
     pool = pool.concat(extras);
   }
 
-  // Shuffle and pick
+  // Si la dificultad es Normal o Duelo, priorizar preguntas accesibles, populares y divertidas
+  if (diffId === 'normal' || diffId === 'duel') {
+    const easyPool = pool.filter(q => q.level === 'easy');
+    const otherPool = pool.filter(q => q.level !== 'easy');
+
+    const shuffledEasy = [...easyPool].sort(() => Math.random() - 0.5);
+    const shuffledOther = [...otherPool].sort(() => Math.random() - 0.5);
+
+    // Tomar prioritariamente del banco accesible
+    const takeEasy = Math.min(shuffledEasy.length, count);
+    const needed = count - takeEasy;
+    const selected = shuffledEasy.slice(0, takeEasy).concat(shuffledOther.slice(0, needed));
+    return selected.sort(() => Math.random() - 0.5);
+  }
+
+  // Modo Pro o Relámpago: mezclar todo el banco
   return pool
     .sort(() => Math.random() - 0.5)
     .slice(0, count);
@@ -1226,7 +1241,7 @@ function startGame() {
 
   const selectedCfg = getSelectedConfig();
   const qCount = (config && config.questionCount) ? config.questionCount : 10;
-  const questions = getQuestions(selectedCfg.category, qCount);
+  const questions = getQuestions(selectedCfg.category, qCount, selectedCfg.diff.id);
 
   gameState = {
     player:         selectedCfg.name,
@@ -2030,8 +2045,8 @@ function createDuelRoom() {
   const playerPhoto = (currentUser && currentUser.photoURL) || null;
   const playerAvatar = config.avatar || '🧑';
 
-  // Obtener preguntas idénticas para ambos jugadores
-  const questions = getQuestions('all', duelQuestionCount);
+  // Obtener preguntas accesibles idénticas para ambos jugadores
+  const questions = getQuestions('all', duelQuestionCount, 'duel');
 
   const roomData = {
     code: roomCode,
@@ -2069,14 +2084,31 @@ function joinDuelRoom(code) {
   }
   if (DOM.duelJoinError) DOM.duelJoinError.classList.add('hidden');
 
+  const btnJoin = DOM.btnJoinRoom;
+  const origHtml = btnJoin ? btnJoin.innerHTML : '';
+  if (btnJoin) {
+    btnJoin.disabled = true;
+    btnJoin.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Entrando al duelo...';
+  }
+
+  const resetBtn = () => {
+    if (btnJoin) {
+      btnJoin.disabled = false;
+      btnJoin.innerHTML = origHtml;
+    }
+  };
+
   db.ref('rooms/' + code).once('value').then(snapshot => {
     const room = snapshot.val();
     if (!room) {
-      showDuelJoinError("No existe ninguna sala con el código '" + code + "'.");
+      showDuelJoinError("No existe ninguna sala con el código '" + code + "'. Verifica el código.");
+      resetBtn();
       return;
     }
-    if (room.status !== 'waiting' || room.p2) {
-      showDuelJoinError("Esta sala ya está llena o el duelo ya empezó.");
+
+    if (room.status === 'finished') {
+      showDuelJoinError("Esta partida ya ha finalizado.");
+      resetBtn();
       return;
     }
 
@@ -2093,21 +2125,34 @@ function joinDuelRoom(code) {
     };
 
     // Actualizar objeto localmente
-    room.p2 = p2Data;
+    room.p2 = room.p2 || p2Data;
     room.status = 'playing';
 
-    // Actualizar sala con Jugador 2 y arrancar
+    currentDuelRoom = code;
+    duelPlayerRole = 'p2';
+
+    // Adjuntar listener primero para sincronización continua
+    listenToDuelRoom(code, 'p2');
+
+    // Actualizar Firebase
     db.ref('rooms/' + code).update({
       p2: p2Data,
       status: 'playing'
     }).then(() => {
-      currentDuelRoom = code;
-      duelPlayerRole = 'p2';
-      startDuelGame(room, 'p2');
-      listenToDuelRoom(code, 'p2');
+      resetBtn();
+      if (!isDuelMode) {
+        startDuelGame(room, 'p2');
+      }
     }).catch(err => {
-      showDuelJoinError("Error al unirse: " + err.message);
+      console.warn("Update error in room:", err);
+      resetBtn();
+      if (!isDuelMode) {
+        startDuelGame(room, 'p2');
+      }
     });
+  }).catch(err => {
+    resetBtn();
+    showDuelJoinError("Error al unirse: " + err.message);
   });
 }
 
@@ -2123,12 +2168,10 @@ function listenToDuelRoom(code, myRole) {
     const oppRole = myRole === 'p1' ? 'p2' : 'p1';
     const opp = room[oppRole];
 
-    // Si P1 estaba esperando y P2 se une:
-    if (myRole === 'p1' && room.status === 'playing' && !isDuelMode) {
-      if (DOM.duelWaitingStatus) DOM.duelWaitingStatus.textContent = "¡Rival conectado! Iniciando...";
-      setTimeout(() => {
-        startDuelGame(room, 'p1');
-      }, 800);
+    // Si la sala está en playing y todavía no arrancamos la pantalla de juego local:
+    if (room.status === 'playing' && !isDuelMode) {
+      if (DOM.duelWaitingStatus) DOM.duelWaitingStatus.textContent = "¡Rival conectado! Iniciando duelo...";
+      startDuelGame(room, myRole);
     }
 
     // Actualizar puntaje del rival en vivo en la pantalla de juego
@@ -2166,12 +2209,12 @@ function startDuelGame(room, role) {
 
   const myRoleData = (room && room[role]) || {
     name: (currentUser && currentUser.displayName) || (DOM.playerName ? DOM.playerName.value.trim() : '') || (role === 'p1' ? 'Jugador 1' : 'Jugador 2'),
-    avatar: config.avatar || '🧑',
+    avatar: config.avatar || (role === 'p1' ? '🧑' : '👾'),
     photoURL: (currentUser && currentUser.photoURL) || null,
     score: 0
   };
   const oppRole = role === 'p1' ? 'p2' : 'p1';
-  const oppRoleData = (room && room[oppRole]) || { name: 'Rival', score: 0, avatar: '👾', photoURL: null };
+  const oppRoleData = (room && room[oppRole]) || { name: 'Rival', score: 0, avatar: (role === 'p1' ? '👾' : '🧑'), photoURL: null };
   duelOpponent = oppRoleData;
 
   // Configurar barra de Duelo VS
@@ -2204,14 +2247,33 @@ function startDuelGame(room, role) {
     }
   }
 
-  // Iniciar juego con las preguntas idénticas de la sala
+  // Asegurar que questions sea un Array real y válido
+  let qList = [];
+  if (Array.isArray(room.questions)) {
+    qList = room.questions;
+  } else if (room.questions && typeof room.questions === 'object') {
+    qList = Object.values(room.questions);
+  }
+  if (!qList.length) {
+    qList = getQuestions('all', 5, 'duel');
+  }
+
+  // Dificultad para el Duelo: 20 segundos para responder con calma
+  const duelDiff = {
+    id: 'duel',
+    label: 'Duelo 1 vs 1',
+    seconds: 20,
+    basePoints: 150,
+    icon: 'fa-swords'
+  };
+
   ensureAudioCtx();
   gameState = {
     player:         myRoleData.name || 'Jugador',
     avatar:         myRoleData.avatar || '🧑',
     category:       'all',
-    diff:           DIFFICULTIES[1], // Pro (10s)
-    questions:      room.questions || getQuestions('all', 5),
+    diff:           duelDiff,
+    questions:      qList,
     currentIndex:   0,
     score:          0,
     correct:        0,
@@ -2223,12 +2285,12 @@ function startDuelGame(room, role) {
     lifelinesFifty: 1,
     lifelinesTime:  1,
     lifelinesClue:  1,
-    timeLeft:       10,
+    timeLeft:       duelDiff.seconds,
   };
 
-  DOM.playerAvatarDisplay.textContent = myRoleData.avatar || '🧑';
-  DOM.playerNameDisplay.textContent   = myRoleData.name || 'Jugador';
-  DOM.difficultyBadge.textContent     = 'Duelo 1 vs 1';
+  if (DOM.playerAvatarDisplay) DOM.playerAvatarDisplay.textContent = myRoleData.avatar || '🧑';
+  if (DOM.playerNameDisplay) DOM.playerNameDisplay.textContent     = myRoleData.name || 'Jugador';
+  if (DOM.difficultyBadge) DOM.difficultyBadge.textContent         = '⚔️ Duelo 1 vs 1';
 
   // Mostrar pantalla de juego
   showScreen('game');

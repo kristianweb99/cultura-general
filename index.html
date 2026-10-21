@@ -1,4 +1,53 @@
-<!DOCTYPE html>
+<!DOC
+
+        <!-- TAB 5: MONETIZACIÓN & ANUNCIOS -->
+        <div id="admin-panel-ads" class="hidden space-y-4">
+          <div class="glass-card p-4 rounded-xl border border-slate-700/60 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div>
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                  <i class="fa-solid fa-money-bill-wave text-neon-green"></i> Configuración de Publicidad
+                </h4>
+                <p class="text-[11px] text-slate-400">Controla los anuncios de tu juego en tiempo real</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="admin-toggle-ads" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-green"></div>
+              </label>
+            </div>
+
+            <!-- Red de Anuncios -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Red Publicitaria</label>
+              <select id="admin-ad-network" class="w-full bg-dark-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neon-cyan">
+                <option value="demo">Modo Demo / Prueba (Simulador visual para probar)</option>
+                <option value="adsense">Google AdSense (Para dominio propio .com)</option>
+                <option value="monetag">Monetag / PropellerAds (Ideal para GitHub Pages)</option>
+                <option value="adsterra">Adsterra (Ideal para GitHub Pages)</option>
+                <option value="custom">Script / Código HTML Personalizado</option>
+              </select>
+            </div>
+
+            <!-- AdSense Publisher ID -->
+            <div id="admin-group-adsense" class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-300">Google AdSense Publisher ID</label>
+              <input type="text" id="admin-adsense-id" placeholder="ca-pub-1234567890123456" class="w-full bg-dark-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-neon-cyan focus:outline-none focus:border-neon-cyan font-mono" />
+              <p class="text-[10px] text-slate-500">Tu código de cliente ca-pub que te da Google AdSense.</p>
+            </div>
+
+            <!-- Custom Script Area -->
+            <div id="admin-group-custom" class="space-y-1.5 hidden">
+              <label class="block text-xs font-bold text-slate-300">Código Script (Monetag o Adsterra)</label>
+              <textarea id="admin-custom-ad-code" rows="3" placeholder="Pega aquí el script proporcionado por tu red publicitaria..." class="w-full bg-dark-bg border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 font-mono focus:outline-none focus:border-neon-cyan"></textarea>
+            </div>
+
+            <button type="button" id="admin-btn-save-ads" class="w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-neon-cyan text-dark-bg hover:bg-cyan-300 transition shadow-lg flex items-center justify-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Configuración de Anuncios
+            </button>
+            <p id="admin-ads-saved-msg" class="hidden text-xs text-neon-green text-center font-bold">¡Configuración guardada y sincronizada!</p>
+          </div>
+        </div>
+TYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -25,7 +74,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
   <!-- App Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=9.0" />
+  <link rel="stylesheet" href="styles.css?v=6.0" />
 
   <script>
     tailwind.config = {
@@ -375,6 +424,23 @@
         <!-- Injected by JS -->
       </div>
     </div>
+    
+    <!-- AD BANNER: START SCREEN -->
+    <div id="ad-banner-start" class="ad-container w-full max-w-lg mx-auto mt-6 mb-2 p-3 text-center rounded-2xl glass-card border border-slate-800/80 shadow-lg">
+      <div class="flex items-center justify-between text-[10px] text-slate-500 uppercase tracking-widest mb-1.5 px-1 font-poppins">
+        <span><i class="fa-solid fa-rectangle-ad mr-1 text-neon-cyan"></i>Publicidad Patrocinada</span>
+        <span class="text-slate-600">Espacio de Anuncios</span>
+      </div>
+      <div id="ad-slot-start-content" class="ad-slot-content flex items-center justify-center min-h-[70px] sm:min-h-[90px] bg-dark-bg/60 rounded-xl border border-dashed border-slate-700/50 p-2">
+        <div class="text-center">
+          <p class="text-xs font-bold text-slate-400 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-bullhorn text-neon-cyan"></i> Banner Publicitario 728x90 / 320x50
+          </p>
+          <p class="text-[10px] text-slate-500 font-poppins mt-0.5">Compatible con Google AdSense, Monetag y Adsterra</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer / Admin Button -->
     <div class="mt-6 flex items-center justify-between w-full max-w-lg px-2">
       <span class="text-[11px] text-slate-500 font-poppins">Cultura General PRO v8.0 • Multijugador</span>
@@ -457,6 +523,10 @@
         <button id="btn-clue" class="lifeline-btn" title="Pista: Descarta 1 opción incorrecta">
           <i class="fa-solid fa-lightbulb text-xs"></i>
           <span class="text-xs font-bold">Pista</span>
+        </button>
+        <button id="btn-rewarded-ad" class="lifeline-btn border-neon-gold/50 text-neon-gold hover:border-neon-gold hover:bg-yellow-500/10 transition" title="Ver anuncio para recargar comodines">
+          <i class="fa-solid fa-film text-xs text-neon-gold"></i>
+          <span class="text-xs font-bold text-neon-gold">+Comodín</span>
         </button>
       </div>
     </div>
@@ -669,6 +739,23 @@
         <span>Retar a un amigo por WhatsApp</span>
       </button>
 
+      
+      <!-- AD BANNER: RESULTS SCREEN -->
+      <div id="ad-banner-results" class="ad-container w-full max-w-lg mx-auto my-4 p-3 text-center rounded-2xl glass-card border border-slate-800/80 shadow-lg">
+        <div class="flex items-center justify-between text-[10px] text-slate-500 uppercase tracking-widest mb-1.5 px-1 font-poppins">
+          <span><i class="fa-solid fa-rectangle-ad mr-1 text-neon-gold"></i>Anuncio Patrocinado</span>
+          <span class="text-slate-600">Espacio de Resultados</span>
+        </div>
+        <div id="ad-slot-results-content" class="ad-slot-content flex items-center justify-center min-h-[70px] sm:min-h-[90px] bg-dark-bg/60 rounded-xl border border-dashed border-slate-700/50 p-2">
+          <div class="text-center">
+            <p class="text-xs font-bold text-slate-400 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-trophy text-neon-gold"></i> ¡Gran Partida! Anuncio Recomendado
+            </p>
+            <p class="text-[10px] text-slate-500 font-poppins mt-0.5">Banner de alta conversión para monetizar jugadores</p>
+          </div>
+        </div>
+      </div>
+
       <div class="flex flex-col sm:flex-row gap-3">
         <button id="btn-share" class="flex-1 py-3 rounded-2xl font-bold text-sm uppercase tracking-wider glass-btn border border-neon-cyan/40 hover:border-neon-cyan transition-all duration-300">
           <i class="fa-solid fa-copy mr-2"></i>Copiar reto
@@ -730,7 +817,7 @@
       </div>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 mb-6">
         <div class="bg-dark-card/80 border border-dark-border p-3 rounded-xl">
           <p id="stat-total-score" class="text-lg font-black neon-text-gold">0</p>
           <p class="text-[10px] text-slate-400 uppercase tracking-wider font-poppins">Total Pts</p>
@@ -836,6 +923,9 @@
         </button>
         <button id="admin-tab-announcement" type="button" class="py-2 rounded-lg text-slate-400 hover:text-white transition">
           <i class="fa-solid fa-bullhorn mr-1"></i><span class="hidden sm:inline">Anuncio</span>
+        </button>
+        <button id="admin-tab-ads" type="button" class="py-2 rounded-lg text-slate-400 hover:text-white transition">
+          <i class="fa-solid fa-rectangle-ad mr-1"></i><span class="hidden sm:inline">Monetizar</span>
         </button>
       </div>
 
@@ -972,6 +1062,41 @@
   <script src="questions.js?v=6.0"></script>
 
   <!-- App Script -->
-  <script src="app.js?v=11.0"></script>
+  <script src="app.js?v=12.0"></script>
+
+  <!-- ============================================================ -->
+  <!-- REWARDED AD MODAL                                            -->
+  <!-- ============================================================ -->
+  <div id="ad-rewarded-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div id="ad-rewarded-overlay" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+    <div class="relative z-10 glass-card w-full max-w-md p-6 rounded-3xl border-2 border-neon-gold shadow-2xl text-center space-y-4 animate-scaleUp">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-film text-neon-gold text-lg"></i>
+          <span class="text-xs uppercase tracking-widest text-slate-300 font-bold font-poppins">Anuncio Recompensado</span>
+        </div>
+        <div id="ad-countdown-badge" class="px-3 py-1 rounded-full bg-yellow-500/20 text-neon-gold text-xs font-black">
+          Espera 5s...
+        </div>
+      </div>
+
+      <!-- Ad Creative Content Area -->
+      <div id="ad-rewarded-content" class="w-full min-h-[200px] rounded-2xl bg-dark-bg/90 border border-slate-700/60 p-4 flex flex-col items-center justify-center space-y-3 relative overflow-hidden">
+        <div class="text-4xl animate-bounce">🎁</div>
+        <h4 class="text-base font-bold text-white">¡Patrocinador Oficial de Cultura General!</h4>
+        <p class="text-xs text-slate-400 max-w-xs font-poppins">
+          Mira este anuncio para recargar inmediatamente tus comodines de <span class="text-neon-cyan font-bold">50/50</span>, <span class="text-neon-gold font-bold">Tiempo Extra</span> y <span class="text-neon-magenta font-bold">Pistas</span>.
+        </p>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-2">
+          <div id="ad-progress-bar" class="h-full bg-neon-gold transition-all duration-1000" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <button id="btn-claim-ad-reward" type="button" disabled class="w-full py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest bg-slate-800 text-slate-500 cursor-not-allowed transition-all duration-300">
+        <i class="fa-solid fa-lock mr-2"></i>Esperando anuncio (5s)...
+      </button>
+    </div>
+  </div>
+
 </body>
 </html>

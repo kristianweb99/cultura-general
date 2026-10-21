@@ -709,3 +709,45 @@ input[type="text"]:focus {
   from { transform: translateY(-100%); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
+
+
+/* ============================================================ */
+/* 21. AD MONETIZATION STYLES                                    */
+/* ============================================================ */
+.ad-container {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.ad-container:hover {
+  border-color: rgba(0, 245, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 245, 255, 0.08);
+}
+
+.ad-slot-content {
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-slot-content:hover {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+#ad-countdown-badge {
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+}
+
+#btn-claim-ad-reward:not(:disabled) {
+  background: linear-gradient(135deg, #ffd700, #ff8800);
+  color: #070b19;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+#btn-claim-ad-reward:not(:disabled):hover {
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  transform: scale(1.02);
+}

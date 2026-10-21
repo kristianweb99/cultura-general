@@ -1098,5 +1098,14 @@ TYPE html>
     </div>
   </div>
 
+  <!-- Monetag Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW note:', err));
+      });
+    }
+  </script>
+
 </body>
 </html>

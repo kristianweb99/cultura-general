@@ -772,7 +772,12 @@ function initAuth() {
       provider.addScope('profile');
       provider.addScope('email');
 
-      authInst.signInWithPopup(provider)
+      // Asegurar persistencia LOCAL para evitar pérdida de sesión
+      authInst.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .catch(() => {})
+        .then(() => {
+          return authInst.signInWithPopup(provider);
+        })
         .then((result) => {
           triggerHaptic('win');
           playTone({ frequency: 660, type: 'sine', duration: 0.15, gain: 0.2 });
@@ -791,10 +796,9 @@ function initAuth() {
             showAuthAlert(msg);
             alert(msg);
           } else if (error.code === 'auth/popup-blocked') {
-            authInst.signInWithRedirect(provider);
+            showAuthAlert("Tu navegador bloqueó la ventana emergente de Google. Por favor toca 'Permitir ventanas emergentes' en la barra del navegador o inicia sesión con tu correo.");
           } else if (error.code !== 'auth/popup-closed-by-user') {
-            showAuthAlert("Error al iniciar con Google: " + error.message);
-            alert("Error con Google: " + error.message);
+            showAuthAlert("Error con Google: " + (error.message || error.code));
           }
         });
     });

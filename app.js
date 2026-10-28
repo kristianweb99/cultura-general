@@ -150,6 +150,8 @@ const DOM = {
 
   // Shared
   scorePopup: $('score-popup'),
+  userPointsDisplay: $('user-points-display'),
+  btnQuickBonus: $('btn-quick-bonus'),
   btnAdReward: $('btn-ad-reward'),
   btnAdRewardText: $('btn-ad-reward-text'),
   btnAdResults: $('btn-ad-results'),
@@ -1223,18 +1225,23 @@ function getQuestions(category, count = 10, diffId = 'normal') {
     pool = pool.concat(extras);
   }
 
-  // Si la dificultad es Normal o Duelo, priorizar preguntas accesibles, populares y divertidas
+  // Si la dificultad es Normal o Duelo, asegurar preguntas 100% accesibles y divertidas
   if (diffId === 'normal' || diffId === 'duel') {
-    const easyPool = pool.filter(q => q.level === 'easy');
-    const otherPool = pool.filter(q => q.level !== 'easy');
+    let easyPool = pool.filter(q => q.level === 'easy');
+
+    // Si la categoría específica tiene pocas fáciles, completar con preguntas populares de otras categorías
+    if (easyPool.length < count) {
+      const globalEasy = QUESTION_BANK.filter(q => q.level === 'easy' && q.category !== category);
+      easyPool = easyPool.concat(globalEasy);
+    }
 
     const shuffledEasy = [...easyPool].sort(() => Math.random() - 0.5);
-    const shuffledOther = [...otherPool].sort(() => Math.random() - 0.5);
+    if (shuffledEasy.length >= count) {
+      return shuffledEasy.slice(0, count);
+    }
 
-    // Tomar prioritariamente del banco accesible
-    const takeEasy = Math.min(shuffledEasy.length, count);
-    const needed = count - takeEasy;
-    const selected = shuffledEasy.slice(0, takeEasy).concat(shuffledOther.slice(0, needed));
+    const otherPool = pool.filter(q => q.level !== 'easy').sort(() => Math.random() - 0.5);
+    const selected = shuffledEasy.concat(otherPool.slice(0, count - shuffledEasy.length));
     return selected.sort(() => Math.random() - 0.5);
   }
 
@@ -2716,57 +2723,92 @@ window.adminDeletePlayer = function(key, name) {
 // 20. BOOT
 // ============================================================
 // ============================================================
-// 21. AD MONETIZATION (Adsterra Smartlink & Rewarded Actions)
+// 21. AD MONETIZATION & POINTS SYSTEM (Adsterra Smartlink)
 // ============================================================
 const AD_SMARTLINK = 'https://asiafilm.org/4/9a63ad70c0553c0435770581d556df0c';
 let completedGamesCount = 0;
 
+function getPlayerPoints() {
+  return parseInt(localStorage.getItem('cq_player_points') || '0', 10);
+}
+
+function updatePlayerPointsDisplay(animate = false) {
+  const pts = getPlayerPoints();
+  const el = DOM.userPointsDisplay || $('user-points-display');
+  if (el) {
+    if (animate) {
+      el.classList.add('scale-125', 'text-emerald-400');
+      setTimeout(() => el.classList.remove('scale-125', 'text-emerald-400'), 600);
+    }
+    el.textContent = pts.toLocaleString();
+  }
+}
+
+function addPlayerPoints(amount) {
+  const current = getPlayerPoints();
+  const next = current + amount;
+  localStorage.setItem('cq_player_points', next.toString());
+  updatePlayerPointsDisplay(true);
+
+  if (currentUser && db) {
+    db.ref('players/' + currentUser.uid).update({
+      accumulatedPoints: next,
+      lastBonusAt: firebase.database.ServerValue.TIMESTAMP
+    }).catch(() => {});
+  }
+  return next;
+}
+
 function initAdMonetization() {
-  // 1. Bono Diario en Pantalla de Inicio
-  if (DOM.btnAdReward) {
-    DOM.btnAdReward.onclick = () => {
-      triggerHaptic('win');
-      playTone({ frequency: 659.25, type: 'sine', duration: 0.2, gain: 0.2 });
-      window.open(AD_SMARTLINK, '_blank');
+  updatePlayerPointsDisplay(false);
 
-      if (DOM.btnAdRewardText) DOM.btnAdRewardText.textContent = "✅ ¡Bono Reclamado (+150 PTS)!";
-      DOM.btnAdReward.disabled = true;
-      DOM.btnAdReward.classList.add('opacity-70', 'cursor-not-allowed');
+  const claimReward = (btn, textSpan) => {
+    triggerHaptic('win');
+    playTone({ frequency: 659.25, type: 'sine', duration: 0.25, gain: 0.25 });
+    window.open(AD_SMARTLINK, '_blank');
 
-      animateScore(150);
+    const total = addPlayerPoints(150);
+    animateScore(150);
 
-      const pName = DOM.playerName && DOM.playerName.value.trim() ? DOM.playerName.value.trim() : 'Jugador';
-      saveScore({
-        name: pName,
-        avatar: gameState.playerAvatar || '🧠',
-        score: 150,
-        category: 'Bono Diario',
-        difficulty: 'Normal',
-        date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }),
-        accuracy: 100,
-      });
-      renderLeaderboard(DOM.leaderboardStart);
+    if (textSpan) textSpan.textContent = "✅ ¡+150 PTS Reclamados!";
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.add('opacity-70', 'cursor-not-allowed');
+    }
 
-      setTimeout(() => {
-        if (DOM.btnAdReward) {
-          DOM.btnAdReward.disabled = false;
-          DOM.btnAdReward.classList.remove('opacity-70', 'cursor-not-allowed');
-          if (DOM.btnAdRewardText) DOM.btnAdRewardText.textContent = "🎁 Bono Diario: +150 PTS Gratis";
-        }
-      }, 180000);
-    };
+    alert(`🎉 ¡Excelente! Has ganado +150 PUNTOS por apoyar el juego.\n\n💰 Tus puntos acumulados ahora son: ${total.toLocaleString()} PTS`);
+
+    setTimeout(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
+      }
+      if (textSpan) textSpan.textContent = "🎁 Bono Diario: +150 PTS Gratis";
+    }, 180000);
+  };
+
+  // Botón rápido en la barra de puntos
+  const btnQuick = DOM.btnQuickBonus || $('btn-quick-bonus');
+  if (btnQuick) {
+    btnQuick.onclick = () => claimReward(btnQuick, null);
   }
 
-  // 2. Bono Extra en Pantalla de Resultados
+  // Botón principal de bono en la pantalla de inicio
+  if (DOM.btnAdReward) {
+    DOM.btnAdReward.onclick = () => claimReward(DOM.btnAdReward, DOM.btnAdRewardText);
+  }
+
+  // Botón de Bono Extra en Pantalla de Resultados (+200 PTS)
   if (DOM.btnAdResults) {
     DOM.btnAdResults.onclick = () => {
       triggerHaptic('win');
-      playTone({ frequency: 784, type: 'sine', duration: 0.2, gain: 0.2 });
+      playTone({ frequency: 784, type: 'sine', duration: 0.25, gain: 0.25 });
       window.open(AD_SMARTLINK, '_blank');
 
       gameState.score += 200;
       if (DOM.resScore) DOM.resScore.textContent = gameState.score.toLocaleString();
       animateScore(200);
+      const total = addPlayerPoints(200);
 
       const entry = {
         name: gameState.playerName,
@@ -2783,6 +2825,8 @@ function initAdMonetization() {
       if (DOM.btnAdResultsText) DOM.btnAdResultsText.textContent = "✅ ¡+200 PTS Agregados!";
       DOM.btnAdResults.disabled = true;
       DOM.btnAdResults.classList.add('opacity-70', 'cursor-not-allowed');
+
+      alert(`🎉 ¡Felicidades! Se sumaron +200 PTS a tu partida.\n\n💰 Saldo total: ${total.toLocaleString()} PTS`);
     };
   }
 }

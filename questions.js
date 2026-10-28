@@ -1,10 +1,2785 @@
 /* =========================================================
-   CULTURA GENERAL PRO — questions.js
-   Banco Masivo de 1.200 preguntas verificadas (200 x 6 categorías)
+   CULTURA GENERAL PRO – questions.js
+   Banco de Preguntas Verificadas (1308 preguntas)
+   Incluye banco inicial de cultura general accesible y popular
    ========================================================= */
 
 var _root = typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : this);
-_root.QUESTION_BANK =  [
+_root.QUESTION_BANK = [
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿En qué país nació la estrella de fútbol Lionel Messi?",
+    "keywords": [
+      "Messi",
+      "país"
+    ],
+    "options": [
+      "Brasil",
+      "Argentina",
+      "Uruguay",
+      "España"
+    ],
+    "correct": 1,
+    "funfact": "Messi nació en Rosario, Argentina, el 24 de junio de 1987."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿En qué país nació el futbolista Cristiano Ronaldo?",
+    "keywords": [
+      "Cristiano Ronaldo"
+    ],
+    "options": [
+      "España",
+      "Brasil",
+      "Portugal",
+      "Italia"
+    ],
+    "correct": 2,
+    "funfact": "Cristiano Ronaldo nació en Funchal, Madeira, Portugal."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cuántos jugadores por equipo entran a la cancha en un partido de fútbol?",
+    "keywords": [
+      "fútbol",
+      "jugadores"
+    ],
+    "options": [
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
+    "correct": 2,
+    "funfact": "Cada equipo juega con 11 jugadores, incluido el arquero."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cada cuántos años se celebra la Copa Mundial de Fútbol de la FIFA?",
+    "keywords": [
+      "Mundial",
+      "fútbol",
+      "años"
+    ],
+    "options": [
+      "2 años",
+      "3 años",
+      "4 años",
+      "5 años"
+    ],
+    "correct": 2,
+    "funfact": "La Copa Mundial se celebra cada 4 años desde 1930 (con pausa por la Segunda Guerra Mundial)."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué país ganó la Copa del Mundo de Fútbol en Qatar 2022?",
+    "keywords": [
+      "Mundial 2022",
+      "Qatar"
+    ],
+    "options": [
+      "Francia",
+      "Argentina",
+      "Brasil",
+      "Croacia"
+    ],
+    "correct": 1,
+    "funfact": "Argentina ganó su tercera Copa del Mundo venciendo a Francia en penales."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cuál es la leyenda del atletismo apodada 'El Rayo' que ganó 8 oros olímpicos en 100 y 200 metros?",
+    "keywords": [
+      "atletismo",
+      "Rayo"
+    ],
+    "options": [
+      "Carl Lewis",
+      "Usain Bolt",
+      "Tyson Gay",
+      "Yohan Blake"
+    ],
+    "correct": 1,
+    "funfact": "El jamaiquino Usain Bolt tiene el récord mundial de 100m con 9.58 segundos."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿En qué deporte se utiliza una raqueta y una pelota amarilla?",
+    "keywords": [
+      "raqueta",
+      "pelota amarilla"
+    ],
+    "options": [
+      "Golf",
+      "Tenis",
+      "Béisbol",
+      "Baloncesto"
+    ],
+    "correct": 1,
+    "funfact": "Las pelotas de tenis son amarillas fluorescentes para facilitar su visibilidad por televisión."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué leyenda del baloncesto estadounidense usó el mítico dorsal 23 con los Chicago Bulls?",
+    "keywords": [
+      "baloncesto",
+      "Chicago Bulls",
+      "23"
+    ],
+    "options": [
+      "Kobe Bryant",
+      "LeBron James",
+      "Michael Jordan",
+      "Shaquille O'Neal"
+    ],
+    "correct": 2,
+    "funfact": "Michael Jordan ganó 6 campeonatos de la NBA con los Chicago Bulls."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cuántos tiempos reglamentarios tiene un partido de fútbol profesional?",
+    "keywords": [
+      "fútbol",
+      "tiempos"
+    ],
+    "options": [
+      "2 tiempos de 45 min",
+      "4 cuartos de 15 min",
+      "3 tiempos de 30 min",
+      "2 tiempos de 40 min"
+    ],
+    "correct": 0,
+    "funfact": "Un partido oficial dura 90 minutos divididos en dos tiempos de 45 minutos."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿De qué color es la tarjeta con la que el árbitro expulsa directamente a un jugador en fútbol?",
+    "keywords": [
+      "tarjeta",
+      "expulsa"
+    ],
+    "options": [
+      "Azul",
+      "Amarilla",
+      "Roja",
+      "Verde"
+    ],
+    "correct": 2,
+    "funfact": "Las tarjetas amarilla y roja fueron introducidas en el Mundial de México 1970."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de Colombia?",
+    "keywords": [
+      "capital",
+      "Colombia"
+    ],
+    "options": [
+      "Medellín",
+      "Cali",
+      "Bogotá",
+      "Barranquilla"
+    ],
+    "correct": 2,
+    "funfact": "Bogotá está situada a unos 2.640 metros sobre el nivel del mar."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de Francia?",
+    "keywords": [
+      "capital",
+      "Francia"
+    ],
+    "options": [
+      "Lyon",
+      "Marsella",
+      "París",
+      "Niza"
+    ],
+    "correct": 2,
+    "funfact": "París es famosa por la Torre Eiffel, construida para la Exposición Universal de 1889."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de España?",
+    "keywords": [
+      "capital",
+      "España"
+    ],
+    "options": [
+      "Barcelona",
+      "Valencia",
+      "Sevilla",
+      "Madrid"
+    ],
+    "correct": 3,
+    "funfact": "Madrid es la capital y la ciudad más poblada de España."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el océano más grande del planeta Tierra?",
+    "keywords": [
+      "océano",
+      "más grande"
+    ],
+    "options": [
+      "Océano Atlántico",
+      "Océano Pacífico",
+      "Océano Índico",
+      "Océano Ártico"
+    ],
+    "correct": 1,
+    "funfact": "El Océano Pacífico cubre más de un tercio de la superficie total de la Tierra."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿En qué continente se encuentra la cordillera de los Andes y la selva del Amazonas?",
+    "keywords": [
+      "Andes",
+      "Amazonas"
+    ],
+    "options": [
+      "África",
+      "Asia",
+      "América del Sur",
+      "Europa"
+    ],
+    "correct": 2,
+    "funfact": "América del Sur alberga el río Amazonas, el más caudaloso del mundo."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Qué país europeo tiene una forma geográfica muy parecida a una bota?",
+    "keywords": [
+      "país",
+      "bota"
+    ],
+    "options": [
+      "Grecia",
+      "Portugal",
+      "Italia",
+      "España"
+    ],
+    "correct": 2,
+    "funfact": "La península itálica se asemeja a una bota pateando la isla de Sicilia."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de México?",
+    "keywords": [
+      "capital",
+      "México"
+    ],
+    "options": [
+      "Guadalajara",
+      "Monterrey",
+      "Ciudad de México",
+      "Cancún"
+    ],
+    "correct": 2,
+    "funfact": "Ciudad de México fue construida sobre las ruinas de la antigua Tenochtitlan azteca."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el desierto cálido más grande del mundo?",
+    "keywords": [
+      "desierto",
+      "más grande"
+    ],
+    "options": [
+      "Desierto de Atacama",
+      "Desierto de Sonora",
+      "Desierto del Sahara",
+      "Desierto de Gobi"
+    ],
+    "correct": 2,
+    "funfact": "El Sahara abarca más de 9 millones de kilómetros cuadrados en el norte de África."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el país más grande del mundo en extensión territorial?",
+    "keywords": [
+      "país",
+      "más grande",
+      "territorio"
+    ],
+    "options": [
+      "Canadá",
+      "China",
+      "Estados Unidos",
+      "Rusia"
+    ],
+    "correct": 3,
+    "funfact": "Rusia abarca más de 17 millones de kilómetros cuadrados en dos continentes (Europa y Asia)."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿En qué continente se encuentran Egipto, Sudáfrica y Nigeria?",
+    "keywords": [
+      "Egipto",
+      "continente"
+    ],
+    "options": [
+      "Asia",
+      "África",
+      "Europa",
+      "Oceanía"
+    ],
+    "correct": 1,
+    "funfact": "África es el segundo continente más poblado del mundo, después de Asia."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es la fórmula química del agua?",
+    "keywords": [
+      "fórmula",
+      "agua"
+    ],
+    "options": [
+      "CO2",
+      "H2O",
+      "NaCl",
+      "O2"
+    ],
+    "correct": 1,
+    "funfact": "El agua está formada por dos átomos de hidrógeno y uno de oxígeno (H2O)."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿A qué temperatura en grados Celsius hierve el agua al nivel del mar?",
+    "keywords": [
+      "agua",
+      "hierve",
+      "temperatura"
+    ],
+    "options": [
+      "50 °C",
+      "90 °C",
+      "100 °C",
+      "120 °C"
+    ],
+    "correct": 2,
+    "funfact": "El punto de ebullición normal del agua pura a 1 atmósfera de presión es 100 °C."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué planeta de nuestro Sistema Solar es conocido como el 'Planeta Rojo'?",
+    "keywords": [
+      "planeta rojo"
+    ],
+    "options": [
+      "Venus",
+      "Júpiter",
+      "Marte",
+      "Mercurio"
+    ],
+    "correct": 2,
+    "funfact": "Marte se ve rojizo debido a la abundancia de óxido de hierro en su superficie."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es el satélite natural que gira alrededor de la Tierra?",
+    "keywords": [
+      "satélite natural",
+      "Tierra"
+    ],
+    "options": [
+      "Europa",
+      "Titán",
+      "La Luna",
+      "Fobos"
+    ],
+    "correct": 2,
+    "funfact": "La Luna es el único satélite natural de la Tierra y causa las mareas en los océanos."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuántos días tiene un año normal (no bisiesto)?",
+    "keywords": [
+      "días",
+      "año"
+    ],
+    "options": [
+      "360 días",
+      "364 días",
+      "365 días",
+      "366 días"
+    ],
+    "correct": 2,
+    "funfact": "Un año normal tiene 365 días, mientras que un año bisiesto tiene 366 (con el 29 de febrero)."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es el hueso más largo del cuerpo humano, ubicado en el muslo?",
+    "keywords": [
+      "hueso",
+      "más largo",
+      "cuerpo humano"
+    ],
+    "options": [
+      "Húmero",
+      "Tibia",
+      "Fémur",
+      "Radio"
+    ],
+    "correct": 2,
+    "funfact": "El fémur soporta gran parte del peso del cuerpo y es el hueso más largo y fuerte."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué gas respiramos del aire que es indispensable para la vida de los seres humanos?",
+    "keywords": [
+      "gas",
+      "respirar",
+      "vida"
+    ],
+    "options": [
+      "Helio",
+      "Oxígeno",
+      "Metano",
+      "Dióxido de carbono"
+    ],
+    "correct": 1,
+    "funfact": "El oxígeno forma aproximadamente el 21% de la atmósfera terrestre."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es la estrella central alrededor de la cual giran los planetas de nuestro Sistema Solar?",
+    "keywords": [
+      "estrella",
+      "Sistema Solar"
+    ],
+    "options": [
+      "La Luna",
+      "Próxima Centauri",
+      "El Sol",
+      "Sirio"
+    ],
+    "correct": 2,
+    "funfact": "El Sol contiene más del 99.8% de toda la masa del Sistema Solar."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué animal terrestre es reconocido como el más rápido del mundo?",
+    "keywords": [
+      "animal",
+      "más rápido"
+    ],
+    "options": [
+      "León",
+      "Guepardo (chita)",
+      "Caballo",
+      "Canguro"
+    ],
+    "correct": 1,
+    "funfact": "El guepardo puede alcanzar velocidades de hasta 110 km/h en carreras cortas."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuántos colores componen tradicionalmente el arcoíris?",
+    "keywords": [
+      "arcoíris",
+      "colores"
+    ],
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 2,
+    "funfact": "Los 7 colores tradicionales son: rojo, naranja, amarillo, verde, azul, añil y violeta."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el superhéroe arácnido de Marvel cuyo verdadero nombre es Peter Parker?",
+    "keywords": [
+      "superhéroe",
+      "Peter Parker"
+    ],
+    "options": [
+      "Iron Man",
+      "Batman",
+      "Spider-Man",
+      "Thor"
+    ],
+    "correct": 2,
+    "funfact": "Spider-Man fue creado por Stan Lee y Steve Ditko, apareciendo por primera vez en 1962."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué cantante colombiana nacida en Barranquilla canta éxitos como 'Hips Don't Lie' y 'Waka Waka'?",
+    "keywords": [
+      "cantante",
+      "Barranquilla"
+    ],
+    "options": [
+      "Karol G",
+      "Shakira",
+      "Greeicy",
+      "Rosalía"
+    ],
+    "correct": 1,
+    "funfact": "Shakira es una de las artistas latinas más exitosas y premiadas de la historia de la música."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿En qué película animada de Disney un leoncito llamado Simba se convierte en rey de la sabana?",
+    "keywords": [
+      "Simba",
+      "Disney"
+    ],
+    "options": [
+      "Madagascar",
+      "Tarzán",
+      "El Rey León",
+      "Bambi"
+    ],
+    "correct": 2,
+    "funfact": "'El Rey León' se estrenó en 1994 y es uno de los grandes clásicos dorados de Disney."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué famoso fontanero de gorra roja rescata a la Princesa Peach en los videojuegos de Nintendo?",
+    "keywords": [
+      "fontanero",
+      "gorra roja",
+      "Nintendo"
+    ],
+    "options": [
+      "Sonic",
+      "Mario Bros",
+      "Crash Bandicoot",
+      "Link"
+    ],
+    "correct": 1,
+    "funfact": "Mario fue creado por Shigeru Miyamoto y apareció por primera vez en Donkey Kong (1981)."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cuál es el nombre del superhéroe multimillonario que viste una armadura de alta tecnología en Marvel?",
+    "keywords": [
+      "armadura",
+      "Marvel"
+    ],
+    "options": [
+      "Capitán América",
+      "Iron Man",
+      "Hulk",
+      "Hawkeye"
+    ],
+    "correct": 1,
+    "funfact": "Tony Stark (Iron Man) fue interpretado inolvidablemente por Robert Downey Jr. en el UCM."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el muñeco de madera al que le crece la nariz cuando dice mentiras?",
+    "keywords": [
+      "muñeco",
+      "nariz",
+      "mentiras"
+    ],
+    "options": [
+      "Gepetto",
+      "Pinocho",
+      "Peter Pan",
+      "Aladdín"
+    ],
+    "correct": 1,
+    "funfact": "Las aventuras de Pinocho fue escrita por el autor italiano Carlo Collodi en 1883."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cuál es la plataforma de streaming roja más famosa por series como 'Stranger Things'?",
+    "keywords": [
+      "streaming",
+      "Stranger Things"
+    ],
+    "options": [
+      "HBO Max",
+      "Disney+",
+      "Netflix",
+      "Amazon Prime"
+    ],
+    "correct": 2,
+    "funfact": "Netflix empezó en 1997 como un servicio de alquiler de DVDs por correo postal."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Quién es el archienemigo de Batman en Ciudad Gótica, conocido como el 'Payaso del Crimen'?",
+    "keywords": [
+      "Batman",
+      "enemigo",
+      "Payaso"
+    ],
+    "options": [
+      "El Acertijo",
+      "El Pingüino",
+      "El Guasón (Joker)",
+      "Dos Caras"
+    ],
+    "correct": 2,
+    "funfact": "El Joker debutó en el cómic Batman #1 en el año 1940."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el joven mago que estudia en Hogwarts con una cicatriz en forma de rayo en la frente?",
+    "keywords": [
+      "mago",
+      "Hogwarts",
+      "cicatriz"
+    ],
+    "options": [
+      "Percy Jackson",
+      "Ron Weasley",
+      "Harry Potter",
+      "Frodo"
+    ],
+    "correct": 2,
+    "funfact": "La saga de Harry Potter fue escrita por la autora británica J.K. Rowling."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué popular juego de bloques y construcción pixelada es el videojuego más vendido de la historia?",
+    "keywords": [
+      "bloques",
+      "videojuego"
+    ],
+    "options": [
+      "Roblox",
+      "Fortnite",
+      "Minecraft",
+      "Tetris"
+    ],
+    "correct": 2,
+    "funfact": "Minecraft ha superado más de 300 millones de copias vendidas en todo el mundo."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿En qué año llegó Cristóbal Colón a América por primera vez?",
+    "keywords": [
+      "Colón",
+      "América",
+      "año"
+    ],
+    "options": [
+      "1450",
+      "1492",
+      "1500",
+      "1520"
+    ],
+    "correct": 1,
+    "funfact": "Colón llegó a la isla de Guanahaní (Bahamas) el 12 de octubre de 1492."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿En qué país se construyeron las famosas Grandes Pirámides de Guiza?",
+    "keywords": [
+      "pirámides",
+      "Guiza"
+    ],
+    "options": [
+      "Grecia",
+      "Italia",
+      "Egipto",
+      "Turquía"
+    ],
+    "correct": 2,
+    "funfact": "La Gran Pirámide de Guiza es la única de las Siete Maravillas del Mundo Antiguo que aún sigue en pie."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Quién fue el líder militar y político conocido como el 'Libertador' de varias naciones de América del Sur?",
+    "keywords": [
+      "Libertador",
+      "América"
+    ],
+    "options": [
+      "Napoleón Bonaparte",
+      "Simón Bolívar",
+      "Cristóbal Colón",
+      "Julio César"
+    ],
+    "correct": 1,
+    "funfact": "Simón Bolívar lideró la independencia de Venezuela, Colombia, Ecuador, Perú y Bolivia."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿En qué año el ser humano pisó la Luna por primera vez con la misión Apolo 11?",
+    "keywords": [
+      "Luna",
+      "Apolo 11",
+      "año"
+    ],
+    "options": [
+      "1959",
+      "1969",
+      "1975",
+      "1982"
+    ],
+    "correct": 1,
+    "funfact": "Neil Armstrong pisó la superficie lunar el 20 de julio de 1969."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué famoso barco supuestamente 'insumergible' chocó contra un iceberg y se hundió en 1912?",
+    "keywords": [
+      "barco",
+      "iceberg",
+      "1912"
+    ],
+    "options": [
+      "Santa María",
+      "Titanic",
+      "Britannic",
+      "Queen Mary"
+    ],
+    "correct": 1,
+    "funfact": "El Titanic se hundió en el Atlántico Norte la noche del 14 al 15 de abril de 1912."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué antigua civilización construyó el Coliseo y conquistó gran parte de Europa y el Mediterráneo?",
+    "keywords": [
+      "Coliseo",
+      "civilización"
+    ],
+    "options": [
+      "Los Vikingos",
+      "Los Egipcios",
+      "El Imperio Romano",
+      "Los Aztecas"
+    ],
+    "correct": 2,
+    "funfact": "El Coliseo de Roma podía albergar a más de 50.000 espectadores en la antigüedad."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Quién pintó la famosa obra de arte de la 'Mona Lisa' (La Gioconda)?",
+    "keywords": [
+      "Mona Lisa",
+      "pintor"
+    ],
+    "options": [
+      "Vincent van Gogh",
+      "Pablo Picasso",
+      "Leonardo da Vinci",
+      "Miguel Ángel"
+    ],
+    "correct": 2,
+    "funfact": "La Mona Lisa se exhibe actualmente en el Museo del Louvre en París."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Quién escribió la célebre novela 'Don Quijote de la Mancha'?",
+    "keywords": [
+      "Don Quijote",
+      "escritor"
+    ],
+    "options": [
+      "Gabriel García Márquez",
+      "Miguel de Cervantes",
+      "William Shakespeare",
+      "Pablo Neruda"
+    ],
+    "correct": 1,
+    "funfact": "Publicada en 1605, Don Quijote es una de las obras más traducidas y leídas del mundo."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿En qué famoso museo de París se encuentra la Mona Lisa?",
+    "keywords": [
+      "museo",
+      "París",
+      "Mona Lisa"
+    ],
+    "options": [
+      "Museo del Prado",
+      "Museo Británico",
+      "Museo del Louvre",
+      "Metropolitan de Nueva York"
+    ],
+    "correct": 2,
+    "funfact": "El Museo del Louvre es el museo de arte más visitado de todo el mundo."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué célebre pintor holandés pintó la obra 'La noche estrellada'?",
+    "keywords": [
+      "noche estrellada",
+      "pintor"
+    ],
+    "options": [
+      "Claude Monet",
+      "Salvador Dalí",
+      "Vincent van Gogh",
+      "Rembrandt"
+    ],
+    "correct": 2,
+    "funfact": "Van Gogh pintó La noche estrellada en 1889 desde el sanatorio de Saint-Rémy."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué escritor colombiano ganó el Premio Nobel de Literatura por su obra 'Cien años de soledad'?",
+    "keywords": [
+      "Nobel",
+      "Cien años de soledad"
+    ],
+    "options": [
+      "Mario Vargas Llosa",
+      "Gabriel García Márquez",
+      "Jorge Luis Borges",
+      "Julio Cortázar"
+    ],
+    "correct": 1,
+    "funfact": "Gabriel García Márquez 'Gabo' recibió el Premio Nobel de Literatura en 1982."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Quién es conocido mundialmente como el 'Rey del Pop'?",
+    "keywords": [
+      "Rey del Pop"
+    ],
+    "options": [
+      "Elvis Presley",
+      "Michael Jackson",
+      "Freddie Mercury",
+      "Prince"
+    ],
+    "correct": 1,
+    "funfact": "Su álbum 'Thriller' (1982) es el disco más vendido de todos los tiempos."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué famoso ratón animado es el emblema principal de Disney?",
+    "keywords": [
+      "ratón animado",
+      "Disney"
+    ],
+    "options": [
+      "Bugs Bunny",
+      "Jerry",
+      "Mickey Mouse",
+      "Pikachu"
+    ],
+    "correct": 2,
+    "funfact": "Mickey Mouse fue creado por Walt Disney y Ub Iwerks en 1928."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el fontanero de gorra roja más famoso de los videojuegos de Nintendo?",
+    "keywords": [
+      "fontanero",
+      "gorra roja",
+      "Nintendo"
+    ],
+    "options": [
+      "Luigi",
+      "Sonic",
+      "Mario",
+      "Crash"
+    ],
+    "correct": 2,
+    "funfact": "Originalmente se llamaba Jumpman en el juego arcade Donkey Kong de 1981."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué superhéroe de Marvel se transforma en un gigante verde cuando se enfurece?",
+    "keywords": [
+      "gigante verde",
+      "Marvel"
+    ],
+    "options": [
+      "Iron Man",
+      "Hulk",
+      "Thor",
+      "Capitán América"
+    ],
+    "correct": 1,
+    "funfact": "El alter ego de Hulk es el brillante científico Bruce Banner."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el villano de Marvel que borró a la mitad del universo con un chasquido?",
+    "keywords": [
+      "villano de Marvel",
+      "chasquido"
+    ],
+    "options": [
+      "Loki",
+      "Thanos",
+      "Ultrón",
+      "Duende Verde"
+    ],
+    "correct": 1,
+    "funfact": "Thanos reunió las seis Gemas del Infinito en su famoso Guantelete."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué joven mago tiene una cicatriz en forma de rayo en la frente?",
+    "keywords": [
+      "cicatriz en forma de rayo",
+      "mago"
+    ],
+    "options": [
+      "Ron Weasley",
+      "Harry Potter",
+      "Percy Jackson",
+      "Frodo"
+    ],
+    "correct": 1,
+    "funfact": "La cicatriz le quedó tras el ataque de Lord Voldemort cuando era un bebé."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué cantante puertorriqueño es apodado 'El Conejo Malo' y canta 'Tití Me Preguntó'?",
+    "keywords": [
+      "El Conejo Malo",
+      "Tití Me Preguntó"
+    ],
+    "options": [
+      "Anuel AA",
+      "Daddy Yankee",
+      "Bad Bunny",
+      "Rauw Alejandro"
+    ],
+    "correct": 2,
+    "funfact": "Su nombre real es Benito Antonio Martínez Ocasio."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cuál es la película animada de Disney protagonizada por las hermanas Elsa y Anna?",
+    "keywords": [
+      "Elsa y Anna",
+      "Disney"
+    ],
+    "options": [
+      "Moana",
+      "Enredados",
+      "Frozen",
+      "La Sirenita"
+    ],
+    "correct": 2,
+    "funfact": "Su tema 'Let It Go' ('Libre Soy') ganó un premio Oscar a la Mejor Canción Original."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué superhéroe multimillonario de Gotham City combate el crimen disfrazado de murciélago?",
+    "keywords": [
+      "Gotham City",
+      "murciélago"
+    ],
+    "options": [
+      "Superman",
+      "Spider-Man",
+      "Batman",
+      "Flash"
+    ],
+    "correct": 2,
+    "funfact": "Su verdadera identidad es el magnate Bruce Wayne."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué famoso ogro verde vive en una ciénaga y tiene como amigo a un asno parlante?",
+    "keywords": [
+      "ogro verde",
+      "asno parlante"
+    ],
+    "options": [
+      "Shrek",
+      "Sulley",
+      "Mike Wazowski",
+      "Grinch"
+    ],
+    "correct": 0,
+    "funfact": "Shrek ganó el primer premio Oscar a la Mejor Película de Animación en 2002."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Quién interpreta al pirata Jack Sparrow en la saga 'Piratas del Caribe'?",
+    "keywords": [
+      "Jack Sparrow",
+      "Piratas del Caribe"
+    ],
+    "options": [
+      "Brad Pitt",
+      "Johnny Depp",
+      "Tom Cruise",
+      "Leonardo DiCaprio"
+    ],
+    "correct": 1,
+    "funfact": "Depp basó su interpretación en el guitarrista de The Rolling Stones, Keith Richards."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué popular videojuego de supervivencia consiste en colocar y picar bloques cúbicos?",
+    "keywords": [
+      "bloques cúbicos",
+      "videojuego"
+    ],
+    "options": [
+      "Roblox",
+      "Fortnite",
+      "Minecraft",
+      "Terraria"
+    ],
+    "correct": 2,
+    "funfact": "Minecraft es el videojuego individual más vendido de toda la historia."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué famoso pez payaso se pierde en el océano en una aclamada película de Pixar?",
+    "keywords": [
+      "pez payaso",
+      "Pixar"
+    ],
+    "options": [
+      "Dory",
+      "Nemo",
+      "Marlin",
+      "Flounder"
+    ],
+    "correct": 1,
+    "funfact": "'Buscando a Nemo' se estrenó en 2003 y fue un fenómeno mundial de taquilla."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué criatura amarilla es el fiel compañero de Ash Ketchum en la serie Pokémon?",
+    "keywords": [
+      "criatura amarilla",
+      "Ash Ketchum"
+    ],
+    "options": [
+      "Charmander",
+      "Squirtle",
+      "Pikachu",
+      "Eevee"
+    ],
+    "correct": 2,
+    "funfact": "Pikachu es un pokémon de tipo Eléctrico y su ataque más famoso es el Impactrueno."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué futbolista argentino ha ganado 8 Balones de Oro y el Mundial de Qatar 2022?",
+    "keywords": [
+      "8 Balones de Oro",
+      "Qatar 2022"
+    ],
+    "options": [
+      "Diego Maradona",
+      "Lionel Messi",
+      "Cristiano Ronaldo",
+      "Ángel Di María"
+    ],
+    "correct": 1,
+    "funfact": "Messi es el jugador con más trofeos colectivos e individuales en la historia del fútbol."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué astro portugués del fútbol es conocido por el apodo 'CR7'?",
+    "keywords": [
+      "CR7",
+      "astro portugués"
+    ],
+    "options": [
+      "Luis Figo",
+      "Cristiano Ronaldo",
+      "Bernardo Silva",
+      "Bruno Fernandes"
+    ],
+    "correct": 1,
+    "funfact": "Es el máximo goleador histórico de las selecciones nacionales y de la Champions League."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cuántos minutos dura el tiempo reglamentario de un partido de fútbol profesional?",
+    "keywords": [
+      "tiempo reglamentario",
+      "partido de fútbol"
+    ],
+    "options": [
+      "80 minutos",
+      "90 minutos",
+      "100 minutos",
+      "60 minutos"
+    ],
+    "correct": 1,
+    "funfact": "Se divide en dos tiempos de 45 minutos cada uno, más el tiempo de descuento."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué país ha ganado la mayor cantidad de Copas del Mundo de la FIFA (5 títulos)?",
+    "keywords": [
+      "5 títulos",
+      "Copas del Mundo"
+    ],
+    "options": [
+      "Alemania",
+      "Italia",
+      "Brasil",
+      "Argentina"
+    ],
+    "correct": 2,
+    "funfact": "Brasil ganó los Mundiales de 1958, 1962, 1970, 1994 y 2002."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué club de fútbol ha ganado más títulos de la UEFA Champions League en la historia?",
+    "keywords": [
+      "Champions League",
+      "más títulos"
+    ],
+    "options": [
+      "FC Barcelona",
+      "Bayern Múnich",
+      "Real Madrid",
+      "AC Milan"
+    ],
+    "correct": 2,
+    "funfact": "El Real Madrid ha conquistado 15 títulos de la Copa de Europa / Champions League."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿En qué deporte brilló la leyenda Michael Jordan con los Chicago Bulls?",
+    "keywords": [
+      "Michael Jordan",
+      "Chicago Bulls"
+    ],
+    "options": [
+      "Béisbol",
+      "Fútbol Americano",
+      "Baloncesto",
+      "Tenis"
+    ],
+    "correct": 2,
+    "funfact": "Jordan ganó 6 anillos de campeonato de la NBA con los Bulls en los años 90."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Quién es considerado el 'Rey del Atletismo' y tiene el récord mundial de 100 y 200 metros?",
+    "keywords": [
+      "récord mundial",
+      "100 metros"
+    ],
+    "options": [
+      "Carl Lewis",
+      "Usain Bolt",
+      "Tyson Gay",
+      "Yohan Blake"
+    ],
+    "correct": 1,
+    "funfact": "El jamaiquino Usain Bolt corrió los 100 metros en 9,58 segundos en Berlín 2009."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cuántos jugadores por equipo juegan simultáneamente en la cancha en un partido de baloncesto?",
+    "keywords": [
+      "jugadores por equipo",
+      "baloncesto"
+    ],
+    "options": [
+      "4 jugadores",
+      "5 jugadores",
+      "6 jugadores",
+      "7 jugadores"
+    ],
+    "correct": 1,
+    "funfact": "Cada equipo tiene 5 integrantes en la pista: base, escolta, alero, ala-pívot y pívot."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cada cuántos años se celebran los Juegos Olímpicos de Verano?",
+    "keywords": [
+      "Juegos Olímpicos",
+      "cuántos años"
+    ],
+    "options": [
+      "Cada 2 años",
+      "Cada 3 años",
+      "Cada 4 años",
+      "Cada 5 años"
+    ],
+    "correct": 2,
+    "funfact": "El periodo de cuatro años entre ediciones olímpicas se denomina 'Olimpiada'."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿De qué color es la tarjeta que expulsa directamente a un jugador en el fútbol?",
+    "keywords": [
+      "tarjeta",
+      "expulsa"
+    ],
+    "options": [
+      "Amarilla",
+      "Roja",
+      "Azul",
+      "Negra"
+    ],
+    "correct": 1,
+    "funfact": "Las tarjetas amarillas y rojas se introdujeron por primera vez en el Mundial de México 1970."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de Francia, célebre por la Torre Eiffel?",
+    "keywords": [
+      "capital de Francia",
+      "Torre Eiffel"
+    ],
+    "options": [
+      "Londres",
+      "París",
+      "Roma",
+      "Berlín"
+    ],
+    "correct": 1,
+    "funfact": "París es apodada mundialmente 'La Ciudad de la Luz'."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el país más extenso del mundo en superficie territorial?",
+    "keywords": [
+      "país más extenso",
+      "superficie"
+    ],
+    "options": [
+      "Canadá",
+      "China",
+      "Rusia",
+      "Estados Unidos"
+    ],
+    "correct": 2,
+    "funfact": "Rusia abarca más de 17 millones de kilómetros cuadrados a través de 11 husos horarios."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el océano más grande y profundo del planeta Tierra?",
+    "keywords": [
+      "océano más grande",
+      "Tierra"
+    ],
+    "options": [
+      "Océano Atlántico",
+      "Océano Índico",
+      "Océano Pacífico",
+      "Océano Ártico"
+    ],
+    "correct": 2,
+    "funfact": "El Océano Pacífico cubre más de un tercio de la superficie de todo el planeta."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿En qué continente se encuentra la cordillera del Himalaya y el Monte Everest?",
+    "keywords": [
+      "Monte Everest",
+      "continente"
+    ],
+    "options": [
+      "Europa",
+      "Asia",
+      "África",
+      "América"
+    ],
+    "correct": 1,
+    "funfact": "El Everest alcanza los 8.848 metros sobre el nivel del mar en la frontera entre Nepal y China."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Qué país europeo tiene una característica silueta geográfica con forma de bota?",
+    "keywords": [
+      "forma de bota",
+      "país europeo"
+    ],
+    "options": [
+      "Grecia",
+      "Portugal",
+      "Italia",
+      "España"
+    ],
+    "correct": 2,
+    "funfact": "En la 'punta' de la bota italiana se encuentra la isla de Sicilia."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el idioma oficial más hablado en Brasil?",
+    "keywords": [
+      "idioma oficial",
+      "Brasil"
+    ],
+    "options": [
+      "Español",
+      "Portugués",
+      "Inglés",
+      "Francés"
+    ],
+    "correct": 1,
+    "funfact": "Brasil es el único país de América Latina cuyo idioma predominante es el portugués."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de los Estados Unidos?",
+    "keywords": [
+      "capital de Estados Unidos"
+    ],
+    "options": [
+      "Nueva York",
+      "Los Ángeles",
+      "Washington D.C.",
+      "Miami"
+    ],
+    "correct": 2,
+    "funfact": "La Casa Blanca y el Capitolio están situados en Washington D.C."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿En qué continente se ubica el río Nilo y las famosas pirámides de Giza?",
+    "keywords": [
+      "pirámides de Giza",
+      "continente"
+    ],
+    "options": [
+      "África",
+      "Asia",
+      "Europa",
+      "Oceanía"
+    ],
+    "correct": 0,
+    "funfact": "Egipto se encuentra en el noreste del continente africano."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es la fórmula química fundamental del agua?",
+    "keywords": [
+      "fórmula química",
+      "agua"
+    ],
+    "options": [
+      "CO2",
+      "H2O",
+      "O2",
+      "NaCl"
+    ],
+    "correct": 1,
+    "funfact": "Cada molécula de agua está compuesta por dos átomos de hidrógeno y uno de oxígeno."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué órgano vital del cuerpo humano es el encargado de bombear la sangre?",
+    "keywords": [
+      "bombear sangre",
+      "órgano vital"
+    ],
+    "options": [
+      "Los pulmones",
+      "El cerebro",
+      "El corazón",
+      "El hígado"
+    ],
+    "correct": 2,
+    "funfact": "El corazón humano late aproximadamente 100.000 veces al día."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué planeta del sistema solar es conocido como el 'Planeta Rojo'?",
+    "keywords": [
+      "Planeta Rojo"
+    ],
+    "options": [
+      "Venus",
+      "Marte",
+      "Júpiter",
+      "Mercurio"
+    ],
+    "correct": 1,
+    "funfact": "Su color rojizo se debe a la gran cantidad de óxido de hierro en su superficie."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es el planeta más grande de todo nuestro sistema solar?",
+    "keywords": [
+      "planeta más grande",
+      "sistema solar"
+    ],
+    "options": [
+      "Saturno",
+      "Neptuno",
+      "Júpiter",
+      "Urano"
+    ],
+    "correct": 2,
+    "funfact": "Júpiter es tan inmenso que en su interior podrían caber más de 1.300 planetas Tierra."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es el hueso más largo y resistente del esqueleto humano?",
+    "keywords": [
+      "hueso más largo",
+      "esqueleto humano"
+    ],
+    "options": [
+      "El fémur",
+      "El húmero",
+      "La tibia",
+      "La clavícula"
+    ],
+    "correct": 0,
+    "funfact": "El fémur está ubicado en el muslo y soporta una enorme presión al caminar o saltar."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué gas atmosférico inhalamos indispensablemente para respirar y vivir?",
+    "keywords": [
+      "gas",
+      "respirar"
+    ],
+    "options": [
+      "Dióxido de carbono",
+      "Oxígeno",
+      "Helio",
+      "Metano"
+    ],
+    "correct": 1,
+    "funfact": "El oxígeno constituye aproximadamente el 21% de la atmósfera terrestre."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuál es el animal terrestre más veloz del mundo en carreras cortas?",
+    "keywords": [
+      "animal terrestre más veloz"
+    ],
+    "options": [
+      "El león",
+      "El guepardo (chita)",
+      "El caballo",
+      "La gacela"
+    ],
+    "correct": 1,
+    "funfact": "El guepardo puede alcanzar velocidades de hasta 115 km/h en pocos segundos."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuántos huesos componen el esqueleto de una persona adulta?",
+    "keywords": [
+      "cuántos huesos",
+      "persona adulta"
+    ],
+    "options": [
+      "150 huesos",
+      "206 huesos",
+      "250 huesos",
+      "300 huesos"
+    ],
+    "correct": 1,
+    "funfact": "Al nacer tenemos unos 270 huesos, pero muchos se fusionan durante el crecimiento."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué astro brillante es el centro de nuestro sistema planetario?",
+    "keywords": [
+      "astro brillante",
+      "centro"
+    ],
+    "options": [
+      "La Luna",
+      "El Sol",
+      "Júpiter",
+      "La Estrella Polar"
+    ],
+    "correct": 1,
+    "funfact": "El Sol contiene más del 99,8% de toda la masa del sistema solar."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué color se obtiene al mezclar pintura de color azul y amarillo?",
+    "keywords": [
+      "mezclar azul y amarillo"
+    ],
+    "options": [
+      "Naranja",
+      "Morado",
+      "Verde",
+      "Marrón"
+    ],
+    "correct": 2,
+    "funfact": "El verde es un color secundario en la teoría tradicional del color."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿En qué año llegó Cristóbal Colón por primera vez al continente americano?",
+    "keywords": [
+      "Cristóbal Colón",
+      "América"
+    ],
+    "options": [
+      "1492",
+      "1500",
+      "1453",
+      "1521"
+    ],
+    "correct": 0,
+    "funfact": "El 12 de octubre de 1492 desembarcó en la isla de Guanahaní, en las Bahamas."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué famoso barco transatlántico se hundió en 1912 tras chocar contra un iceberg?",
+    "keywords": [
+      "transatlántico",
+      "iceberg",
+      "1912"
+    ],
+    "options": [
+      "Lusitania",
+      "Titanic",
+      "Britannic",
+      "Queen Mary"
+    ],
+    "correct": 1,
+    "funfact": "El Titanic realizaba su viaje inaugural desde Southampton hacia Nueva York."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Quién fue el líder militar que se proclamó Emperador de los franceses en 1804?",
+    "keywords": [
+      "Emperador de los franceses"
+    ],
+    "options": [
+      "Luis XIV",
+      "Napoleón Bonaparte",
+      "Carlomagno",
+      "Robespierre"
+    ],
+    "correct": 1,
+    "funfact": "Napoleón dominó gran parte de Europa continental antes de su derrota en Waterloo."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿En qué año pisó el hombre la Luna por primera vez con la misión Apolo 11?",
+    "keywords": [
+      "hombre la Luna",
+      "Apolo 11"
+    ],
+    "options": [
+      "1959",
+      "1969",
+      "1975",
+      "1981"
+    ],
+    "correct": 1,
+    "funfact": "Neil Armstrong pronunció su histórica frase: 'Un pequeño paso para el hombre...'."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué civilización antigua construyó el Coliseo y el Foro Romano?",
+    "keywords": [
+      "Coliseo",
+      "civilización"
+    ],
+    "options": [
+      "Antigua Grecia",
+      "Imperio Romano",
+      "Antiguo Egipto",
+      "Imperio Otomano"
+    ],
+    "correct": 1,
+    "funfact": "El Coliseo romano podía albergar hasta 50.000 espectadores en combates de gladiadores."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Quién fue el libertador que lideró la independencia de Venezuela, Colombia, Ecuador, Perú y Bolivia?",
+    "keywords": [
+      "libertador",
+      "independencia"
+    ],
+    "options": [
+      "José de San Martín",
+      "Simón Bolívar",
+      "Bernardo O'Higgins",
+      "Antonio José de Sucre"
+    ],
+    "correct": 1,
+    "funfact": "Conocido como 'El Libertador', es una de las figuras históricas más destacadas de América."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué célebre muro cayó en 1989 marcando el final de la Guerra Fría en Alemania?",
+    "keywords": [
+      "muro cayó en 1989",
+      "Alemania"
+    ],
+    "options": [
+      "Muro de Londres",
+      "Muro de Berlín",
+      "Muro de Viena",
+      "Muro de Varsovia"
+    ],
+    "correct": 1,
+    "funfact": "La caída del Muro de Berlín en noviembre de 1989 abrió paso a la reunificación alemana."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Quién pintó la mundialmente famosa obra 'La Gioconda' (o Mona Lisa)?",
+    "keywords": [
+      "Mona Lisa",
+      "La Gioconda"
+    ],
+    "options": [
+      "Vincent van Gogh",
+      "Pablo Picasso",
+      "Leonardo da Vinci",
+      "Miguel Ángel"
+    ],
+    "correct": 2,
+    "funfact": "La Mona Lisa se exhibe permanentemente en el Museo del Louvre en París."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué genial pintor holandés se cortó una oreja y pintó 'La noche estrellada'?",
+    "keywords": [
+      "La noche estrellada",
+      "pintor holandés"
+    ],
+    "options": [
+      "Rembrandt",
+      "Vincent van Gogh",
+      "Johannes Vermeer",
+      "Claude Monet"
+    ],
+    "correct": 1,
+    "funfact": "Van Gogh pintó 'La noche estrellada' en 1889 mientras estaba en el asilo de Saint-Rémy."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué instrumento musical de cuerdas tiene un teclado con teclas blancas y negras?",
+    "keywords": [
+      "teclas blancas y negras",
+      "instrumento"
+    ],
+    "options": [
+      "Guitarra",
+      "Violín",
+      "Piano",
+      "Arpa"
+    ],
+    "correct": 2,
+    "funfact": "Un piano estándar moderno tiene 88 teclas: 52 blancas y 36 negras."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Quién escribió la trágica historia de amor de 'Romeo y Julieta'?",
+    "keywords": [
+      "Romeo y Julieta"
+    ],
+    "options": [
+      "Charles Dickens",
+      "William Shakespeare",
+      "Oscar Wilde",
+      "Edgar Allan Poe"
+    ],
+    "correct": 1,
+    "funfact": "Shakespeare escribió 'Romeo y Julieta' entre 1591 y 1595 en Inglaterra."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué escritor colombiano ganó el Premio Nobel de Literatura con 'Cien años de soledad'?",
+    "keywords": [
+      "Cien años de soledad",
+      "colombiano"
+    ],
+    "options": [
+      "Mario Vargas Llosa",
+      "Gabriel García Márquez",
+      "Jorge Luis Borges",
+      "Julio Cortázar"
+    ],
+    "correct": 1,
+    "funfact": "'Gabo' recibió el Premio Nobel de Literatura en 1982 por su magistral realismo mágico."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el muñeco vaquero que protagoniza 'Toy Story' junto a Buzz Lightyear?",
+    "keywords": [
+      "muñeco vaquero",
+      "Toy Story"
+    ],
+    "options": [
+      "Woody",
+      "Jessie",
+      "Andy",
+      "Rex"
+    ],
+    "correct": 0,
+    "funfact": "El famoso lema de Buzz Lightyear es: '¡Al infinito y más allá!'."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué superhéroe arácnido vive en Nueva York y fue picado por una araña radiactiva?",
+    "keywords": [
+      "superhéroe arácnido",
+      "araña"
+    ],
+    "options": [
+      "Daredevil",
+      "Spider-Man",
+      "Iron Man",
+      "Ant-Man"
+    ],
+    "correct": 1,
+    "funfact": "Su nombre es Peter Parker y su tío Ben le enseñó que un gran poder conlleva una gran responsabilidad."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Quién interpreta a Jack Dawson en la taquillera película 'Titanic'?",
+    "keywords": [
+      "Jack Dawson",
+      "Titanic"
+    ],
+    "options": [
+      "Brad Pitt",
+      "Leonardo DiCaprio",
+      "Matt Damon",
+      "Tom Cruise"
+    ],
+    "correct": 1,
+    "funfact": "'Titanic' ganó 11 premios Oscar y catapultó a DiCaprio al estrellato mundial."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué personaje amarillo que vive en una piña debajo del mar trabaja en el Crustáceo Cascarudo?",
+    "keywords": [
+      "piña debajo del mar",
+      "Crustáceo Cascarudo"
+    ],
+    "options": [
+      "Patricio",
+      "Calamardo",
+      "Bob Esponja",
+      "Don Cangrejo"
+    ],
+    "correct": 2,
+    "funfact": "Bob Esponja fue creado por el animador y biólogo marino Stephen Hillenburg en 1999."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama la famosa saga de videojuegos donde puedes robar autos y explorar ciudades como Los Santos?",
+    "keywords": [
+      "Los Santos",
+      "videojuegos"
+    ],
+    "options": [
+      "Need for Speed",
+      "Grand Theft Auto (GTA)",
+      "Call of Duty",
+      "Far Cry"
+    ],
+    "correct": 1,
+    "funfact": "GTA V es uno de los productos de entretenimiento más rentables de la historia."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué banda británica liderada por Freddie Mercury compuso el himno 'Bohemian Rhapsody'?",
+    "keywords": [
+      "Freddie Mercury",
+      "Bohemian Rhapsody"
+    ],
+    "options": [
+      "The Beatles",
+      "The Rolling Stones",
+      "Queen",
+      "Pink Floyd"
+    ],
+    "correct": 2,
+    "funfact": "'Bohemian Rhapsody' fue lanzada en 1975 y dura casi 6 minutos sin estribillo tradicional."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué superhéroe extraterrestre nació en el planeta Krypton y es vulnerable a la kryptonita?",
+    "keywords": [
+      "planeta Krypton",
+      "kryptonita"
+    ],
+    "options": [
+      "Batman",
+      "Superman",
+      "Linterna Verde",
+      "Cyborg"
+    ],
+    "correct": 1,
+    "funfact": "Su nombre kryptoniano es Kal-El y en la Tierra vive como el periodista Clark Kent."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Quién es el padre de Luke Skywalker en la célebre saga 'Star Wars'?",
+    "keywords": [
+      "Luke Skywalker",
+      "Star Wars"
+    ],
+    "options": [
+      "Yoda",
+      "Obi-Wan Kenobi",
+      "Darth Vader (Anakin)",
+      "Palpatine"
+    ],
+    "correct": 2,
+    "funfact": "La revelación 'Yo soy tu padre' en 'El Imperio Contraataca' (1980) es un icono del cine."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Qué red social de videos cortos utiliza el logo de una nota musical sobre fondo negro?",
+    "keywords": [
+      "videos cortos",
+      "nota musical"
+    ],
+    "options": [
+      "Instagram",
+      "Twitter",
+      "TikTok",
+      "Snapchat"
+    ],
+    "correct": 2,
+    "funfact": "TikTok superó los mil millones de usuarios activos globales en tiempo récord."
+  },
+  {
+    "category": "pop",
+    "categoryLabel": "Cultura Pop",
+    "level": "easy",
+    "question": "¿Cómo se llama el león protagonista que aprende el 'Hakuna Matata' en El Rey León?",
+    "keywords": [
+      "El Rey León",
+      "Hakuna Matata"
+    ],
+    "options": [
+      "Mufasa",
+      "Scar",
+      "Simba",
+      "Timón"
+    ],
+    "correct": 2,
+    "funfact": "'Hakuna Matata' es una frase real en idioma suajili que significa 'no hay problema'."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué selección nacional de fútbol ganó el Mundial de Qatar 2022 con Messi como capitán?",
+    "keywords": [
+      "Mundial de Qatar 2022"
+    ],
+    "options": [
+      "Francia",
+      "Brasil",
+      "Argentina",
+      "Croacia"
+    ],
+    "correct": 2,
+    "funfact": "Argentina venció a Francia por penales tras un vibrante empate 3-3 en la gran final."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué deportista español es considerado el 'Rey de la Tierra Batida' tras ganar 14 títulos de Roland Garros?",
+    "keywords": [
+      "Roland Garros",
+      "tierra batida"
+    ],
+    "options": [
+      "Carlos Alcaraz",
+      "Rafael Nadal",
+      "Roger Federer",
+      "Novak Djokovic"
+    ],
+    "correct": 1,
+    "funfact": "Rafael Nadal posee un récord prácticamente inalcanzable de 14 copas en Roland Garros."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿En qué país se inventó originalmente el juego del fútbol moderno?",
+    "keywords": [
+      "fútbol moderno",
+      "inventó"
+    ],
+    "options": [
+      "Brasil",
+      "Inglaterra",
+      "Alemania",
+      "España"
+    ],
+    "correct": 1,
+    "funfact": "Las reglas modernas del fútbol fueron unificadas en Londres por The Football Association en 1863."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué atleta estadounidense es el nadador con más medallas de oro olímpicas de la historia (23 oros)?",
+    "keywords": [
+      "nadador",
+      "medallas de oro"
+    ],
+    "options": [
+      "Ian Thorpe",
+      "Michael Phelps",
+      "Ryan Lochte",
+      "Caeleb Dressel"
+    ],
+    "correct": 1,
+    "funfact": "Phelps acumuló un récord absoluto de 28 medallas olímpicas en total (23 de oro)."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿A cuántos metros de distancia de la portería se sitúa el punto de penalti en el fútbol?",
+    "keywords": [
+      "punto de penalti",
+      "distancia"
+    ],
+    "options": [
+      "9 metros",
+      "11 metros",
+      "15 metros",
+      "13 metros"
+    ],
+    "correct": 1,
+    "funfact": "La distancia oficial equivale exactamente a 12 yardas inglesas (11 metros)."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué astro brasileño del fútbol fue el único jugador de la historia en ganar 3 Mundiales?",
+    "keywords": [
+      "astro brasileño",
+      "3 Mundiales"
+    ],
+    "options": [
+      "Ronaldo Nazário",
+      "Pelé (Edson Arantes)",
+      "Ronaldinho",
+      "Romário"
+    ],
+    "correct": 1,
+    "funfact": "Pelé se coronó campeón del mundo en Suecia 1958, Chile 1962 y México 1970."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Qué mítico jugador argentino anotó el famoso gol con 'La Mano de Dios' en el Mundial México 1986?",
+    "keywords": [
+      "La Mano de Dios",
+      "México 1986"
+    ],
+    "options": [
+      "Gabriel Batistuta",
+      "Diego Armando Maradona",
+      "Mario Kempes",
+      "Daniel Passarella"
+    ],
+    "correct": 1,
+    "funfact": "En ese mismo partido contra Inglaterra anotó el considerado 'Gol del Siglo'."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cuántas ruedas tiene un monoplaza de Fórmula 1 durante una carrera?",
+    "keywords": [
+      "Fórmula 1",
+      "ruedas"
+    ],
+    "options": [
+      "2 ruedas",
+      "4 ruedas",
+      "6 ruedas",
+      "3 ruedas"
+    ],
+    "correct": 1,
+    "funfact": "Los monoplazas de F1 utilizan 4 neumáticos suministrados actualmente por Pirelli."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿De qué color es tradicionalmente el maillot que viste el líder del Tour de Francia?",
+    "keywords": [
+      "Tour de Francia",
+      "maillot"
+    ],
+    "options": [
+      "Rojo",
+      "Verde",
+      "Amarillo",
+      "Blanco"
+    ],
+    "correct": 2,
+    "funfact": "El color amarillo rinde homenaje a las páginas del periódico fundador 'L'Auto'."
+  },
+  {
+    "category": "dep",
+    "categoryLabel": "Deportes",
+    "level": "easy",
+    "question": "¿Cómo se llama el torneo de fútbol más prestigioso de clubes de Sudamérica?",
+    "keywords": [
+      "torneo de fútbol",
+      "Sudamérica"
+    ],
+    "options": [
+      "Copa Libertadores",
+      "Copa Sudamericana",
+      "Copa América",
+      "Recopa"
+    ],
+    "correct": 0,
+    "funfact": "Lleva ese nombre en honor a los líderes libertadores de las naciones sudamericanas."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de Italia, hogar del Vaticano y del Coliseo?",
+    "keywords": [
+      "capital de Italia",
+      "Coliseo"
+    ],
+    "options": [
+      "Milán",
+      "Venecia",
+      "Roma",
+      "Florencia"
+    ],
+    "correct": 2,
+    "funfact": "Roma es conocida como la 'Ciudad Eterna' y tiene más de 2.700 años de historia."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de Argentina?",
+    "keywords": [
+      "capital de Argentina"
+    ],
+    "options": [
+      "Córdoba",
+      "Rosario",
+      "Mendoza",
+      "Buenos Aires"
+    ],
+    "correct": 3,
+    "funfact": "Buenos Aires es cuna del tango y su centro está presidido por el gran Obelisco."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿En qué país se encuentra la famosa Gran Muralla?",
+    "keywords": [
+      "Gran Muralla"
+    ],
+    "options": [
+      "Japón",
+      "Corea del Sur",
+      "China",
+      "India"
+    ],
+    "correct": 2,
+    "funfact": "La Gran Muralla China se extiende por miles de kilómetros y fue construida para defender la frontera norte."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el río más caudaloso del mundo que atraviesa la selva sudamericana?",
+    "keywords": [
+      "río más caudaloso",
+      "selva sudamericana"
+    ],
+    "options": [
+      "Río Nilo",
+      "Río Amazonas",
+      "Río Misisipi",
+      "Río Danubio"
+    ],
+    "correct": 1,
+    "funfact": "El río Amazonas contiene aproximadamente una quinta parte de toda el agua dulce del planeta."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital del Reino Unido?",
+    "keywords": [
+      "capital del Reino Unido"
+    ],
+    "options": [
+      "Manchester",
+      "Dublín",
+      "Londres",
+      "Edimburgo"
+    ],
+    "correct": 2,
+    "funfact": "En Londres se encuentran iconos como el Big Ben, el río Támesis y el Palacio de Buckingham."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es el país con mayor número de habitantes en todo el continente americano?",
+    "keywords": [
+      "mayor número de habitantes",
+      "continente americano"
+    ],
+    "options": [
+      "Brasil",
+      "México",
+      "Estados Unidos",
+      "Canadá"
+    ],
+    "correct": 2,
+    "funfact": "Estados Unidos cuenta con más de 335 millones de habitantes."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿En qué país se encuentra la antigua ciudadela inca de Machu Picchu?",
+    "keywords": [
+      "Machu Picchu",
+      "ciudadela inca"
+    ],
+    "options": [
+      "Bolivia",
+      "Perú",
+      "Ecuador",
+      "Chile"
+    ],
+    "correct": 1,
+    "funfact": "Machu Picchu está situada en lo alto de los Andes peruanos sobre el valle del río Urubamba."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Qué desierto cálido es el más grande del planeta Tierra?",
+    "keywords": [
+      "desierto cálido",
+      "más grande"
+    ],
+    "options": [
+      "Desierto de Atacama",
+      "Desierto del Sahara",
+      "Desierto de Gobi",
+      "Desierto de Sonora"
+    ],
+    "correct": 1,
+    "funfact": "El Sahara abarca casi toda la franja norte de África con más de 9 millones de km²."
+  },
+  {
+    "category": "geo",
+    "categoryLabel": "Geografía",
+    "level": "easy",
+    "question": "¿Cuál es la capital de Alemania?",
+    "keywords": [
+      "capital de Alemania"
+    ],
+    "options": [
+      "Múnich",
+      "Fráncfort",
+      "Hamburgo",
+      "Berlín"
+    ],
+    "correct": 3,
+    "funfact": "Berlín volvió a ser la capital oficial de Alemania tras la reunificación en 1990."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuántas patas tienen habitualmente los insectos adultos como las hormigas o abejas?",
+    "keywords": [
+      "patas",
+      "insectos"
+    ],
+    "options": [
+      "4 patas",
+      "6 patas",
+      "8 patas",
+      "10 patas"
+    ],
+    "correct": 1,
+    "funfact": "Todos los insectos pertenecen a los hexápodos y tienen exactamente 6 patas articuladas."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué satélite natural orbita permanentemente alrededor del planeta Tierra?",
+    "keywords": [
+      "satélite natural",
+      "planeta Tierra"
+    ],
+    "options": [
+      "Marte",
+      "El Sol",
+      "La Luna",
+      "Titán"
+    ],
+    "correct": 2,
+    "funfact": "La Luna es el único satélite natural de la Tierra y causa las mareas en los océanos."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿A qué temperatura hierve el agua pura al nivel del mar en la escala Celsius?",
+    "keywords": [
+      "hierve el agua",
+      "temperatura"
+    ],
+    "options": [
+      "50 °C",
+      "80 °C",
+      "100 °C",
+      "120 °C"
+    ],
+    "correct": 2,
+    "funfact": "El punto de congelación del agua es 0 °C y el de ebullición es 100 °C."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué animal mamífero es el más grande y pesado que existe en la Tierra?",
+    "keywords": [
+      "animal mamífero",
+      "más grande"
+    ],
+    "options": [
+      "El elefante africano",
+      "La ballena azul",
+      "El tiburón blanco",
+      "La jirafa"
+    ],
+    "correct": 1,
+    "funfact": "La ballena azul puede medir hasta 30 metros de longitud y pesar cerca de 180 toneladas."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué sentido del cuerpo humano nos permite percibir los olores?",
+    "keywords": [
+      "sentido",
+      "percibir olores"
+    ],
+    "options": [
+      "La vista",
+      "El tacto",
+      "El olfato",
+      "El gusto"
+    ],
+    "correct": 2,
+    "funfact": "El bulbo olfatorio procesa las partículas aromáticas que entran por la cavidad nasal."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cómo se llama el proceso natural por el cual las plantas producen su alimento usando la luz solar?",
+    "keywords": [
+      "luz solar",
+      "plantas producen alimento"
+    ],
+    "options": [
+      "Fotosíntesis",
+      "Respiración celular",
+      "Evaporación",
+      "Germinación"
+    ],
+    "correct": 0,
+    "funfact": "Durante la fotosíntesis, las plantas absorben dióxido de carbono y liberan oxígeno vital."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué metal precioso tiene el símbolo químico 'Au' en la tabla periódica?",
+    "keywords": [
+      "Au",
+      "tabla periódica"
+    ],
+    "options": [
+      "Plata",
+      "Cobre",
+      "Oro",
+      "Hierro"
+    ],
+    "correct": 2,
+    "funfact": "El símbolo 'Au' proviene de la palabra latina 'aurum', que significa 'amanecer brillante'."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Qué animal produce miel a partir del néctar recolectado de las flores?",
+    "keywords": [
+      "produce miel",
+      "flores"
+    ],
+    "options": [
+      "La avispa",
+      "La mariposa",
+      "La abeja",
+      "La mariquita"
+    ],
+    "correct": 2,
+    "funfact": "Una sola colmena de abejas melíferas puede albergar a más de 50.000 individuos."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cómo se llama la fuerza invisible que atrae a todos los objetos hacia el centro de la Tierra?",
+    "keywords": [
+      "fuerza invisible",
+      "atrae"
+    ],
+    "options": [
+      "Magnetismo",
+      "Gravedad",
+      "Fricción",
+      "Presión"
+    ],
+    "correct": 1,
+    "funfact": "Isaac Newton formuló la ley de la gravitación universal en el siglo XVII."
+  },
+  {
+    "category": "sci",
+    "categoryLabel": "Ciencia",
+    "level": "easy",
+    "question": "¿Cuántos días tarda aproximadamente la Tierra en dar una vuelta completa alrededor del Sol?",
+    "keywords": [
+      "vuelta completa",
+      "alrededor del Sol"
+    ],
+    "options": [
+      "30 días",
+      "180 días",
+      "365 días",
+      "500 días"
+    ],
+    "correct": 2,
+    "funfact": "Tarda exactamente 365 días y unas 6 horas, por lo que cada 4 años hay un año bisiesto."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿En qué país se inventó la pólvora, el papel y la brújula?",
+    "keywords": [
+      "pólvora",
+      "papel",
+      "brújula"
+    ],
+    "options": [
+      "Egipto",
+      "China",
+      "Grecia",
+      "India"
+    ],
+    "correct": 1,
+    "funfact": "China es la cuna de los cuatro grandes inventos de la civilización oriental."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Cómo se llamaba el faraón egipcio cuya máscara de oro puro intacta fue descubierta en 1922?",
+    "keywords": [
+      "faraón",
+      "máscara de oro"
+    ],
+    "options": [
+      "Ramsés II",
+      "Tutankamón",
+      "Keops",
+      "Akenatón"
+    ],
+    "correct": 1,
+    "funfact": "La tumba casi intacta de Tutankamón fue descubierta por el arqueólogo Howard Carter."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué emperador romano fue asesinado por senadores en los Idus de Marzo del año 44 a.C.?",
+    "keywords": [
+      "Idus de Marzo",
+      "emperador romano"
+    ],
+    "options": [
+      "Nerón",
+      "Julio César",
+      "Augusto",
+      "Calígula"
+    ],
+    "correct": 1,
+    "funfact": "Entre los conspiradores que apuñalaron a César se encontraba Marco Junio Bruto."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Qué día del año se celebra tradicionalmente la Navidad en el mundo occidental?",
+    "keywords": [
+      "Navidad",
+      "día"
+    ],
+    "options": [
+      "24 de diciembre",
+      "25 de diciembre",
+      "31 de diciembre",
+      "1 de enero"
+    ],
+    "correct": 1,
+    "funfact": "Conmemora el nacimiento de Jesús de Nazaret según la tradición cristiana."
+  },
+  {
+    "category": "hist",
+    "categoryLabel": "Historia",
+    "level": "easy",
+    "question": "¿Quién fue la reina de Egipto famosa por sus alianzas con Julio César y Marco Antonio?",
+    "keywords": [
+      "reina de Egipto"
+    ],
+    "options": [
+      "Nefertiti",
+      "Cleopatra VII",
+      "Hatshepsut",
+      "Nefertari"
+    ],
+    "correct": 1,
+    "funfact": "Cleopatra fue la última soberana activa de la dinastía ptolemaica de Egipto."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿De qué país es originaria la pizza y la pasta?",
+    "keywords": [
+      "pizza",
+      "pasta"
+    ],
+    "options": [
+      "Francia",
+      "Italia",
+      "España",
+      "Grecia"
+    ],
+    "correct": 1,
+    "funfact": "La pizza Margherita fue creada en Nápoles en honor a la reina Margarita de Saboya."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué famosa estatua de una mujer sosteniendo una antorcha da la bienvenida en el puerto de Nueva York?",
+    "keywords": [
+      "antorcha",
+      "puerto de Nueva York"
+    ],
+    "options": [
+      "La Estatua de la Libertad",
+      "La Venus de Milo",
+      "La Victoria de Samotracia",
+      "La Sirena"
+    ],
+    "correct": 0,
+    "funfact": "Fue un regalo de Francia al pueblo de los Estados Unidos en 1886."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Quién esculpió la célebre estatua de mármol del rey David en Florencia?",
+    "keywords": [
+      "David",
+      "escultura"
+    ],
+    "options": [
+      "Leonardo da Vinci",
+      "Miguel Ángel (Michelangelo)",
+      "Donatello",
+      "Bernini"
+    ],
+    "correct": 1,
+    "funfact": "Miguel Ángel esculpió el David entre 1501 y 1504 a partir de un solo bloque de mármol."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿Qué instrumento musical de cuerda se toca frotando un arco con cerdas de caballo?",
+    "keywords": [
+      "arco",
+      "instrumento musical"
+    ],
+    "options": [
+      "La flauta",
+      "El violín",
+      "La batería",
+      "El saxofón"
+    ],
+    "correct": 1,
+    "funfact": "La familia del violín incluye a la viola, el violonchelo y el contrabajo."
+  },
+  {
+    "category": "art",
+    "categoryLabel": "Arte",
+    "level": "easy",
+    "question": "¿En qué país nació el pintor surrealista Salvador Dalí, célebre por sus relojes derretidos?",
+    "keywords": [
+      "Salvador Dalí",
+      "relojes derretidos"
+    ],
+    "options": [
+      "Francia",
+      "España",
+      "México",
+      "Italia"
+    ],
+    "correct": 1,
+    "funfact": "Dalí nació en Figueres, Cataluña, y su obra más famosa es 'La persistencia de la memoria'."
+  },
   {
     "category": "pop",
     "categoryLabel": "Cultura Pop",
@@ -37,7 +2812,8 @@ _root.QUESTION_BANK =  [
       "Dublín"
     ],
     "correct": 3,
-    "funfact": "Dublín fue fundada por los vikingos en el siglo IX a orillas del río Liffey."
+    "funfact": "Dublín fue fundada por los vikingos en el siglo IX a orillas del río Liffey.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -54,7 +2830,8 @@ _root.QUESTION_BANK =  [
       "Ginebra"
     ],
     "correct": 0,
-    "funfact": "Suiza técnicamente no tiene una capital oficial por ley, pero Berna ejerce como 'ciudad federal' y sede del gobierno."
+    "funfact": "Suiza técnicamente no tiene una capital oficial por ley, pero Berna ejerce como 'ciudad federal' y sede del gobierno.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -71,7 +2848,8 @@ _root.QUESTION_BANK =  [
       "Río Nilo"
     ],
     "correct": 3,
-    "funfact": "El Nilo recorre aproximadamente 6.650 km atravesando once países en el noreste de África."
+    "funfact": "El Nilo recorre aproximadamente 6.650 km atravesando once países en el noreste de África.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -242,7 +3020,8 @@ _root.QUESTION_BANK =  [
       "Astaná"
     ],
     "correct": 3,
-    "funfact": "La ciudad de Astaná se llamó Nur-Sultán temporalmente entre 2019 y 2022."
+    "funfact": "La ciudad de Astaná se llamó Nur-Sultán temporalmente entre 2019 y 2022.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -259,7 +3038,8 @@ _root.QUESTION_BANK =  [
       "208 huesos"
     ],
     "correct": 2,
-    "funfact": "Al nacer, un bebé tiene unos 300 huesos blandos que se van fusionando progresivamente durante el crecimiento."
+    "funfact": "Al nacer, un bebé tiene unos 300 huesos blandos que se van fusionando progresivamente durante el crecimiento.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -395,7 +3175,8 @@ _root.QUESTION_BANK =  [
       "Andrés Nocioni"
     ],
     "correct": 2,
-    "funfact": "Popularizó el movimiento del 'Eurostep' en la NBA y lideró la 'Generación Dorada' del baloncesto argentino."
+    "funfact": "Popularizó el movimiento del 'Eurostep' en la NBA y lideró la 'Generación Dorada' del baloncesto argentino.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -548,7 +3329,8 @@ _root.QUESTION_BANK =  [
       "Salvador de Bahía"
     ],
     "correct": 0,
-    "funfact": "Brasilia es una ciudad totalmente planificada construida en solo 41 meses e inaugurada en 1960."
+    "funfact": "Brasilia es una ciudad totalmente planificada construida en solo 41 meses e inaugurada en 1960.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -653,23 +3435,6 @@ _root.QUESTION_BANK =  [
     "funfact": "El robot bebedor y cínico Bender Bending Rodríguez se convirtió en el personaje más querido de la serie."
   },
   {
-    "category": "geo",
-    "categoryLabel": "Geografía",
-    "question": "¿Cuál es la capital de México?",
-    "keywords": [
-      "capital",
-      "México"
-    ],
-    "options": [
-      "Guadalajara",
-      "Ciudad de México",
-      "Monterrey",
-      "Puebla"
-    ],
-    "correct": 1,
-    "funfact": "Fue construida sobre las ruinas de México-Tenochtitlan, la majestuosa capital del Imperio Azteca."
-  },
-  {
     "category": "hist",
     "categoryLabel": "Historia",
     "question": "¿En qué año ocurrió el catastrófico accidente nuclear en la central de Chernóbil en Ucrania?",
@@ -769,7 +3534,8 @@ _root.QUESTION_BANK =  [
       "1946"
     ],
     "correct": 0,
-    "funfact": "La guerra concluyó en 1945 tras la rendición incondicional de las potencias del Eje en Europa y el Pacífico."
+    "funfact": "La guerra concluyó en 1945 tras la rendición incondicional de las potencias del Eje en Europa y el Pacífico.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -837,7 +3603,8 @@ _root.QUESTION_BANK =  [
       "Cabo Blanco"
     ],
     "correct": 2,
-    "funfact": "El Cabo de Hornos en el archipiélago de Tierra del Fuego es famoso por sus tempestuosas y gélidas aguas australes."
+    "funfact": "El Cabo de Hornos en el archipiélago de Tierra del Fuego es famoso por sus tempestuosas y gélidas aguas australes.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -871,7 +3638,8 @@ _root.QUESTION_BANK =  [
       "Keflavík"
     ],
     "correct": 2,
-    "funfact": "Reikiavik es la capital nacional más septentrional (al norte) del mundo."
+    "funfact": "Reikiavik es la capital nacional más septentrional (al norte) del mundo.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -1024,7 +3792,8 @@ _root.QUESTION_BANK =  [
       "Lyndon B. Johnson"
     ],
     "correct": 2,
-    "funfact": "Nixon presentó formalmente su dimisión en agosto de 1974 para eludir un juicio político inminente en el Senado."
+    "funfact": "Nixon presentó formalmente su dimisión en agosto de 1974 para eludir un juicio político inminente en el Senado.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -1313,7 +4082,8 @@ _root.QUESTION_BANK =  [
       "Al Wakrah"
     ],
     "correct": 2,
-    "funfact": "Doha albergó la gran mayoría de las sedes de la Copa Mundial de Fútbol de 2022."
+    "funfact": "Doha albergó la gran mayoría de las sedes de la Copa Mundial de Fútbol de 2022.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -1364,7 +4134,8 @@ _root.QUESTION_BANK =  [
       "Berlín"
     ],
     "correct": 0,
-    "funfact": "El personaje de 'El Profesor' planea el asalto a la Real Casa de la Moneda y Timbre al ritmo del canto antifascista 'Bella Ciao'."
+    "funfact": "El personaje de 'El Profesor' planea el asalto a la Real Casa de la Moneda y Timbre al ritmo del canto antifascista 'Bella Ciao'.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -1432,7 +4203,8 @@ _root.QUESTION_BANK =  [
       "Ganimedes"
     ],
     "correct": 0,
-    "funfact": "Los científicos consideran a Europa uno de los objetivos más prometedores para buscar vida extraterrestre microbiana."
+    "funfact": "Los científicos consideran a Europa uno de los objetivos más prometedores para buscar vida extraterrestre microbiana.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -1517,7 +4289,8 @@ _root.QUESTION_BANK =  [
       "Sharjah"
     ],
     "correct": 0,
-    "funfact": "Dubái tiene el rascacielos más alto (Burj Khalifa), pero Abu Dabi es la capital federal."
+    "funfact": "Dubái tiene el rascacielos más alto (Burj Khalifa), pero Abu Dabi es la capital federal.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -1687,7 +4460,8 @@ _root.QUESTION_BANK =  [
       "Frida Kahlo"
     ],
     "correct": 3,
-    "funfact": "Canalizó el sufrimiento físico de sus múltiples cirugías y su accidente de autobús en pinturas de profundo simbolismo."
+    "funfact": "Canalizó el sufrimiento físico de sus múltiples cirugías y su accidente de autobús en pinturas de profundo simbolismo.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -1993,7 +4767,8 @@ _root.QUESTION_BANK =  [
       "Río Volga"
     ],
     "correct": 3,
-    "funfact": "El Volga fluye íntegramente por Rusia a lo largo de 3.530 km hasta desembocar en el mar Caspio."
+    "funfact": "El Volga fluye íntegramente por Rusia a lo largo de 3.530 km hasta desembocar en el mar Caspio.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -2027,7 +4802,8 @@ _root.QUESTION_BANK =  [
       "Estados Unidos"
     ],
     "correct": 2,
-    "funfact": "Aitana Bonmatí fue galardonada con el Balón de Oro del torneo tras una brillante exhibición técnica."
+    "funfact": "Aitana Bonmatí fue galardonada con el Balón de Oro del torneo tras una brillante exhibición técnica.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -2044,7 +4820,8 @@ _root.QUESTION_BANK =  [
       "La Habana"
     ],
     "correct": 3,
-    "funfact": "El centro histórico de La Habana Vieja fue declarado Patrimonio de la Humanidad por la UNESCO en 1982."
+    "funfact": "El centro histórico de La Habana Vieja fue declarado Patrimonio de la Humanidad por la UNESCO en 1982.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -2129,7 +4906,8 @@ _root.QUESTION_BANK =  [
       "Ronaldo Nazário"
     ],
     "correct": 2,
-    "funfact": "Pelé se coronó campeón del mundo con Brasil en 1958 (con solo 17 años), 1962 y 1970."
+    "funfact": "Pelé se coronó campeón del mundo con Brasil en 1958 (con solo 17 años), 1962 y 1970.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -2316,7 +5094,8 @@ _root.QUESTION_BANK =  [
       "Monica Seles"
     ],
     "correct": 0,
-    "funfact": "Es la única persona en la historia del tenis masculino y femenino que ha conquistado el Golden Slam en un solo año natural."
+    "funfact": "Es la única persona en la historia del tenis masculino y femenino que ha conquistado el Golden Slam en un solo año natural.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -2333,7 +5112,8 @@ _root.QUESTION_BANK =  [
       "Batalla del Marne"
     ],
     "correct": 2,
-    "funfact": "El general francés Philippe Pétain acuñó el lema patriótico de resistencia: ¡No pasarán!"
+    "funfact": "El general francés Philippe Pétain acuñó el lema patriótico de resistencia: ¡No pasarán!",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -2367,7 +5147,8 @@ _root.QUESTION_BANK =  [
       "Estambul"
     ],
     "correct": 2,
-    "funfact": "Aunque Estambul es la ciudad más grande y famosa, Ankara fue declarada capital por Atatürk en 1923."
+    "funfact": "Aunque Estambul es la ciudad más grande y famosa, Ankara fue declarada capital por Atatürk en 1923.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -2537,7 +5318,8 @@ _root.QUESTION_BANK =  [
       "Uruguay"
     ],
     "correct": 3,
-    "funfact": "Uruguay derrotó a Argentina 4-2 en el Estadio Centenario de Montevideo ante más de 68.000 espectadores."
+    "funfact": "Uruguay derrotó a Argentina 4-2 en el Estadio Centenario de Montevideo ante más de 68.000 espectadores.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -2554,7 +5336,8 @@ _root.QUESTION_BANK =  [
       "Nanga Parbat"
     ],
     "correct": 0,
-    "funfact": "Ubicado en la cordillera del Karakórum, el K2 tiene una de las tasas de mortalidad más elevadas entre los ochomiles."
+    "funfact": "Ubicado en la cordillera del Karakórum, el K2 tiene una de las tasas de mortalidad más elevadas entre los ochomiles.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -2622,7 +5405,8 @@ _root.QUESTION_BANK =  [
       "Cardiff"
     ],
     "correct": 3,
-    "funfact": "Cardiff fue declarada oficialmente capital de Gales en 1955."
+    "funfact": "Cardiff fue declarada oficialmente capital de Gales en 1955.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -2656,7 +5440,8 @@ _root.QUESTION_BANK =  [
       "Islamabad"
     ],
     "correct": 3,
-    "funfact": "Islamabad fue construida en la década de 1960 para sustituir a Karachi como capital."
+    "funfact": "Islamabad fue construida en la década de 1960 para sustituir a Karachi como capital.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -2707,7 +5492,8 @@ _root.QUESTION_BANK =  [
       "Urano"
     ],
     "correct": 1,
-    "funfact": "Los anillos de Saturno están formados principalmente por miles de millones de fragmentos de hielo de agua y roca."
+    "funfact": "Los anillos de Saturno están formados principalmente por miles de millones de fragmentos de hielo de agua y roca.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -2724,7 +5510,8 @@ _root.QUESTION_BANK =  [
       "Haleakala"
     ],
     "correct": 0,
-    "funfact": "Si se mide desde su base en el lecho marino oceánico, el Mauna Loa supera con creces los 9.000 metros de altura total."
+    "funfact": "Si se mide desde su base en el lecho marino oceánico, el Mauna Loa supera con creces los 9.000 metros de altura total.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -2775,7 +5562,8 @@ _root.QUESTION_BANK =  [
       "San Pedro Sula"
     ],
     "correct": 2,
-    "funfact": "Tegucigalpa está situada en un valle rodeado de montañas y no cuenta con un sistema ferroviario de pasajeros."
+    "funfact": "Tegucigalpa está situada en un valle rodeado de montañas y no cuenta con un sistema ferroviario de pasajeros.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -2877,7 +5665,8 @@ _root.QUESTION_BANK =  [
       "La hormiga"
     ],
     "correct": 1,
-    "funfact": "Las abejas melíferas se comunican la distancia y dirección de las flores ricas en néctar mediante la 'danza del ocho'."
+    "funfact": "Las abejas melíferas se comunican la distancia y dirección de las flores ricas en néctar mediante la 'danza del ocho'.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -2894,7 +5683,8 @@ _root.QUESTION_BANK =  [
       "Estrecho de Magallanes"
     ],
     "correct": 0,
-    "funfact": "El estrecho de Gibraltar tiene solo 14,4 kilómetros de anchura en su punto más angosto."
+    "funfact": "El estrecho de Gibraltar tiene solo 14,4 kilómetros de anchura en su punto más angosto.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -2962,7 +5752,8 @@ _root.QUESTION_BANK =  [
       "Khulna"
     ],
     "correct": 2,
-    "funfact": "Daca es conocida como la 'Ciudad de las Mezquitas' y la capital mundial del bicitaxi."
+    "funfact": "Daca es conocida como la 'Ciudad de las Mezquitas' y la capital mundial del bicitaxi.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -2979,7 +5770,8 @@ _root.QUESTION_BANK =  [
       "Isla Santa Elena"
     ],
     "correct": 3,
-    "funfact": "Había escapado de su primer destierro en la isla de Elba para gobernar durante el efímero 'Periodo de los Cien Días'."
+    "funfact": "Había escapado de su primer destierro en la isla de Elba para gobernar durante el efímero 'Periodo de los Cien Días'.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -3030,7 +5822,8 @@ _root.QUESTION_BANK =  [
       "Yeda"
     ],
     "correct": 2,
-    "funfact": "Riad pasó de ser una pequeña ciudad amurallada en el desierto a una metrópoli futurista de rascacielos."
+    "funfact": "Riad pasó de ser una pequeña ciudad amurallada en el desierto a una metrópoli futurista de rascacielos.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -3098,7 +5891,8 @@ _root.QUESTION_BANK =  [
       "Breslavia"
     ],
     "correct": 2,
-    "funfact": "Varsovia fue reconstruida meticulosamente tras la Segunda Guerra Mundial siguiendo planos y cuadros históricos."
+    "funfact": "Varsovia fue reconstruida meticulosamente tras la Segunda Guerra Mundial siguiendo planos y cuadros históricos.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -3169,23 +5963,6 @@ _root.QUESTION_BANK =  [
     "funfact": "Acuñó la famosa máxima de la obra 'A puerta cerrada': 'El infierno son los otros'."
   },
   {
-    "category": "geo",
-    "categoryLabel": "Geografía",
-    "question": "¿Cuál es la capital de Colombia?",
-    "keywords": [
-      "capital",
-      "Colombia"
-    ],
-    "options": [
-      "Barranquilla",
-      "Cali",
-      "Medellín",
-      "Bogotá"
-    ],
-    "correct": 3,
-    "funfact": "Bogotá se encuentra a 2.640 metros sobre el nivel del mar, en la sabana de la cordillera Oriental."
-  },
-  {
     "category": "sci",
     "categoryLabel": "Ciencia",
     "question": "¿Cuál es el planeta más cercano al Sol?",
@@ -3200,7 +5977,8 @@ _root.QUESTION_BANK =  [
       "Venus"
     ],
     "correct": 0,
-    "funfact": "Mercurio no tiene atmósfera sustancial para retener el calor, por lo que pasa de 430 °C de día a -180 °C de noche."
+    "funfact": "Mercurio no tiene atmósfera sustancial para retener el calor, por lo que pasa de 430 °C de día a -180 °C de noche.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -3302,7 +6080,8 @@ _root.QUESTION_BANK =  [
       "Tratado de Versalles"
     ],
     "correct": 3,
-    "funfact": "Impuso durísimas sanciones económicas y territoriales a Alemania que alimentaron el rencor previo a la Segunda Guerra."
+    "funfact": "Impuso durísimas sanciones económicas y territoriales a Alemania que alimentaron el rencor previo a la Segunda Guerra.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -3472,7 +6251,8 @@ _root.QUESTION_BANK =  [
       "Bagan"
     ],
     "correct": 1,
-    "funfact": "El gobierno birmano trasladó la capital de Rangún a la nueva ciudad de Naipyidó en noviembre de 2005."
+    "funfact": "El gobierno birmano trasladó la capital de Rangún a la nueva ciudad de Naipyidó en noviembre de 2005.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -3489,7 +6269,8 @@ _root.QUESTION_BANK =  [
       "Maglia Rosa (rosa)"
     ],
     "correct": 3,
-    "funfact": "El color rosa homenajea a las páginas de papel rosado del diario deportivo organizador 'La Gazzetta dello Sport'."
+    "funfact": "El color rosa homenajea a las páginas de papel rosado del diario deportivo organizador 'La Gazzetta dello Sport'.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -3625,7 +6406,8 @@ _root.QUESTION_BANK =  [
       "Galileo Galilei"
     ],
     "correct": 1,
-    "funfact": "Publicó su monumental obra 'De revolutionibus orbium coelestium' en su lecho de muerte en 1543."
+    "funfact": "Publicó su monumental obra 'De revolutionibus orbium coelestium' en su lecho de muerte en 1543.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -3710,7 +6492,8 @@ _root.QUESTION_BANK =  [
       "Haifa"
     ],
     "correct": 2,
-    "funfact": "Jerusalén es una de las ciudades santas más disputadas y veneradas por el judaísmo, cristianismo e islam."
+    "funfact": "Jerusalén es una de las ciudades santas más disputadas y veneradas por el judaísmo, cristianismo e islam.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -3863,7 +6646,8 @@ _root.QUESTION_BANK =  [
       "Szeged"
     ],
     "correct": 0,
-    "funfact": "Budapest se formó en 1873 con la unión de dos ciudades separadas por el Danubio: Buda y Pest."
+    "funfact": "Budapest se formó en 1873 con la unión de dos ciudades separadas por el Danubio: Buda y Pest.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -4050,7 +6834,8 @@ _root.QUESTION_BANK =  [
       "Plzen"
     ],
     "correct": 0,
-    "funfact": "Praga es conocida como 'La Ciudad de las Cien Torres' y su casco histórico es Patrimonio de la Humanidad."
+    "funfact": "Praga es conocida como 'La Ciudad de las Cien Torres' y su casco histórico es Patrimonio de la Humanidad.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -4067,7 +6852,8 @@ _root.QUESTION_BANK =  [
       "Shawn Mendes"
     ],
     "correct": 2,
-    "funfact": "Se convirtió en uno de los artistas pop masculinos con mayor número de seguidores y ventas discográficas del siglo XXI."
+    "funfact": "Se convirtió en uno de los artistas pop masculinos con mayor número de seguidores y ventas discográficas del siglo XXI.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -4169,7 +6955,8 @@ _root.QUESTION_BANK =  [
       "El Señor de los Anillos"
     ],
     "correct": 2,
-    "funfact": "Basada en la saga literaria 'Canción de hielo y fuego' del escritor estadounidense George R.R. Martin."
+    "funfact": "Basada en la saga literaria 'Canción de hielo y fuego' del escritor estadounidense George R.R. Martin.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -4288,7 +7075,8 @@ _root.QUESTION_BANK =  [
       "Xavi Hernández"
     ],
     "correct": 2,
-    "funfact": "Dedicó su inolvidable gol a su amigo fallecido con la camiseta: 'Dani Jarque siempre con nosotros'."
+    "funfact": "Dedicó su inolvidable gol a su amigo fallecido con la camiseta: 'Dani Jarque siempre con nosotros'.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -4390,7 +7178,8 @@ _root.QUESTION_BANK =  [
       "Bagdad"
     ],
     "correct": 3,
-    "funfact": "El río Tigris divide la histórica ciudad de Bagdad en dos mitades: Karkh y Rusafa."
+    "funfact": "El río Tigris divide la histórica ciudad de Bagdad en dos mitades: Karkh y Rusafa.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -4441,7 +7230,8 @@ _root.QUESTION_BANK =  [
       "Eliud Kipchoge"
     ],
     "correct": 2,
-    "funfact": "Su sonrisa constante y su zancada armónica marcaron una era legendaria del atletismo de larga distancia."
+    "funfact": "Su sonrisa constante y su zancada armónica marcaron una era legendaria del atletismo de larga distancia.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -4475,7 +7265,8 @@ _root.QUESTION_BANK =  [
       "Pattaya"
     ],
     "correct": 2,
-    "funfact": "El nombre ceremonial tailandés completo de Bangkok tiene más de 160 caracteres."
+    "funfact": "El nombre ceremonial tailandés completo de Bangkok tiene más de 160 caracteres.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -4594,7 +7385,8 @@ _root.QUESTION_BANK =  [
       "Mombasa"
     ],
     "correct": 0,
-    "funfact": "Nairobi tiene un parque nacional con leones y jirafas que colinda directamente con los rascacielos de la ciudad."
+    "funfact": "Nairobi tiene un parque nacional con leones y jirafas que colinda directamente con los rascacielos de la ciudad.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -4662,7 +7454,8 @@ _root.QUESTION_BANK =  [
       "Zagreb"
     ],
     "correct": 3,
-    "funfact": "Zagreb se compone de la Ciudad Alta (Gornji Grad) y la Ciudad Baja (Donji Grad)."
+    "funfact": "Zagreb se compone de la Ciudad Alta (Gornji Grad) y la Ciudad Baja (Donji Grad).",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -4951,7 +7744,8 @@ _root.QUESTION_BANK =  [
       "Akane Yamaguchi"
     ],
     "correct": 0,
-    "funfact": "Es considerada la mejor jugadora europea de la historia del bádminton gracias a su juego agresivo y zurdo."
+    "funfact": "Es considerada la mejor jugadora europea de la historia del bádminton gracias a su juego agresivo y zurdo.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -5002,7 +7796,8 @@ _root.QUESTION_BANK =  [
       "Antigua Guatemala"
     ],
     "correct": 1,
-    "funfact": "Antigua Guatemala fue la capital colonial hasta que los terremotos de Santa Marta en 1773 forzaron el traslado."
+    "funfact": "Antigua Guatemala fue la capital colonial hasta que los terremotos de Santa Marta en 1773 forzaron el traslado.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -5036,7 +7831,8 @@ _root.QUESTION_BANK =  [
       "Seychelles"
     ],
     "correct": 0,
-    "funfact": "Socotra tiene un grado tan extremo de endemismo vegetal que parece un paisaje de otro planeta."
+    "funfact": "Socotra tiene un grado tan extremo de endemismo vegetal que parece un paisaje de otro planeta.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -5223,7 +8019,8 @@ _root.QUESTION_BANK =  [
       "Sofia Coppola"
     ],
     "correct": 0,
-    "funfact": "Se convirtió en la película dirigida en solitario por una mujer más taquillera de toda la historia del cine."
+    "funfact": "Se convirtió en la película dirigida en solitario por una mujer más taquillera de toda la historia del cine.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -5257,7 +8054,8 @@ _root.QUESTION_BANK =  [
       "Copenhague"
     ],
     "correct": 3,
-    "funfact": "Copenhague es famosa por su estatua de La Sirenita y por ser una de las capitales más amigables con las bicicletas."
+    "funfact": "Copenhague es famosa por su estatua de La Sirenita y por ser una de las capitales más amigables con las bicicletas.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -5410,7 +8208,8 @@ _root.QUESTION_BANK =  [
       "San Pedro"
     ],
     "correct": 1,
-    "funfact": "Yamusukro alberga la Basílica de Nuestra Señora de la Paz, una de las iglesias cristianas más grandes del planeta."
+    "funfact": "Yamusukro alberga la Basílica de Nuestra Señora de la Paz, una de las iglesias cristianas más grandes del planeta.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -5529,7 +8328,8 @@ _root.QUESTION_BANK =  [
       "Bakú"
     ],
     "correct": 3,
-    "funfact": "Bakú está situada a 28 metros por debajo del nivel del mar a orillas del mar Caspio, siendo la capital más baja del mundo."
+    "funfact": "Bakú está situada a 28 metros por debajo del nivel del mar a orillas del mar Caspio, siendo la capital más baja del mundo.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -5546,7 +8346,8 @@ _root.QUESTION_BANK =  [
       "Benjamin Franklin"
     ],
     "correct": 2,
-    "funfact": "Comandó el Ejército Continental patriota en la Guerra de Independencia y su rostro figura en el monte Rushmore."
+    "funfact": "Comandó el Ejército Continental patriota en la Guerra de Independencia y su rostro figura en el monte Rushmore.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -5665,7 +8466,8 @@ _root.QUESTION_BANK =  [
       "Santiago"
     ],
     "correct": 1,
-    "funfact": "Ciudad de Panamá alberga las esclusas del Canal de Panamá, una de las mayores obras de ingeniería civil de la historia."
+    "funfact": "Ciudad de Panamá alberga las esclusas del Canal de Panamá, una de las mayores obras de ingeniería civil de la historia.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -5733,7 +8535,8 @@ _root.QUESTION_BANK =  [
       "Peroné"
     ],
     "correct": 1,
-    "funfact": "Se encuentra en el muslo y soporta una presión de hasta 30 veces el peso del cuerpo al correr y saltar."
+    "funfact": "Se encuentra en el muslo y soporta una presión de hasta 30 veces el peso del cuerpo al correr y saltar.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -5750,7 +8553,8 @@ _root.QUESTION_BANK =  [
       "Monte Elbrús"
     ],
     "correct": 3,
-    "funfact": "El monte Elbrús es un estratovolcán inactivo en Rusia con una altitud de 5.642 metros."
+    "funfact": "El monte Elbrús es un estratovolcán inactivo en Rusia con una altitud de 5.642 metros.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -5954,7 +8758,8 @@ _root.QUESTION_BANK =  [
       "Saturno"
     ],
     "correct": 2,
-    "funfact": "Júpiter tiene una masa más de dos veces superior a la de todos los demás planetas juntos."
+    "funfact": "Júpiter tiene una masa más de dos veces superior a la de todos los demás planetas juntos.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -6056,7 +8861,8 @@ _root.QUESTION_BANK =  [
       "Los cinco primeros países"
     ],
     "correct": 1,
-    "funfact": "Sus colores (azul, amarillo, negro, verde y rojo sobre fondo blanco) garantizan que la bandera de cada nación del mundo contenga al menos uno de ellos."
+    "funfact": "Sus colores (azul, amarillo, negro, verde y rojo sobre fondo blanco) garantizan que la bandera de cada nación del mundo contenga al menos uno de ellos.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -6209,7 +9015,8 @@ _root.QUESTION_BANK =  [
       "Júpiter"
     ],
     "correct": 1,
-    "funfact": "Su densísima atmósfera de dióxido de carbono genera un efecto invernadero desbocado y nubes de ácido sulfúrico."
+    "funfact": "Su densísima atmósfera de dióxido de carbono genera un efecto invernadero desbocado y nubes de ácido sulfúrico.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -6328,7 +9135,8 @@ _root.QUESTION_BANK =  [
       "Sfax"
     ],
     "correct": 2,
-    "funfact": "A pocos kilómetros de la moderna Túnez yacen las ruinas legendarias de la antigua Cartago."
+    "funfact": "A pocos kilómetros de la moderna Túnez yacen las ruinas legendarias de la antigua Cartago.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -6413,7 +9221,8 @@ _root.QUESTION_BANK =  [
       "Wayde van Niekerk"
     ],
     "correct": 0,
-    "funfact": "Su peculiar estilo de correr con la espalda erguida y zancadas rápidas le valió el apodo de 'El Expreso de Waco'."
+    "funfact": "Su peculiar estilo de correr con la espalda erguida y zancadas rápidas le valió el apodo de 'El Expreso de Waco'.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -6430,7 +9239,8 @@ _root.QUESTION_BANK =  [
       "Padre de familia"
     ],
     "correct": 0,
-    "funfact": "Stan, Kyle, Cartman y Kenny protagonizan esta mordaz sátira social donde Kenny solía morir en cada episodio."
+    "funfact": "Stan, Kyle, Cartman y Kenny protagonizan esta mordaz sátira social donde Kenny solía morir en cada episodio.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -6498,7 +9308,8 @@ _root.QUESTION_BANK =  [
       "Daegu"
     ],
     "correct": 0,
-    "funfact": "Seúl alberga a casi la mitad de la población del país en su área metropolitana."
+    "funfact": "Seúl alberga a casi la mitad de la población del país en su área metropolitana.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -6515,7 +9326,8 @@ _root.QUESTION_BANK =  [
       "Maillot Blanco"
     ],
     "correct": 0,
-    "funfact": "El maillot de la ronda española ha sido históricamente naranja, amarillo y oro antes de adoptar el rojo definitivo en 2010."
+    "funfact": "El maillot de la ronda española ha sido históricamente naranja, amarillo y oro antes de adoptar el rojo definitivo en 2010.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -6753,7 +9565,8 @@ _root.QUESTION_BANK =  [
       "Belgrado"
     ],
     "correct": 3,
-    "funfact": "Belgrado se ubica en la confluencia estratégica de los ríos Danubio y Sava."
+    "funfact": "Belgrado se ubica en la confluencia estratégica de los ríos Danubio y Sava.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -6838,7 +9651,8 @@ _root.QUESTION_BANK =  [
       "Tiro"
     ],
     "correct": 1,
-    "funfact": "Beirut fue apodada en el siglo XX la 'París de Oriente Medio' por su ambiente cosmopolita."
+    "funfact": "Beirut fue apodada en el siglo XX la 'París de Oriente Medio' por su ambiente cosmopolita.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -6855,7 +9669,8 @@ _root.QUESTION_BANK =  [
       "Oporto"
     ],
     "correct": 2,
-    "funfact": "Lisboa es una de las ciudades más antiguas de Europa occidental, anterior incluso a Roma."
+    "funfact": "Lisboa es una de las ciudades más antiguas de Europa occidental, anterior incluso a Roma.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -6991,7 +9806,8 @@ _root.QUESTION_BANK =  [
       "Melchor Ocampo"
     ],
     "correct": 1,
-    "funfact": "Acuñó su célebre aforismo universal: Entre los individuos, como entre las naciones, el respeto al derecho ajeno es la paz."
+    "funfact": "Acuñó su célebre aforismo universal: Entre los individuos, como entre las naciones, el respeto al derecho ajeno es la paz.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -7008,7 +9824,8 @@ _root.QUESTION_BANK =  [
       "Lima"
     ],
     "correct": 3,
-    "funfact": "Lima fue fundada en 1535 por Francisco Pizarro con el nombre de 'Ciudad de los Reyes'."
+    "funfact": "Lima fue fundada en 1535 por Francisco Pizarro con el nombre de 'Ciudad de los Reyes'.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -7093,7 +9910,8 @@ _root.QUESTION_BANK =  [
       "Heredia"
     ],
     "correct": 1,
-    "funfact": "San José fue una de las primeras ciudades de América Latina en contar con alumbrado público eléctrico."
+    "funfact": "San José fue una de las primeras ciudades de América Latina en contar con alumbrado público eléctrico.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -7212,7 +10030,8 @@ _root.QUESTION_BANK =  [
       "Leonardo da Vinci"
     ],
     "correct": 3,
-    "funfact": "Se exhibe en el Museo del Louvre de París detrás de un cristal blindado antibalas."
+    "funfact": "Se exhibe en el Museo del Louvre de París detrás de un cristal blindado antibalas.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -7314,7 +10133,8 @@ _root.QUESTION_BANK =  [
       "Santiago"
     ],
     "correct": 3,
-    "funfact": "El Congreso Nacional de Chile se ubica en Valparaíso, pero la sede ejecutiva está en Santiago."
+    "funfact": "El Congreso Nacional de Chile se ubica en Valparaíso, pero la sede ejecutiva está en Santiago.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -7450,7 +10270,8 @@ _root.QUESTION_BANK =  [
       "Madagascar"
     ],
     "correct": 2,
-    "funfact": "Groenlandia es un territorio autónomo perteneciente al Reino de Dinamarca y cuenta con más de 2 millones de km²."
+    "funfact": "Groenlandia es un territorio autónomo perteneciente al Reino de Dinamarca y cuenta con más de 2 millones de km².",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -7535,7 +10356,8 @@ _root.QUESTION_BANK =  [
       "Graz"
     ],
     "correct": 0,
-    "funfact": "Viena fue la capital del Imperio Austrohúngaro y es famosa por su rica tradición de música clásica."
+    "funfact": "Viena fue la capital del Imperio Austrohúngaro y es famosa por su rica tradición de música clásica.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -7552,7 +10374,8 @@ _root.QUESTION_BANK =  [
       "Mauricio"
     ],
     "correct": 2,
-    "funfact": "Madagascar se separó del subcontinente indio hace unos 88 millones de años, lo que propició una fauna endémica única como los lémures."
+    "funfact": "Madagascar se separó del subcontinente indio hace unos 88 millones de años, lo que propició una fauna endémica única como los lémures.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -7722,7 +10545,8 @@ _root.QUESTION_BANK =  [
       "Michael Phelps"
     ],
     "correct": 1,
-    "funfact": "Mantuvo el récord histórico de oros en una sola olimpiada durante 36 años hasta la llegada de Michael Phelps en 2008."
+    "funfact": "Mantuvo el récord histórico de oros en una sola olimpiada durante 36 años hasta la llegada de Michael Phelps en 2008.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -7773,7 +10597,8 @@ _root.QUESTION_BANK =  [
       "Heraclión"
     ],
     "correct": 1,
-    "funfact": "Atenas tiene una historia documentada que supera los 3.400 años y es la cuna de la democracia."
+    "funfact": "Atenas tiene una historia documentada que supera los 3.400 años y es la cuna de la democracia.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -7807,7 +10632,8 @@ _root.QUESTION_BANK =  [
       "Australia"
     ],
     "correct": 3,
-    "funfact": "Australia es la mayor isla de Oceanía y el sexto país más grande del mundo por superficie."
+    "funfact": "Australia es la mayor isla de Oceanía y el sexto país más grande del mundo por superficie.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -7841,7 +10667,8 @@ _root.QUESTION_BANK =  [
       "Asafa Powell"
     ],
     "correct": 2,
-    "funfact": "Conocido como 'El Relámpago' (Lightning Bolt), celebró sus victorias apuntando al cielo con su icónico arco triunfal."
+    "funfact": "Conocido como 'El Relámpago' (Lightning Bolt), celebró sus victorias apuntando al cielo con su icónico arco triunfal.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -7909,7 +10736,8 @@ _root.QUESTION_BANK =  [
       "Kandy"
     ],
     "correct": 0,
-    "funfact": "Sri Jayawardenepura Kotte es la capital legislativa, pero Colombo es el centro financiero y ejecutivo principal."
+    "funfact": "Sri Jayawardenepura Kotte es la capital legislativa, pero Colombo es el centro financiero y ejecutivo principal.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -7926,7 +10754,8 @@ _root.QUESTION_BANK =  [
       "Medusa"
     ],
     "correct": 0,
-    "funfact": "Su sangre contiene hemocianina rica en cobre en lugar de hemoglobina rica en hierro para transportar el oxígeno en aguas frías."
+    "funfact": "Su sangre contiene hemocianina rica en cobre en lugar de hemoglobina rica en hierro para transportar el oxígeno en aguas frías.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -8012,23 +10841,6 @@ _root.QUESTION_BANK =  [
     ],
     "correct": 2,
     "funfact": "Durante los equinoccios, las sombras en la escalinata simulan el descenso de la serpiente emplumada."
-  },
-  {
-    "category": "geo",
-    "categoryLabel": "Geografía",
-    "question": "¿Cuál es la capital de Argentina?",
-    "keywords": [
-      "capital",
-      "Argentina"
-    ],
-    "options": [
-      "Rosario",
-      "Buenos Aires",
-      "Mendoza",
-      "Córdoba"
-    ],
-    "correct": 1,
-    "funfact": "Buenos Aires es famosa por el tango, el Teatro Colón y el icónico Obelisco de la avenida 9 de Julio."
   },
   {
     "category": "sci",
@@ -8147,7 +10959,8 @@ _root.QUESTION_BANK =  [
       "Thabo Mbeki"
     ],
     "correct": 1,
-    "funfact": "Premio Nobel de la Paz en 1993, lideró la reconciliación nacional tras décadas del régimen de segregación del Apartheid."
+    "funfact": "Premio Nobel de la Paz en 1993, lideró la reconciliación nacional tras décadas del régimen de segregación del Apartheid.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -8181,7 +10994,8 @@ _root.QUESTION_BANK =  [
       "Chip en el balón"
     ],
     "correct": 0,
-    "funfact": "Revisa cuatro jugadas clave: goles, decisiones de penalti, tarjetas rojas directas y confusión de identidad."
+    "funfact": "Revisa cuatro jugadas clave: goles, decisiones de penalti, tarjetas rojas directas y confusión de identidad.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -8198,7 +11012,8 @@ _root.QUESTION_BANK =  [
       "Moscú"
     ],
     "correct": 3,
-    "funfact": "La Plaza Roja y el Kremlin de Moscú han sido el corazón del poder ruso durante siglos."
+    "funfact": "La Plaza Roja y el Kremlin de Moscú han sido el corazón del poder ruso durante siglos.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -8369,7 +11184,8 @@ _root.QUESTION_BANK =  [
       "Fabiano Caruana"
     ],
     "correct": 0,
-    "funfact": "Alcanzó una puntuación Elo récord de 2882 puntos, la más alta jamás registrada en la historia del ajedrez."
+    "funfact": "Alcanzó una puntuación Elo récord de 2882 puntos, la más alta jamás registrada en la historia del ajedrez.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -8403,7 +11219,8 @@ _root.QUESTION_BANK =  [
       "Basora"
     ],
     "correct": 1,
-    "funfact": "Bagdad fue el centro de la Edad de Oro del Islam y sede de la legendaria Casa de la Sabiduría."
+    "funfact": "Bagdad fue el centro de la Edad de Oro del Islam y sede de la legendaria Casa de la Sabiduría.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -8488,7 +11305,8 @@ _root.QUESTION_BANK =  [
       "Francisco Fernando de Austria"
     ],
     "correct": 3,
-    "funfact": "Fue tiroteado junto a su esposa Sofía por el nacionalista serbio Gavrilo Princip."
+    "funfact": "Fue tiroteado junto a su esposa Sofía por el nacionalista serbio Gavrilo Princip.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -8539,7 +11357,8 @@ _root.QUESTION_BANK =  [
       "Yaundé"
     ],
     "correct": 3,
-    "funfact": "Duala es el principal puerto marítimo del país, mientras que Yaundé es la sede administrativa."
+    "funfact": "Duala es el principal puerto marítimo del país, mientras que Yaundé es la sede administrativa.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -8709,7 +11528,8 @@ _root.QUESTION_BANK =  [
       "Japón"
     ],
     "correct": 0,
-    "funfact": "Lideradas por estrellas como Megan Rapinoe, Alex Morgan y Mia Hamm, conquistaron los títulos de 1991, 1999, 2015 y 2019."
+    "funfact": "Lideradas por estrellas como Megan Rapinoe, Alex Morgan y Mia Hamm, conquistaron los títulos de 1991, 1999, 2015 y 2019.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -8794,7 +11614,8 @@ _root.QUESTION_BANK =  [
       "Ronaldo Nazário"
     ],
     "correct": 3,
-    "funfact": "Superó dos gravísimas lesiones de rodilla para coronarse como máximo goleador del torneo con ocho dianas."
+    "funfact": "Superó dos gravísimas lesiones de rodilla para coronarse como máximo goleador del torneo con ocho dianas.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -8811,7 +11632,8 @@ _root.QUESTION_BANK =  [
       "Mick Fanning"
     ],
     "correct": 2,
-    "funfact": "Es tanto el campeón mundial más joven de la historia (a los 20 años) como el más veterano (a los 39 años)."
+    "funfact": "Es tanto el campeón mundial más joven de la historia (a los 20 años) como el más veterano (a los 39 años).",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -8964,7 +11786,8 @@ _root.QUESTION_BANK =  [
       "Desierto de Kalahari"
     ],
     "correct": 0,
-    "funfact": "El Sáhara cubre más de 9 millones de kilómetros cuadrados, abarcando gran parte del norte de África."
+    "funfact": "El Sáhara cubre más de 9 millones de kilómetros cuadrados, abarcando gran parte del norte de África.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -9083,7 +11906,8 @@ _root.QUESTION_BANK =  [
       "Ámsterdam"
     ],
     "correct": 0,
-    "funfact": "El Palacio de la Paz en La Haya es la sede de la Corte Internacional de Justicia de las Naciones Unidas."
+    "funfact": "El Palacio de la Paz en La Haya es la sede de la Corte Internacional de Justicia de las Naciones Unidas.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -9202,7 +12026,8 @@ _root.QUESTION_BANK =  [
       "Celje"
     ],
     "correct": 1,
-    "funfact": "El símbolo legendario de Liubliana es el dragón, presente en su célebre Puente de los Dragones."
+    "funfact": "El símbolo legendario de Liubliana es el dragón, presente en su célebre Puente de los Dragones.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -9236,7 +12061,8 @@ _root.QUESTION_BANK =  [
       "Theodore Roosevelt"
     ],
     "correct": 2,
-    "funfact": "Es el único presidente de la historia de EE.UU. que fue reelegido para cuatro mandatos consecutivos."
+    "funfact": "Es el único presidente de la historia de EE.UU. que fue reelegido para cuatro mandatos consecutivos.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -9287,7 +12113,8 @@ _root.QUESTION_BANK =  [
       "Mike Tyson"
     ],
     "correct": 3,
-    "funfact": "Famoso por su demoledora pegada de nocaut fulminante en los primeros asaltos y su ferocidad en el ring."
+    "funfact": "Famoso por su demoledora pegada de nocaut fulminante en los primeros asaltos y su ferocidad en el ring.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -9389,7 +12216,8 @@ _root.QUESTION_BANK =  [
       "Chongjin"
     ],
     "correct": 1,
-    "funfact": "Pionyang es una de las ciudades más antiguas de la península de Corea."
+    "funfact": "Pionyang es una de las ciudades más antiguas de la península de Corea.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -9508,7 +12336,8 @@ _root.QUESTION_BANK =  [
       "Ibadán"
     ],
     "correct": 0,
-    "funfact": "Lagos es la ciudad más poblada del continente africano, pero Abuya fue designada capital en 1991 por su neutralidad geográfica."
+    "funfact": "Lagos es la ciudad más poblada del continente africano, pero Abuya fue designada capital en 1991 por su neutralidad geográfica.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -9576,7 +12405,8 @@ _root.QUESTION_BANK =  [
       "Áqaba"
     ],
     "correct": 2,
-    "funfact": "Amán es una de las ciudades continuamente habitadas más antiguas del mundo."
+    "funfact": "Amán es una de las ciudades continuamente habitadas más antiguas del mundo.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -9593,7 +12423,8 @@ _root.QUESTION_BANK =  [
       "Álvaro Obregón"
     ],
     "correct": 2,
-    "funfact": "El 18 de marzo de 1938 anunció la expropiación de las empresas petroleras extranjeras."
+    "funfact": "El 18 de marzo de 1938 anunció la expropiación de las empresas petroleras extranjeras.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -9729,7 +12560,8 @@ _root.QUESTION_BANK =  [
       "Garry Kasparov"
     ],
     "correct": 3,
-    "funfact": "Se convirtió en el campeón mundial de ajedrez más joven de la historia a los 22 años al derrotar a Anatoly Karpov en Moscú."
+    "funfact": "Se convirtió en el campeón mundial de ajedrez más joven de la historia a los 22 años al derrotar a Anatoly Karpov en Moscú.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -9763,7 +12595,8 @@ _root.QUESTION_BANK =  [
       "Tabriz"
     ],
     "correct": 1,
-    "funfact": "Teherán se encuentra en las faldas de la imponente cordillera de los montes Alborz."
+    "funfact": "Teherán se encuentra en las faldas de la imponente cordillera de los montes Alborz.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -9848,7 +12681,8 @@ _root.QUESTION_BANK =  [
       "Hieronymus Bosch"
     ],
     "correct": 2,
-    "funfact": "La pintura destaca por el magistral uso de la luz y el costoso pigmento azul ultramar obtenido del lapislázuli."
+    "funfact": "La pintura destaca por el magistral uso de la luz y el costoso pigmento azul ultramar obtenido del lapislázuli.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -9950,7 +12784,8 @@ _root.QUESTION_BANK =  [
       "Venezuela"
     ],
     "correct": 2,
-    "funfact": "Colombia posee unos 1.600 km de costas sobre el mar Caribe (Atlántico) y 1.300 km sobre el océano Pacífico."
+    "funfact": "Colombia posee unos 1.600 km de costas sobre el mar Caribe (Atlántico) y 1.300 km sobre el océano Pacífico.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -9984,7 +12819,8 @@ _root.QUESTION_BANK =  [
       "Vanadzor"
     ],
     "correct": 0,
-    "funfact": "Ereván fue fundada en 782 a.C., por lo que es casi tres décadas más antigua que la propia Roma."
+    "funfact": "Ereván fue fundada en 782 a.C., por lo que es casi tres décadas más antigua que la propia Roma.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -10035,7 +12871,8 @@ _root.QUESTION_BANK =  [
       "Ciudad del Este"
     ],
     "correct": 1,
-    "funfact": "Asunción es una de las ciudades coloniales más antiguas de Sudamérica, conocida como la 'Madre de Ciudades'."
+    "funfact": "Asunción es una de las ciudades coloniales más antiguas de Sudamérica, conocida como la 'Madre de Ciudades'.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -10290,7 +13127,8 @@ _root.QUESTION_BANK =  [
       "Tampere"
     ],
     "correct": 0,
-    "funfact": "Helsinki fue designada Capital Mundial del Diseño en 2012 y alberga una gran fortaleza marítima insular (Suomenlinna)."
+    "funfact": "Helsinki fue designada Capital Mundial del Diseño en 2012 y alberga una gran fortaleza marítima insular (Suomenlinna).",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -10375,7 +13213,8 @@ _root.QUESTION_BANK =  [
       "Metano"
     ],
     "correct": 2,
-    "funfact": "Es un hidrocarburo alcano de cuatro carbonos (C4H10) que se licúa fácilmente a presiones moderadas."
+    "funfact": "Es un hidrocarburo alcano de cuatro carbonos (C4H10) que se licúa fácilmente a presiones moderadas.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -10392,7 +13231,8 @@ _root.QUESTION_BANK =  [
       "Canal de Erie"
     ],
     "correct": 1,
-    "funfact": "El carguero SS Ancón fue la primera nave en cruzar oficialmente el canal de Panamá el 15 de agosto de 1914."
+    "funfact": "El carguero SS Ancón fue la primera nave en cruzar oficialmente el canal de Panamá el 15 de agosto de 1914.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -10460,7 +13300,8 @@ _root.QUESTION_BANK =  [
       "Fibrinógeno"
     ],
     "correct": 2,
-    "funfact": "Constituye aproximadamente una cuarta parte de toda la masa proteica total de un mamífero."
+    "funfact": "Constituye aproximadamente una cuarta parte de toda la masa proteica total de un mamífero.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -10715,7 +13556,8 @@ _root.QUESTION_BANK =  [
       "Caeleb Dressel"
     ],
     "correct": 0,
-    "funfact": "Ostenta los récords mundiales absolutos de 800 y 1.500 metros libre con ventajas abismales sobre sus rivales."
+    "funfact": "Ostenta los récords mundiales absolutos de 800 y 1.500 metros libre con ventajas abismales sobre sus rivales.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -10732,7 +13574,8 @@ _root.QUESTION_BANK =  [
       "Río Tajo"
     ],
     "correct": 3,
-    "funfact": "El Tajo nace en los montes Universales en España y desemboca en el océano Atlántico en Lisboa (Portugal)."
+    "funfact": "El Tajo nace en los montes Universales en España y desemboca en el océano Atlántico en Lisboa (Portugal).",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -10987,7 +13830,8 @@ _root.QUESTION_BANK =  [
       "1948"
     ],
     "correct": 1,
-    "funfact": "La Carta de las Naciones Unidas fue firmada en San Francisco por delegados de 50 naciones en junio de 1945."
+    "funfact": "La Carta de las Naciones Unidas fue firmada en San Francisco por delegados de 50 naciones en junio de 1945.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -11106,7 +13950,8 @@ _root.QUESTION_BANK =  [
       "Dióxido de carbono"
     ],
     "correct": 1,
-    "funfact": "El oxígeno conforma el 21% de la atmósfera y el argón casi el 1% restante."
+    "funfact": "El oxígeno conforma el 21% de la atmósfera y el argón casi el 1% restante.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -11140,7 +13985,8 @@ _root.QUESTION_BANK =  [
       "Salvador Allende"
     ],
     "correct": 3,
-    "funfact": "Murió en el Palacio de La Moneda durante el bombardeo de las fuerzas armadas sublevadas."
+    "funfact": "Murió en el Palacio de La Moneda durante el bombardeo de las fuerzas armadas sublevadas.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -11208,7 +14054,8 @@ _root.QUESTION_BANK =  [
       "Cristóbal Colón"
     ],
     "correct": 1,
-    "funfact": "Fernando de Magallanes murió en Filipinas y Elcano regresó al puerto de Sanlúcar con la nao Victoria."
+    "funfact": "Fernando de Magallanes murió en Filipinas y Elcano regresó al puerto de Sanlúcar con la nao Victoria.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -11378,7 +14225,8 @@ _root.QUESTION_BANK =  [
       "Katmandú"
     ],
     "correct": 3,
-    "funfact": "El valle de Katmandú alberga siete conjuntos monumentales declarados Patrimonio de la Humanidad."
+    "funfact": "El valle de Katmandú alberga siete conjuntos monumentales declarados Patrimonio de la Humanidad.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -11395,7 +14243,8 @@ _root.QUESTION_BANK =  [
       "Francia"
     ],
     "correct": 0,
-    "funfact": "Dirigida por el técnico alemán Otto Rehhagel, venció dos veces a la anfitriona Portugal de Cristiano Ronaldo y Figo."
+    "funfact": "Dirigida por el técnico alemán Otto Rehhagel, venció dos veces a la anfitriona Portugal de Cristiano Ronaldo y Figo.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -11480,7 +14329,8 @@ _root.QUESTION_BANK =  [
       "Lúxor"
     ],
     "correct": 2,
-    "funfact": "El Cairo es la mayor área metropolitana del mundo árabe y de Oriente Medio."
+    "funfact": "El Cairo es la mayor área metropolitana del mundo árabe y de Oriente Medio.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -11514,7 +14364,8 @@ _root.QUESTION_BANK =  [
       "Masaya"
     ],
     "correct": 2,
-    "funfact": "Managua fue elegida capital definitiva en 1852 para poner fin a la histórica rivalidad entre León y Granada."
+    "funfact": "Managua fue elegida capital definitiva en 1852 para poner fin a la histórica rivalidad entre León y Granada.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -11548,7 +14399,8 @@ _root.QUESTION_BANK =  [
       "Armagh"
     ],
     "correct": 2,
-    "funfact": "En los astilleros de Belfast se construyó el famoso transatlántico RMS Titanic a principios del siglo XX."
+    "funfact": "En los astilleros de Belfast se construyó el famoso transatlántico RMS Titanic a principios del siglo XX.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -11616,7 +14468,8 @@ _root.QUESTION_BANK =  [
       "Ocho Ríos"
     ],
     "correct": 2,
-    "funfact": "Kingston fue fundada en 1692 tras la destrucción por terremoto del legendario puerto pirata de Port Royal."
+    "funfact": "Kingston fue fundada en 1692 tras la destrucción por terremoto del legendario puerto pirata de Port Royal.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -11718,7 +14571,8 @@ _root.QUESTION_BANK =  [
       "Marc Márquez"
     ],
     "correct": 3,
-    "funfact": "Famoso por su estilo de pilotaje agresivo rozando el codo y el hombro en el asfalto en curvas imposibles."
+    "funfact": "Famoso por su estilo de pilotaje agresivo rozando el codo y el hombro en el asfalto en curvas imposibles.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -11820,7 +14674,8 @@ _root.QUESTION_BANK =  [
       "Mekele"
     ],
     "correct": 1,
-    "funfact": "Adís Abeba es la sede central de la Unión Africana y una de las capitales más altas del mundo (2.355 m)."
+    "funfact": "Adís Abeba es la sede central de la Unión Africana y una de las capitales más altas del mundo (2.355 m).",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -12364,7 +15219,8 @@ _root.QUESTION_BANK =  [
       "Burgas"
     ],
     "correct": 1,
-    "funfact": "Sofía se encuentra a los pies del imponente macizo montañoso de Vitosha."
+    "funfact": "Sofía se encuentra a los pies del imponente macizo montañoso de Vitosha.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -12381,7 +15237,8 @@ _root.QUESTION_BANK =  [
       "Jiva"
     ],
     "correct": 2,
-    "funfact": "Taskent fue un nudo vital de la legendaria Ruta de la Seda que conectaba China con Occidente."
+    "funfact": "Taskent fue un nudo vital de la legendaria Ruta de la Seda que conectaba China con Occidente.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -12415,7 +15272,8 @@ _root.QUESTION_BANK =  [
       "Ghost in the Shell"
     ],
     "correct": 0,
-    "funfact": "La emblemática motocicleta roja del joven delincuente Kaneda y su derrape lateral se convirtieron en un ícono homenajeado universalmente."
+    "funfact": "La emblemática motocicleta roja del joven delincuente Kaneda y su derrape lateral se convirtieron en un ícono homenajeado universalmente.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -12568,7 +15426,8 @@ _root.QUESTION_BANK =  [
       "Hué"
     ],
     "correct": 1,
-    "funfact": "Ciudad Ho Chi Minh (antigua Saigón) es la más poblada, pero Hanói es la capital política."
+    "funfact": "Ciudad Ho Chi Minh (antigua Saigón) es la más poblada, pero Hanói es la capital política.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -12942,7 +15801,8 @@ _root.QUESTION_BANK =  [
       "Cebú"
     ],
     "correct": 0,
-    "funfact": "La bahía de Manila es famosa por sus atardeceres y por el histórico distrito amurallado de Intramuros."
+    "funfact": "La bahía de Manila es famosa por sus atardeceres y por el histórico distrito amurallado de Intramuros.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -13027,7 +15887,8 @@ _root.QUESTION_BANK =  [
       "Theo van Doesburg"
     ],
     "correct": 1,
-    "funfact": "Su estilo sobrio de líneas negras y rectángulos primarios influyó decisivamente en el diseño gráfico y la moda."
+    "funfact": "Su estilo sobrio de líneas negras y rectángulos primarios influyó decisivamente en el diseño gráfico y la moda.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -13132,23 +15993,6 @@ _root.QUESTION_BANK =  [
     "funfact": "Narra en su fascinante autobiografía cómo tuvo que fundir todas las vajillas de estaño de su casa para completar el vaciado del bronce."
   },
   {
-    "category": "hist",
-    "categoryLabel": "Historia",
-    "question": "¿En qué año llegó Cristóbal Colón a América por primera vez?",
-    "keywords": [
-      "llegada a América",
-      "año"
-    ],
-    "options": [
-      "1488",
-      "1492",
-      "1498",
-      "1502"
-    ],
-    "correct": 1,
-    "funfact": "La expedición de tres carabelas avistó tierra en la isla de Guanahaní (Bahamas) el 12 de octubre de 1492."
-  },
-  {
     "category": "pop",
     "categoryLabel": "Cultura Pop",
     "question": "¿Qué banda de grunge de Seattle liderada por Kurt Cobain revolucionó la música de los años 90 con el himno 'Smells Like Teen Spirit'?",
@@ -13197,7 +16041,8 @@ _root.QUESTION_BANK =  [
       "Presov"
     ],
     "correct": 1,
-    "funfact": "Bratislava es la única capital nacional del mundo que hace frontera directamente con dos países soberanos (Austria y Hungría)."
+    "funfact": "Bratislava es la única capital nacional del mundo que hace frontera directamente con dos países soberanos (Austria y Hungría).",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -13350,7 +16195,8 @@ _root.QUESTION_BANK =  [
       "Thiès"
     ],
     "correct": 0,
-    "funfact": "Dakar se ubica en la península de Cabo Verde, el punto más occidental de todo el continente africano continental."
+    "funfact": "Dakar se ubica en la península de Cabo Verde, el punto más occidental de todo el continente africano continental.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -13435,7 +16281,8 @@ _root.QUESTION_BANK =  [
       "Singapur"
     ],
     "correct": 3,
-    "funfact": "Singapur es una ciudad-estado insular, por lo que su capital es la misma ciudad."
+    "funfact": "Singapur es una ciudad-estado insular, por lo que su capital es la misma ciudad.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -13469,7 +16316,8 @@ _root.QUESTION_BANK =  [
       "Toronto"
     ],
     "correct": 0,
-    "funfact": "La reina Victoria eligió Ottawa como capital en 1857 por su ubicación estratégica entre las poblaciones anglófona y francófona."
+    "funfact": "La reina Victoria eligió Ottawa como capital en 1857 por su ubicación estratégica entre las poblaciones anglófona y francófona.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -13639,7 +16487,8 @@ _root.QUESTION_BANK =  [
       "Ámsterdam"
     ],
     "correct": 3,
-    "funfact": "Ámsterdam es la capital oficial según la constitución, aunque La Haya es la sede del gobierno y de la monarquía."
+    "funfact": "Ámsterdam es la capital oficial según la constitución, aunque La Haya es la sede del gobierno y de la monarquía.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -13741,7 +16590,8 @@ _root.QUESTION_BANK =  [
       "James Buchanan"
     ],
     "correct": 0,
-    "funfact": "Promulgó la Proclamación de Emancipación en 1863 y fue asesinado en el teatro Ford por John Wilkes Booth en 1865."
+    "funfact": "Promulgó la Proclamación de Emancipación en 1863 y fue asesinado en el teatro Ford por John Wilkes Booth en 1865.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -13843,7 +16693,8 @@ _root.QUESTION_BANK =  [
       "Peniche"
     ],
     "correct": 1,
-    "funfact": "Un inmenso cañón submarino de 5.000 metros de profundidad canaliza y amplifica la energía del oleaje atlántico."
+    "funfact": "Un inmenso cañón submarino de 5.000 metros de profundidad canaliza y amplifica la energía del oleaje atlántico.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -13894,7 +16745,8 @@ _root.QUESTION_BANK =  [
       "Osaka"
     ],
     "correct": 0,
-    "funfact": "Kioto fue la capital imperial durante más de mil años antes de que el emperador se trasladara a Tokio en 1868."
+    "funfact": "Kioto fue la capital imperial durante más de mil años antes de que el emperador se trasladara a Tokio en 1868.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -14030,7 +16882,8 @@ _root.QUESTION_BANK =  [
       "1912"
     ],
     "correct": 1,
-    "funfact": "El conflicto estalló en julio de 1914 tras el asesinato del archiduque Francisco Fernando de Austria en Sarajevo."
+    "funfact": "El conflicto estalló en julio de 1914 tras el asesinato del archiduque Francisco Fernando de Austria en Sarajevo.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -14132,7 +16985,8 @@ _root.QUESTION_BANK =  [
       "Manny Pacquiao (Pac-Man)"
     ],
     "correct": 3,
-    "funfact": "Elegido además senador y candidato presidencial en su país, donde es venerado como un héroe nacional indiscutible."
+    "funfact": "Elegido además senador y candidato presidencial en su país, donde es venerado como un héroe nacional indiscutible.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -14217,7 +17071,8 @@ _root.QUESTION_BANK =  [
       "Tycho Brahe"
     ],
     "correct": 2,
-    "funfact": "Descubrió que los planetas barren áreas iguales en tiempos iguales y no se mueven en círculos perfectos."
+    "funfact": "Descubrió que los planetas barren áreas iguales en tiempos iguales y no se mueven en círculos perfectos.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -14234,7 +17089,8 @@ _root.QUESTION_BANK =  [
       "Andre Agassi"
     ],
     "correct": 3,
-    "funfact": "Su apasionante y sincera autobiografía 'Open' se convirtió en un superventas mundial de la literatura deportiva."
+    "funfact": "Su apasionante y sincera autobiografía 'Open' se convirtió en un superventas mundial de la literatura deportiva.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -14438,7 +17294,8 @@ _root.QUESTION_BANK =  [
       "Hong Kong"
     ],
     "correct": 1,
-    "funfact": "Pekín alberga la Ciudad Prohibida, el complejo palaciego más grande del mundo."
+    "funfact": "Pekín alberga la Ciudad Prohibida, el complejo palaciego más grande del mundo.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -14948,7 +17805,8 @@ _root.QUESTION_BANK =  [
       "León"
     ],
     "correct": 2,
-    "funfact": "Puede acelerar de 0 a 100 km/h en apenas 3 segundos alcanzando velocidades puntuales de hasta 115 km/h."
+    "funfact": "Puede acelerar de 0 a 100 km/h en apenas 3 segundos alcanzando velocidades puntuales de hasta 115 km/h.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -14999,7 +17857,8 @@ _root.QUESTION_BANK =  [
       "Timisoara"
     ],
     "correct": 0,
-    "funfact": "Bucarest alberga el Palacio del Parlamento, el edificio administrativo civil más pesado del mundo."
+    "funfact": "Bucarest alberga el Palacio del Parlamento, el edificio administrativo civil más pesado del mundo.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -15067,7 +17926,8 @@ _root.QUESTION_BANK =  [
       "Arusha"
     ],
     "correct": 1,
-    "funfact": "Dodoma fue designada capital en 1974 para descentralizar la administración de Dar es Salaam."
+    "funfact": "Dodoma fue designada capital en 1974 para descentralizar la administración de Dar es Salaam.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -15101,7 +17961,8 @@ _root.QUESTION_BANK =  [
       "Bruce"
     ],
     "correct": 0,
-    "funfact": "La película concienció a millones de espectadores sobre la belleza y fragilidad de la Gran Barrera de Coral."
+    "funfact": "La película concienció a millones de espectadores sobre la belleza y fragilidad de la Gran Barrera de Coral.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -15288,7 +18149,8 @@ _root.QUESTION_BANK =  [
       "Juan Manuel Márquez"
     ],
     "correct": 2,
-    "funfact": "Ha derrotado a decenas de campeones mundiales a lo largo de casi dos décadas de carrera pugilística profesional."
+    "funfact": "Ha derrotado a decenas de campeones mundiales a lo largo de casi dos décadas de carrera pugilística profesional.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -15339,7 +18201,8 @@ _root.QUESTION_BANK =  [
       "Bunny Wailer"
     ],
     "correct": 0,
-    "funfact": "Lideró The Wailers y difundió la cultura rastafari y mensajes de paz y justicia social a escala planetaria."
+    "funfact": "Lideró The Wailers y difundió la cultura rastafari y mensajes de paz y justicia social a escala planetaria.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -15475,7 +18338,8 @@ _root.QUESTION_BANK =  [
       "Giralda"
     ],
     "correct": 1,
-    "funfact": "Iniciada en el siglo VIII por Abderramán I, llegó a tener más de 850 columnas de jaspe, mármol y granito."
+    "funfact": "Iniciada en el siglo VIII por Abderramán I, llegó a tener más de 850 columnas de jaspe, mármol y granito.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -15526,7 +18390,8 @@ _root.QUESTION_BANK =  [
       "Océano Índico"
     ],
     "correct": 1,
-    "funfact": "El océano Pacífico cubre más de un tercio de la superficie terrestre y es mayor que todas las masas de tierra juntas."
+    "funfact": "El océano Pacífico cubre más de un tercio de la superficie terrestre y es mayor que todas las masas de tierra juntas.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -15611,7 +18476,8 @@ _root.QUESTION_BANK =  [
       "Thierry Henry"
     ],
     "correct": 1,
-    "funfact": "Su volea con la zurda contra el Bayer Leverkusen dio al Real Madrid su novena Copa de Europa."
+    "funfact": "Su volea con la zurda contra el Bayer Leverkusen dio al Real Madrid su novena Copa de Europa.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -15645,7 +18511,8 @@ _root.QUESTION_BANK =  [
       "Constantina"
     ],
     "correct": 2,
-    "funfact": "Argel es apodada 'Argel la Blanca' por el brillo reluciente de sus edificios escalonados frente al Mediterráneo."
+    "funfact": "Argel es apodada 'Argel la Blanca' por el brillo reluciente de sus edificios escalonados frente al Mediterráneo.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -15662,7 +18529,8 @@ _root.QUESTION_BANK =  [
       "Santo Domingo"
     ],
     "correct": 3,
-    "funfact": "Fundada en 1496 por Bartolomé Colón, es el asentamiento europeo habitado continuamente más antiguo de América."
+    "funfact": "Fundada en 1496 por Bartolomé Colón, es el asentamiento europeo habitado continuamente más antiguo de América.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -15730,7 +18598,8 @@ _root.QUESTION_BANK =  [
       "Santa Elena"
     ],
     "correct": 1,
-    "funfact": "Tristán de Acuña se ubica en el Atlántico sur a más de 2.400 kilómetros de la masa continental habitada más próxima."
+    "funfact": "Tristán de Acuña se ubica en el Atlántico sur a más de 2.400 kilómetros de la masa continental habitada más próxima.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -15917,7 +18786,8 @@ _root.QUESTION_BANK =  [
       "El Líbero"
     ],
     "correct": 3,
-    "funfact": "Fue introducida en 1998 para favorecer las jugadas defensivas largas y espectaculares."
+    "funfact": "Fue introducida en 1998 para favorecer las jugadas defensivas largas y espectaculares.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -15934,7 +18804,8 @@ _root.QUESTION_BANK =  [
       "Canberra"
     ],
     "correct": 3,
-    "funfact": "Canberra fue elegida como capital en 1908 como solución de compromiso entre las rivales Sídney y Melbourne."
+    "funfact": "Canberra fue elegida como capital en 1908 como solución de compromiso entre las rivales Sídney y Melbourne.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -15968,7 +18839,8 @@ _root.QUESTION_BANK =  [
       "Océano Índico"
     ],
     "correct": 0,
-    "funfact": "El Atlántico separa las masas continentales de América al oeste y de Europa y África al este."
+    "funfact": "El Atlántico separa las masas continentales de América al oeste y de Europa y África al este.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -16019,7 +18891,8 @@ _root.QUESTION_BANK =  [
       "Shakira"
     ],
     "correct": 3,
-    "funfact": "Ha ganado múltiples premios Grammy y es la artista femenina latina más reproducida y premiada de la historia."
+    "funfact": "Ha ganado múltiples premios Grammy y es la artista femenina latina más reproducida y premiada de la historia.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -16036,7 +18909,8 @@ _root.QUESTION_BANK =  [
       "Queenstown"
     ],
     "correct": 1,
-    "funfact": "Wellington es la capital nacional más meridional (al sur) de todo el planeta."
+    "funfact": "Wellington es la capital nacional más meridional (al sur) de todo el planeta.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -16053,7 +18927,8 @@ _root.QUESTION_BANK =  [
       "Malmö"
     ],
     "correct": 2,
-    "funfact": "Estocolmo está construida sobre 14 islas conectadas por más de 50 puentes."
+    "funfact": "Estocolmo está construida sobre 14 islas conectadas por más de 50 puentes.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -16070,7 +18945,8 @@ _root.QUESTION_BANK =  [
       "Berna"
     ],
     "correct": 1,
-    "funfact": "Fue el primer organismo internacional multilateral concebido para mantener la paz mundial."
+    "funfact": "Fue el primer organismo internacional multilateral concebido para mantener la paz mundial.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -16087,7 +18963,8 @@ _root.QUESTION_BANK =  [
       "Rabat"
     ],
     "correct": 3,
-    "funfact": "Casablanca es el motor económico del país, pero Rabat es la sede del gobierno y del rey."
+    "funfact": "Casablanca es el motor económico del país, pero Rabat es la sede del gobierno y del rey.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -16291,7 +19168,8 @@ _root.QUESTION_BANK =  [
       "Océano Índico"
     ],
     "correct": 0,
-    "funfact": "El océano Ártico rodea el Polo Norte y se encuentra cubierto por una capa de banquisa de hielo flotante."
+    "funfact": "El océano Ártico rodea el Polo Norte y se encuentra cubierto por una capa de banquisa de hielo flotante.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -16359,7 +19237,8 @@ _root.QUESTION_BANK =  [
       "Max Biaggi"
     ],
     "correct": 0,
-    "funfact": "Su desbordante carisma llenó de color amarillo fluorescente los circuitos de todo el planeta durante un cuarto de siglo."
+    "funfact": "Su desbordante carisma llenó de color amarillo fluorescente los circuitos de todo el planeta durante un cuarto de siglo.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -16427,7 +19306,8 @@ _root.QUESTION_BANK =  [
       "Trondheim"
     ],
     "correct": 1,
-    "funfact": "Oslo fue fundada en el año 1040 y se llamó Cristianía durante casi tres siglos."
+    "funfact": "Oslo fue fundada en el año 1040 y se llamó Cristianía durante casi tres siglos.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -16529,7 +19409,8 @@ _root.QUESTION_BANK =  [
       "Sekondi-Takoradi"
     ],
     "correct": 2,
-    "funfact": "Acra fue un importante centro de comercio de oro y esclavos a lo largo del golfo de Guinea."
+    "funfact": "Acra fue un importante centro de comercio de oro y esclavos a lo largo del golfo de Guinea.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -16563,7 +19444,8 @@ _root.QUESTION_BANK =  [
       "Simone Biles"
     ],
     "correct": 3,
-    "funfact": "Tiene cinco elementos acrobáticos bautizados oficialmente con su apellido en el código de puntuación de la gimnasia artística."
+    "funfact": "Tiene cinco elementos acrobáticos bautizados oficialmente con su apellido en el código de puntuación de la gimnasia artística.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -16852,7 +19734,8 @@ _root.QUESTION_BANK =  [
       "Sonsonate"
     ],
     "correct": 0,
-    "funfact": "San Salvador se ubica al pie del imponente volcán de San Salvador (Quezaltepeque)."
+    "funfact": "San Salvador se ubica al pie del imponente volcán de San Salvador (Quezaltepeque).",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -16938,7 +19821,8 @@ _root.QUESTION_BANK =  [
       "Járkov"
     ],
     "correct": 1,
-    "funfact": "Kiev es el centro cultural y espiritual ortodoxo de la antigua Rus de Kiev."
+    "funfact": "Kiev es el centro cultural y espiritual ortodoxo de la antigua Rus de Kiev.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -16972,7 +19856,8 @@ _root.QUESTION_BANK =  [
       "Calcuta"
     ],
     "correct": 0,
-    "funfact": "Nueva Delhi fue planificada por los arquitectos británicos Edwin Lutyens y Herbert Baker."
+    "funfact": "Nueva Delhi fue planificada por los arquitectos británicos Edwin Lutyens y Herbert Baker.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -17040,7 +19925,8 @@ _root.QUESTION_BANK =  [
       "Manta"
     ],
     "correct": 1,
-    "funfact": "Quito es la segunda capital más alta del mundo (2.850 m) y la más cercana a la línea ecuatorial."
+    "funfact": "Quito es la segunda capital más alta del mundo (2.850 m) y la más cercana a la línea ecuatorial.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -17091,7 +19977,8 @@ _root.QUESTION_BANK =  [
       "André Derain"
     ],
     "correct": 0,
-    "funfact": "Obras cumbres como 'La danza' transmiten una intensa alegría vital mediante contornos fluidos y colores planos."
+    "funfact": "Obras cumbres como 'La danza' transmiten una intensa alegría vital mediante contornos fluidos y colores planos.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -17108,7 +19995,8 @@ _root.QUESTION_BANK =  [
       "Pato Donald"
     ],
     "correct": 1,
-    "funfact": "Debutó en el revolucionario cortometraje sonoro 'Steamboat Willie' silbando al timón de un barco de vapor."
+    "funfact": "Debutó en el revolucionario cortometraje sonoro 'Steamboat Willie' silbando al timón de un barco de vapor.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -17227,7 +20115,8 @@ _root.QUESTION_BANK =  [
       "Pepe Reina"
     ],
     "correct": 2,
-    "funfact": "Su parada milagrosa con el pie derecho ante el remate de Arjen Robben en la final del Mundial es historia de España."
+    "funfact": "Su parada milagrosa con el pie derecho ante el remate de Arjen Robben en la final del Mundial es historia de España.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -17244,7 +20133,8 @@ _root.QUESTION_BANK =  [
       "Mazar-e Sharif"
     ],
     "correct": 0,
-    "funfact": "Kabul tiene una ubicación estratégica en un valle montañoso que controla los pasos de la cordillera del Hindu Kush."
+    "funfact": "Kabul tiene una ubicación estratégica en un valle montañoso que controla los pasos de la cordillera del Hindu Kush.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -17363,7 +20253,8 @@ _root.QUESTION_BANK =  [
       "República Democrática del Congo"
     ],
     "correct": 2,
-    "funfact": "Aproximadamente el 60% de la cuenca amazónica se encuentra dentro de las fronteras soberanas de Brasil."
+    "funfact": "Aproximadamente el 60% de la cuenca amazónica se encuentra dentro de las fronteras soberanas de Brasil.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -17431,7 +20322,8 @@ _root.QUESTION_BANK =  [
       "Charmander"
     ],
     "correct": 2,
-    "funfact": "Es el fiel compañero inseparable del entrenador Ash Ketchum a lo largo de toda la serie animada original."
+    "funfact": "Es el fiel compañero inseparable del entrenador Ash Ketchum a lo largo de toda la serie animada original.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -17601,7 +20493,8 @@ _root.QUESTION_BANK =  [
       "Antananarivo"
     ],
     "correct": 3,
-    "funfact": "Antananarivo significa 'Ciudad de los Mil Soldados' en el idioma malgache."
+    "funfact": "Antananarivo significa 'Ciudad de los Mil Soldados' en el idioma malgache.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -17618,7 +20511,8 @@ _root.QUESTION_BANK =  [
       "Sodio"
     ],
     "correct": 1,
-    "funfact": "Aproximadamente el 99% del calcio corporal se almacena en la matriz ósea y en el esmalte dental."
+    "funfact": "Aproximadamente el 99% del calcio corporal se almacena en la matriz ósea y en el esmalte dental.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -17635,7 +20529,8 @@ _root.QUESTION_BANK =  [
       "Katy Perry"
     ],
     "correct": 3,
-    "funfact": "Éxitos como 'Firework', 'Roar' y 'California Gurls' la convirtieron en una de las mayores reinas del pop de los 2010."
+    "funfact": "Éxitos como 'Firework', 'Roar' y 'California Gurls' la convirtieron en una de las mayores reinas del pop de los 2010.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -17703,7 +20598,8 @@ _root.QUESTION_BANK =  [
       "Río Congo"
     ],
     "correct": 1,
-    "funfact": "El Amazonas vierte al océano Atlántico aproximadamente una quinta parte del total de agua dulce fluvial del mundo."
+    "funfact": "El Amazonas vierte al océano Atlántico aproximadamente una quinta parte del total de agua dulce fluvial del mundo.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -18009,7 +20905,8 @@ _root.QUESTION_BANK =  [
       "Colonia del Sacramento"
     ],
     "correct": 0,
-    "funfact": "Montevideo es la capital más austral de América y se asienta sobre la orilla norte del Río de la Plata."
+    "funfact": "Montevideo es la capital más austral de América y se asienta sobre la orilla norte del Río de la Plata.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -18128,7 +21025,8 @@ _root.QUESTION_BANK =  [
       "Kutaisi"
     ],
     "correct": 2,
-    "funfact": "Tiflis es famosa por sus baños de aguas termales sulfurosas naturales en el barrio de Abanotubani."
+    "funfact": "Tiflis es famosa por sus baños de aguas termales sulfurosas naturales en el barrio de Abanotubani.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -18213,7 +21111,8 @@ _root.QUESTION_BANK =  [
       "Odesa"
     ],
     "correct": 1,
-    "funfact": "Kiev es una de las ciudades más antiguas de Europa oriental, fundada en el siglo V."
+    "funfact": "Kiev es una de las ciudades más antiguas de Europa oriental, fundada en el siglo V.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -18264,7 +21163,8 @@ _root.QUESTION_BANK =  [
       "Aberdeen"
     ],
     "correct": 1,
-    "funfact": "Glasgow es la ciudad escocesa más poblada, pero Edimburgo ha sido su capital desde el siglo XV."
+    "funfact": "Glasgow es la ciudad escocesa más poblada, pero Edimburgo ha sido su capital desde el siglo XV.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -18366,7 +21266,8 @@ _root.QUESTION_BANK =  [
       "Surabaya"
     ],
     "correct": 1,
-    "funfact": "Indonesia está construyendo una nueva capital llamada Nusantara en la isla de Borneo."
+    "funfact": "Indonesia está construyendo una nueva capital llamada Nusantara en la isla de Borneo.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -18400,7 +21301,8 @@ _root.QUESTION_BANK =  [
       "Coldplay"
     ],
     "correct": 3,
-    "funfact": "Sus espectaculares conciertos en directo incorporan pulseras LED ecológicas que iluminan las gradas al unísono."
+    "funfact": "Sus espectaculares conciertos en directo incorporan pulseras LED ecológicas que iluminan las gradas al unísono.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -18417,7 +21319,8 @@ _root.QUESTION_BANK =  [
       "Océano Ártico"
     ],
     "correct": 2,
-    "funfact": "El abismo Challenger en la Fosa de las Marianas alcanza casi 11.000 metros de profundidad bajo la superficie del mar."
+    "funfact": "El abismo Challenger en la Fosa de las Marianas alcanza casi 11.000 metros de profundidad bajo la superficie del mar.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -18519,7 +21422,8 @@ _root.QUESTION_BANK =  [
       "COI"
     ],
     "correct": 0,
-    "funfact": "Fue fundada en París en 1904 por delegados de siete federaciones nacionales europeas."
+    "funfact": "Fue fundada en París en 1904 por delegados de siete federaciones nacionales europeas.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -18553,7 +21457,8 @@ _root.QUESTION_BANK =  [
       "New York Yankees"
     ],
     "correct": 3,
-    "funfact": "Conocidos como los 'Bombarderos del Bronx', vistieron su camiseta iconos del deporte como Babe Ruth, Lou Gehrig y Joe DiMaggio."
+    "funfact": "Conocidos como los 'Bombarderos del Bronx', vistieron su camiseta iconos del deporte como Babe Ruth, Lou Gehrig y Joe DiMaggio.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -18570,7 +21475,8 @@ _root.QUESTION_BANK =  [
       "Océano Pacífico"
     ],
     "correct": 1,
-    "funfact": "El océano Índico baña las costas de África oriental, el sur de Asia y Australia occidental."
+    "funfact": "El océano Índico baña las costas de África oriental, el sur de Asia y Australia occidental.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -18587,7 +21493,8 @@ _root.QUESTION_BANK =  [
       "Río Mekong"
     ],
     "correct": 0,
-    "funfact": "El Yangtsé recorre 6.300 km en China y en su curso se ubica la presa de las Tres Gargantas."
+    "funfact": "El Yangtsé recorre 6.300 km en China y en su curso se ubica la presa de las Tres Gargantas.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -18604,7 +21511,8 @@ _root.QUESTION_BANK =  [
       "Howard Webb"
     ],
     "correct": 0,
-    "funfact": "Se le ocurrió la idea al detenerse en un semáforo de tráfico: amarillo para precaución y rojo para detenerse."
+    "funfact": "Se le ocurrió la idea al detenerse en un semáforo de tráfico: amarillo para precaución y rojo para detenerse.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -18672,7 +21580,8 @@ _root.QUESTION_BANK =  [
       "Argentina"
     ],
     "correct": 1,
-    "funfact": "Brasil conquistó sus cinco títulos mundiales en Suecia 1958, Chile 1962, México 1970, EE.UU. 1994 y Corea-Japón 2002."
+    "funfact": "Brasil conquistó sus cinco títulos mundiales en Suecia 1958, Chile 1962, México 1970, EE.UU. 1994 y Corea-Japón 2002.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -18876,7 +21785,8 @@ _root.QUESTION_BANK =  [
       "Butano"
     ],
     "correct": 2,
-    "funfact": "Se forma por la descomposición anaeróbica de materia orgánica bajo la corteza terrestre durante millones de años."
+    "funfact": "Se forma por la descomposición anaeróbica de materia orgánica bajo la corteza terrestre durante millones de años.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -19046,7 +21956,8 @@ _root.QUESTION_BANK =  [
       "Brujas"
     ],
     "correct": 0,
-    "funfact": "Bruselas es considerada la capital de facto de la Unión Europea."
+    "funfact": "Bruselas es considerada la capital de facto de la Unión Europea.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -19080,7 +21991,8 @@ _root.QUESTION_BANK =  [
       "Línea Internacional del Cambio de Fecha"
     ],
     "correct": 1,
-    "funfact": "Pasa por el Real Observatorio de Greenwich en las afueras de Londres, establecido como estándar en 1884."
+    "funfact": "Pasa por el Real Observatorio de Greenwich en las afueras de Londres, establecido como estándar en 1884.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -19233,7 +22145,8 @@ _root.QUESTION_BANK =  [
       "Ciudad del Cabo"
     ],
     "correct": 2,
-    "funfact": "Sudáfrica tiene tres capitales: Pretoria (ejecutiva/administrativa), Ciudad del Cabo (legislativa) y Bloemfontein (judicial)."
+    "funfact": "Sudáfrica tiene tres capitales: Pretoria (ejecutiva/administrativa), Ciudad del Cabo (legislativa) y Bloemfontein (judicial).",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -19318,7 +22231,8 @@ _root.QUESTION_BANK =  [
       "Fernando I"
     ],
     "correct": 0,
-    "funfact": "Su largo reinado presenció las transformaciones políticas, culturales y trágicas de Centroeuropa."
+    "funfact": "Su largo reinado presenció las transformaciones políticas, culturales y trágicas de Centroeuropa.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -19335,7 +22249,8 @@ _root.QUESTION_BANK =  [
       "Marte"
     ],
     "correct": 3,
-    "funfact": "Marte alberga el Monte Olimpo, el volcán y montaña más alta conocida en el sistema solar."
+    "funfact": "Marte alberga el Monte Olimpo, el volcán y montaña más alta conocida en el sistema solar.",
+    "level": "easy"
   },
   {
     "category": "hist",
@@ -19403,7 +22318,8 @@ _root.QUESTION_BANK =  [
       "San Juan"
     ],
     "correct": 3,
-    "funfact": "El Castillo San Felipe del Morro en el Viejo San Juan protegía la entrada a la bahía colonial."
+    "funfact": "El Castillo San Felipe del Morro en el Viejo San Juan protegía la entrada a la bahía colonial.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -19420,7 +22336,8 @@ _root.QUESTION_BANK =  [
       "Gerd Müller"
     ],
     "correct": 2,
-    "funfact": "Jugó con el hombro dislocado y en cabestrillo en el mítico 'Partido del Siglo' contra Italia en México 1970."
+    "funfact": "Jugó con el hombro dislocado y en cabestrillo en el mítico 'Partido del Siglo' contra Italia en México 1970.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -19454,7 +22371,8 @@ _root.QUESTION_BANK =  [
       "Linterna Verde"
     ],
     "correct": 0,
-    "funfact": "Creado en 1938 por Jerry Siegel y Joe Shuster, es el arquetipo primordial del superhéroe moderno."
+    "funfact": "Creado en 1938 por Jerry Siegel y Joe Shuster, es el arquetipo primordial del superhéroe moderno.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -19471,7 +22389,8 @@ _root.QUESTION_BANK =  [
       "Michael Schumacher"
     ],
     "correct": 3,
-    "funfact": "Dominó la categoría reina del automovilismo entre 2000 y 2004 junto al director Jean Todt y el ingeniero Ross Brawn."
+    "funfact": "Dominó la categoría reina del automovilismo entre 2000 y 2004 junto al director Jean Todt y el ingeniero Ross Brawn.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -19573,7 +22492,8 @@ _root.QUESTION_BANK =  [
       "Marruecos"
     ],
     "correct": 3,
-    "funfact": "Derrotó en su histórica andadura a selecciones de primer nivel como España y Portugal."
+    "funfact": "Derrotó en su histórica andadura a selecciones de primer nivel como España y Portugal.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -19607,7 +22527,8 @@ _root.QUESTION_BANK =  [
       "Wojciech Jaruzelski"
     ],
     "correct": 0,
-    "funfact": "Inició las protestas históricas como electricista en los astilleros Lenin de Gdansk en 1980."
+    "funfact": "Inició las protestas históricas como electricista en los astilleros Lenin de Gdansk en 1980.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -19709,7 +22630,8 @@ _root.QUESTION_BANK =  [
       "Río Tajo"
     ],
     "correct": 1,
-    "funfact": "El Ebro nace en Cantabria y forma un gigantesco delta de gran riqueza ecológica en el mar Mediterráneo."
+    "funfact": "El Ebro nace en Cantabria y forma un gigantesco delta de gran riqueza ecológica en el mar Mediterráneo.",
+    "level": "easy"
   },
   {
     "category": "dep",
@@ -19726,7 +22648,8 @@ _root.QUESTION_BANK =  [
       "Croacia"
     ],
     "correct": 0,
-    "funfact": "Argentina venció a Francia en una memorable tanda de penaltis tras un emocionante empate 3-3 en la prórroga."
+    "funfact": "Argentina venció a Francia en una memorable tanda de penaltis tras un emocionante empate 3-3 en la prórroga.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -19913,7 +22836,8 @@ _root.QUESTION_BANK =  [
       "Gabriel Batistuta"
     ],
     "correct": 1,
-    "funfact": "Tras esquivar a cinco rivales ingleses desde el centro del campo, firmó el mejor gol de la historia de los mundiales."
+    "funfact": "Tras esquivar a cinco rivales ingleses desde el centro del campo, firmó el mejor gol de la historia de los mundiales.",
+    "level": "easy"
   },
   {
     "category": "geo",
@@ -19964,7 +22888,8 @@ _root.QUESTION_BANK =  [
       "Darjan"
     ],
     "correct": 0,
-    "funfact": "Ulán Bator es considerada la capital nacional más fría del mundo por su temperatura media anual (-1.3 °C)."
+    "funfact": "Ulán Bator es considerada la capital nacional más fría del mundo por su temperatura media anual (-1.3 °C).",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -19998,7 +22923,8 @@ _root.QUESTION_BANK =  [
       "Adolfo Suárez"
     ],
     "correct": 3,
-    "funfact": "Promovió la Ley para la Reforma Política y las primeras elecciones libres de 1977."
+    "funfact": "Promovió la Ley para la Reforma Política y las primeras elecciones libres de 1977.",
+    "level": "easy"
   },
   {
     "category": "pop",
@@ -20219,7 +23145,8 @@ _root.QUESTION_BANK =  [
       "Batalla del Mar del Coral"
     ],
     "correct": 0,
-    "funfact": "La marina estadounidense descifró los códigos japoneses y hundió cuatro portaaviones nipones en cuestión de horas."
+    "funfact": "La marina estadounidense descifró los códigos japoneses y hundió cuatro portaaviones nipones en cuestión de horas.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -20304,7 +23231,8 @@ _root.QUESTION_BANK =  [
       "Alpes"
     ],
     "correct": 1,
-    "funfact": "Los Andes se extienden a lo largo de más de 7.000 kilómetros cruzando siete países de Sudamérica."
+    "funfact": "Los Andes se extienden a lo largo de más de 7.000 kilómetros cruzando siete países de Sudamérica.",
+    "level": "easy"
   },
   {
     "category": "art",
@@ -20355,7 +23283,8 @@ _root.QUESTION_BANK =  [
       "Kuala Lumpur"
     ],
     "correct": 3,
-    "funfact": "Kuala Lumpur alberga las famosas Torres Petronas, que fueron los edificios más altos del mundo entre 1998 y 2004."
+    "funfact": "Kuala Lumpur alberga las famosas Torres Petronas, que fueron los edificios más altos del mundo entre 1998 y 2004.",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -20389,7 +23318,8 @@ _root.QUESTION_BANK =  [
       "Valencia"
     ],
     "correct": 0,
-    "funfact": "Caracas se ubica al pie del imponente parque nacional Cerro El Ávila (Waraira Repano)."
+    "funfact": "Caracas se ubica al pie del imponente parque nacional Cerro El Ávila (Waraira Repano).",
+    "level": "easy"
   },
   {
     "category": "sci",
@@ -20409,10 +23339,3 @@ _root.QUESTION_BANK =  [
     "funfact": "22 pares son autosomas y el par 23 está formado por los cromosomas sexuales (XX en mujeres, XY en hombres)."
   }
 ];
-
-if (typeof QUESTION_BANK === 'undefined') {
-  var QUESTION_BANK = _root.QUESTION_BANK;
-}
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = _root.QUESTION_BANK;
-}

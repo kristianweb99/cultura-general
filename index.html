@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#030712" />
   <title>CULTURA GENERAL PRO</title>
 
   <!-- Google Fonts -->
@@ -184,7 +187,27 @@
     <!-- Setup card -->
     <div class="glass-card w-full max-w-lg p-8 space-y-6">
 
-            <!-- Active Player Status Header -->
+            <!-- Card de Puntos Acumulados y Recompensa -->
+      <div id="home-points-card" class="w-full flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-yellow-500/15 to-amber-500/10 border border-yellow-500/40 mb-3 shadow-[0_0_15px_rgba(255,215,0,0.15)]">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-yellow-500/20 border border-yellow-400/50 flex items-center justify-center text-xl animate-pulse">
+            🪙
+          </div>
+          <div class="text-left">
+            <p class="text-[10px] uppercase tracking-widest text-yellow-400 font-bold font-poppins">Tus Puntos Acumulados</p>
+            <div class="flex items-baseline gap-1.5">
+              <span id="user-points-display" class="text-2xl font-black text-neon-gold leading-none">0</span>
+              <span class="text-xs font-bold text-amber-300">PTS</span>
+            </div>
+          </div>
+        </div>
+        <button id="btn-quick-bonus" type="button" class="px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-slate-950 shadow-lg shadow-yellow-500/30 transition-all active:scale-95 flex items-center gap-1.5" title="Ver anuncio y ganar puntos">
+          <i class="fa-solid fa-gift"></i>
+          <span>+150 PTS</span>
+        </button>
+      </div>
+
+      <!-- Active Player Status Header -->
       <div id="user-status-banner" class="w-full flex items-center justify-between p-3 rounded-xl bg-dark-card/90 border border-slate-700/60 mb-2">
         <div class="flex items-center gap-2.5 overflow-hidden">
           <div id="banner-avatar-wrapper" class="relative flex-shrink-0">

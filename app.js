@@ -150,6 +150,10 @@ const DOM = {
 
   // Shared
   scorePopup: $('score-popup'),
+  btnAdReward: $('btn-ad-reward'),
+  btnAdRewardText: $('btn-ad-reward-text'),
+  btnAdResults: $('btn-ad-results'),
+  btnAdResultsText: $('btn-ad-results-text'),
 
   // Auth Screen & Controls
   screenAuth:           $('screen-auth'),
@@ -1743,6 +1747,13 @@ function endGame(incomplete = false) {
     };
   }
 
+  // Restablecer botón de recompensa de anuncio para cada partida
+  if (DOM.btnAdResults) {
+    DOM.btnAdResults.disabled = false;
+    DOM.btnAdResults.classList.remove('opacity-70', 'cursor-not-allowed');
+    if (DOM.btnAdResultsText) DOM.btnAdResultsText.textContent = "🎁 Ver Anuncio y Ganar +200 PTS Extra";
+  }
+
   if (isDuelMode) {
     finishDuelInFirebase();
     if (DOM.duelResultsCard) DOM.duelResultsCard.classList.remove('hidden');
@@ -1762,6 +1773,13 @@ function endGame(incomplete = false) {
     duelPlayerRole = null;
     if (DOM.duelVsBar) DOM.duelVsBar.classList.add('hidden');
     if (DOM.duelResultsCard) DOM.duelResultsCard.classList.add('hidden');
+
+    // Monetización inteligente: abre anuncio cada 2 partidas jugadas
+    completedGamesCount++;
+    if (completedGamesCount % 2 === 0) {
+      try { window.open(AD_SMARTLINK, '_blank'); } catch(e) {}
+    }
+
     showScreen('start');
     renderLeaderboard(DOM.leaderboardStart);
   };
@@ -2697,6 +2715,78 @@ window.adminDeletePlayer = function(key, name) {
 // ============================================================
 // 20. BOOT
 // ============================================================
+// ============================================================
+// 21. AD MONETIZATION (Adsterra Smartlink & Rewarded Actions)
+// ============================================================
+const AD_SMARTLINK = 'https://asiafilm.org/4/9a63ad70c0553c0435770581d556df0c';
+let completedGamesCount = 0;
+
+function initAdMonetization() {
+  // 1. Bono Diario en Pantalla de Inicio
+  if (DOM.btnAdReward) {
+    DOM.btnAdReward.onclick = () => {
+      triggerHaptic('win');
+      playTone({ frequency: 659.25, type: 'sine', duration: 0.2, gain: 0.2 });
+      window.open(AD_SMARTLINK, '_blank');
+
+      if (DOM.btnAdRewardText) DOM.btnAdRewardText.textContent = "✅ ¡Bono Reclamado (+150 PTS)!";
+      DOM.btnAdReward.disabled = true;
+      DOM.btnAdReward.classList.add('opacity-70', 'cursor-not-allowed');
+
+      animateScore(150);
+
+      const pName = DOM.playerName && DOM.playerName.value.trim() ? DOM.playerName.value.trim() : 'Jugador';
+      saveScore({
+        name: pName,
+        avatar: gameState.playerAvatar || '🧠',
+        score: 150,
+        category: 'Bono Diario',
+        difficulty: 'Normal',
+        date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }),
+        accuracy: 100,
+      });
+      renderLeaderboard(DOM.leaderboardStart);
+
+      setTimeout(() => {
+        if (DOM.btnAdReward) {
+          DOM.btnAdReward.disabled = false;
+          DOM.btnAdReward.classList.remove('opacity-70', 'cursor-not-allowed');
+          if (DOM.btnAdRewardText) DOM.btnAdRewardText.textContent = "🎁 Bono Diario: +150 PTS Gratis";
+        }
+      }, 180000);
+    };
+  }
+
+  // 2. Bono Extra en Pantalla de Resultados
+  if (DOM.btnAdResults) {
+    DOM.btnAdResults.onclick = () => {
+      triggerHaptic('win');
+      playTone({ frequency: 784, type: 'sine', duration: 0.2, gain: 0.2 });
+      window.open(AD_SMARTLINK, '_blank');
+
+      gameState.score += 200;
+      if (DOM.resScore) DOM.resScore.textContent = gameState.score.toLocaleString();
+      animateScore(200);
+
+      const entry = {
+        name: gameState.playerName,
+        avatar: gameState.playerAvatar,
+        score: gameState.score,
+        category: gameState.category,
+        difficulty: gameState.difficulty,
+        date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }),
+        accuracy: Math.round((gameState.correctAnswers / Math.max(1, gameState.totalAnswered)) * 100),
+      };
+      saveScore(entry);
+      renderLeaderboard(DOM.leaderboardResults);
+
+      if (DOM.btnAdResultsText) DOM.btnAdResultsText.textContent = "✅ ¡+200 PTS Agregados!";
+      DOM.btnAdResults.disabled = true;
+      DOM.btnAdResults.classList.add('opacity-70', 'cursor-not-allowed');
+    };
+  }
+}
+
 function bootApp() {
   initParticles();
   initAuth();
@@ -2704,6 +2794,7 @@ function bootApp() {
   initRealtimeLeaderboard();
   initDuelSystem();
   initAdminSystem();
+  initAdMonetization();
 
   // Unlock AudioContext on first interaction
   document.addEventListener('pointerdown', ensureAudioCtx, { once: true });
